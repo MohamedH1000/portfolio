@@ -102,6 +102,20 @@ export const projects = [
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/three.svg", "/gsap.svg"],
     link: "https://mafaz.vercel.app/",
   },
+  {
+    id: 5,
+    title: "Basic Calculation Website",
+    des: "Application that is build using react and reactflow allowing you to do the basic calculations like sum, substract, multiply and divide manipulations",
+    img: "/BasicCalc.png",
+    iconLists: [
+      "/ReactFlow.ico",
+      "/tail.svg",
+      "/ts.svg",
+      "/re.svg",
+      "/gsap.svg",
+    ],
+    link: "https://dragdrop-chi.vercel.app/",
+  },
 ];
 
 export const testimonials = [
