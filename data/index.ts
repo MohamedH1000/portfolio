@@ -76,7 +76,7 @@ export const projects = [
     des: "Ask your questions that you dont have an answer for and wait an expert to answer you and find a lot of questions and answers, this website is like stackoverflow",
     img: "/devFlow.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/next.svg", "/c.svg"],
-    link: "https://devflow-rose.vercel.app/",
+    link: "https://dev-flow-nine-psi.vercel.app/",
   },
   {
     id: 2,
