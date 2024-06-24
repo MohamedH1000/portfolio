@@ -116,6 +116,20 @@ export const projects = [
     ],
     link: "https://dragdrop-chi.vercel.app/",
   },
+  {
+    id: 6,
+    title: "Filmpire",
+    des: "Application that is build using react and redux allowing you watch different movies",
+    img: "/Filmpire.png",
+    iconLists: [
+      "/ReactFlow.ico",
+      "/tail.svg",
+      "/ts.svg",
+      "/re.svg",
+      "/gsap.svg",
+    ],
+    link: "https://willowy-nougat-2d34e6.netlify.app/",
+  },
 ];
 
 export const testimonials = [
