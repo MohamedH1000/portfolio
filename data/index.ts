@@ -88,11 +88,11 @@ export const projects = [
   },
   {
     id: 3,
-    title: "LuxHunt Store",
-    des: "Application thats build in Nextjs with modern features and build with testnet network and you can buy via metamask and you deploy smart contracts",
-    img: "/LuxHunt.png",
+    title: "Mersal Chalet Resort",
+    des: "Application thats build in Nextjs, NextAuth, prisma and MongoDb for building a website for reserve a chalets",
+    img: "/Mersal.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/next.svg", "/c.svg"],
-    link: "https://lux-hunt.vercel.app/",
+    link: "https://mersal-ksa.vercel.app/",
   },
   {
     id: 4,
