@@ -121,13 +121,15 @@ export const projects = [
     title: "Filmpire",
     des: "Application that is build using react and redux allowing you watch different movies",
     img: "/Filmpire.png",
-    iconLists: [
-      "/ReactFlow.ico",
-      "/tail.svg",
-      "/ts.svg",
-      "/re.svg",
-      "/gsap.svg",
-    ],
+    iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
+    link: "https://willowy-nougat-2d34e6.netlify.app/",
+  },
+  {
+    id: 7,
+    title: "Figma Clone",
+    des: "Application that is build using NextJS allowing you to design websites like figma",
+    img: "/figma_clone.png",
+    iconLists: ["/next.ico", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
     link: "https://willowy-nougat-2d34e6.netlify.app/",
   },
 ];
