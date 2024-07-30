@@ -129,7 +129,7 @@ export const projects = [
     title: "Figma Clone",
     des: "Application that is build using NextJS allowing you to design websites like figma",
     img: "/figma_clone.png",
-    iconLists: ["/next.ico", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
+    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
     link: "https://willowy-nougat-2d34e6.netlify.app/",
   },
 ];
