@@ -132,6 +132,14 @@ export const projects = [
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
     link: "https://figma-clone-mu-ruddy.vercel.app/",
   },
+  {
+    id: 8,
+    title: "Collaborative Editor",
+    des: "Application that is build using NextJS allowing you write, edit and delete document in realtime with other persons",
+    img: "/collaborative_editor.png",
+    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
+    link: "https://editor-app-seven.vercel.app/",
+  },
 ];
 
 export const testimonials = [
