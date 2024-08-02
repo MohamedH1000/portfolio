@@ -75,7 +75,7 @@ export const projects = [
     title: "DevFlow application for questions and answers",
     des: "Ask your questions that you dont have an answer for and wait an expert to answer you and find a lot of questions and answers, this website is like stackoverflow",
     img: "/devFlow.png",
-    iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/next.svg", "/c.svg"],
+    iconLists: ["/mongodb.svg", "/tail.svg", "/ts.svg", "/next.svg", "/c.svg"],
     link: "https://dev-flow-nine-psi.vercel.app/",
   },
   {
@@ -91,7 +91,13 @@ export const projects = [
     title: "Mersal Chalet Resort",
     des: "Application thats build in Nextjs, NextAuth, prisma and MongoDb for building a website for reserve a chalets",
     img: "/Mersal.png",
-    iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/next.svg", "/c.svg"],
+    iconLists: [
+      "/prisma.webp",
+      "/tail.svg",
+      "/ts.svg",
+      "/next.svg",
+      "/nextauth.png",
+    ],
     link: "https://mersal-ksa.vercel.app/",
   },
   {
@@ -99,7 +105,7 @@ export const projects = [
     title: "Mafaz",
     des: "Application that is built using Nextjs with clerk, material-ui, shadcn, tailwindcss and MongoDB",
     img: "/Mafaz.png",
-    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/three.svg", "/gsap.svg"],
+    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/mongodb.svg", "/c.svg"],
     link: "https://mafaz.vercel.app/",
   },
   {
@@ -121,7 +127,13 @@ export const projects = [
     title: "Filmpire",
     des: "Application that is build using react and redux allowing you watch different movies",
     img: "/Filmpire.png",
-    iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
+    iconLists: [
+      "/re.svg",
+      "/tail.svg",
+      "/ts.svg",
+      "/mongodb.svg",
+      "/redux.svg",
+    ],
     link: "https://willowy-nougat-2d34e6.netlify.app/",
   },
   {
@@ -129,7 +141,13 @@ export const projects = [
     title: "Figma Clone",
     des: "Application that is build using NextJS allowing you to design websites like figma",
     img: "/figma_clone.png",
-    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
+    iconLists: [
+      "/next.svg",
+      "/tail.svg",
+      "/ts.svg",
+      "/re.svg",
+      "/liveblocks.png",
+    ],
     link: "https://figma-clone-mu-ruddy.vercel.app/",
   },
   {
@@ -137,8 +155,28 @@ export const projects = [
     title: "Collaborative Editor",
     des: "Application that is build using NextJS allowing you write, edit and delete document in realtime with other persons",
     img: "/collaborative_editor.png",
-    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/re.svg", "/gsap.svg"],
+    iconLists: [
+      "/next.svg",
+      "/tail.svg",
+      "/ts.svg",
+      "/liveblocks.png",
+      "/c.svg",
+    ],
     link: "https://editor-app-seven.vercel.app/",
+  },
+  {
+    id: 9,
+    title: "Netflix Clone",
+    des: "Application that is build using NextJS allowing you to watch movies like netflix",
+    img: "/Netflix.png",
+    iconLists: [
+      "/next.svg",
+      "/tail.svg",
+      "/ts.svg",
+      "/re.svg",
+      "/nextauth.png",
+    ],
+    link: "https://netflix-clone-gray-delta-89.vercel.app/auth",
   },
 ];
 
