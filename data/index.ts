@@ -176,7 +176,7 @@ export const projects = [
       "/re.svg",
       "/nextauth.png",
     ],
-    link: "https://netflix-clone-gray-delta-89.vercel.app/auth",
+    link: "https://netflix-clone-gray-delta-89.vercel.app",
   },
 ];
 
