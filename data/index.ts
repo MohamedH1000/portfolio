@@ -178,6 +178,20 @@ export const projects = [
     ],
     link: "https://netflix-clone-gray-delta-89.vercel.app",
   },
+  {
+    id: 10,
+    title: "Massenger Clone",
+    des: "Application that is build using NextJS to make chat between members in realtime environment",
+    img: "/Massenger.png",
+    iconLists: [
+      "/next.svg",
+      "/tail.svg",
+      "/ts.svg",
+      "/prisma.webp",
+      "/mongodb.svg",
+    ],
+    link: "https://massenger-clone.vercel.app",
+  },
 ];
 
 export const testimonials = [
