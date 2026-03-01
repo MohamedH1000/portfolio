@@ -88,6 +88,14 @@ export const projects = [
   },
   {
     id: 3,
+    title: "Nouzl - Booking Platform Website",
+    des: "Booking different type of properties with the best prices and sign up your properties as partner in the platform",
+    img: "/nouzl.png",
+    iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/redux.svg", "/prisma.webp"],
+    link: "https://www.nouzl.com/",
+  },
+  {
+    id: 4,
     title: "Mersal Chalet Resort",
     des: "Application thats build in Nextjs, NextAuth, prisma and MongoDb for building a website for reserve a chalets",
     img: "/Mersal.png",
@@ -101,7 +109,7 @@ export const projects = [
     link: "https://mersal-ksa.vercel.app/",
   },
   {
-    id: 4,
+    id: 5,
     title: "Mafaz",
     des: "Application that is built using Nextjs with clerk, material-ui, shadcn, tailwindcss and MongoDB",
     img: "/Mafaz.png",
@@ -109,7 +117,7 @@ export const projects = [
     link: "https://mafaz.vercel.app/",
   },
   {
-    id: 5,
+    id: 6,
     title: "Basic Calculation Website",
     des: "Application that is build using react and reactflow allowing you to do the basic calculations like sum, substract, multiply and divide manipulations",
     img: "/BasicCalc.png",
@@ -123,7 +131,7 @@ export const projects = [
     link: "https://dragdrop-chi.vercel.app/",
   },
   {
-    id: 6,
+    id: 7,
     title: "Filmpire",
     des: "Application that is build using react and redux allowing you watch different movies",
     img: "/Filmpire.png",
@@ -137,7 +145,7 @@ export const projects = [
     link: "https://willowy-nougat-2d34e6.netlify.app/",
   },
   {
-    id: 7,
+    id: 8,
     title: "Figma Clone",
     des: "Application that is build using NextJS allowing you to design websites like figma",
     img: "/figma_clone.png",
@@ -151,7 +159,7 @@ export const projects = [
     link: "https://figma-clone-mu-ruddy.vercel.app/",
   },
   {
-    id: 8,
+    id: 9,
     title: "Collaborative Editor",
     des: "Application that is build using NextJS allowing you write, edit and delete document in realtime with other persons",
     img: "/collaborative_editor.png",
@@ -165,7 +173,7 @@ export const projects = [
     link: "https://editor-app-seven.vercel.app/",
   },
   {
-    id: 9,
+    id: 10,
     title: "Netflix Clone",
     des: "Application that is build using NextJS allowing you to watch movies like netflix",
     img: "/Netflix.png",
@@ -179,7 +187,7 @@ export const projects = [
     link: "https://netflix-clone-gray-delta-89.vercel.app",
   },
   {
-    id: 10,
+    id: 11,
     title: "Massenger Clone",
     des: "Application that is build using NextJS to make chat between members in realtime environment",
     img: "/Massenger.png",
