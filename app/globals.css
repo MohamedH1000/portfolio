@@ -1,85 +1,185 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+/* ===== Dark Theme (Default) ===== */
+:root {
+  --background: #121222;
+  --foreground: #e3e0f8;
+  --card: #1a1a2b;
+  --card-foreground: #e3e0f8;
+  --popover: #1e1e2f;
+  --popover-foreground: #e3e0f8;
+  --primary: #CBACF9;
+  --primary-foreground: #27074e;
+  --secondary: #29283a;
+  --secondary-foreground: #e3e0f8;
+  --muted: #1e1e2f;
+  --muted-foreground: #ccc4d1;
+  --accent: #29283a;
+  --accent-foreground: #e3e0f8;
+  --destructive: #ffb4ab;
+  --destructive-foreground: #690005;
+  --border: #4a454f;
+  --input: #333345;
+  --ring: #CBACF9;
+  --radius: 0.5rem;
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+  /* Surface hierarchy */
+  --surface-dim: #121222;
+  --surface-container-lowest: #0c0c1d;
+  --surface-container-low: #1a1a2b;
+  --surface-container: #1e1e2f;
+  --surface-container-high: #29283a;
+  --surface-container-highest: #333345;
+  --surface-bright: #38374a;
+}
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+/* ===== Light Theme ===== */
+.light {
+  --background: #faf8ff;
+  --foreground: #1c1b2e;
+  --card: #ffffff;
+  --card-foreground: #1c1b2e;
+  --popover: #ffffff;
+  --popover-foreground: #1c1b2e;
+  --primary: #6c5196;
+  --primary-foreground: #ffffff;
+  --secondary: #e8e0f5;
+  --secondary-foreground: #1c1b2e;
+  --muted: #f0ecf7;
+  --muted-foreground: #5a5670;
+  --accent: #e8e0f5;
+  --accent-foreground: #1c1b2e;
+  --destructive: #ba1a1a;
+  --destructive-foreground: #ffffff;
+  --border: #cbc4d7;
+  --input: #cbc4d7;
+  --ring: #6c5196;
 
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+  --surface-dim: #e3e0f8;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f0ecf7;
+  --surface-container: #ebe5f3;
+  --surface-container-high: #e5dff0;
+  --surface-container-highest: #dfd9ea;
+  --surface-bright: #faf8ff;
+}
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+@theme inline {
+  /* Semantic Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+  /* Surface System */
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-lowest: var(--surface-container-lowest);
+  --color-surface-low: var(--surface-container-low);
+  --color-surface: var(--surface-container);
+  --color-surface-high: var(--surface-container-high);
+  --color-surface-highest: var(--surface-container-highest);
+  --color-surface-bright: var(--surface-bright);
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+  /* Brand */
+  --color-brand: #CBACF9;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+  /* Radii */
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
+  /* Fonts */
+  --font-sans: var(--font-inter);
+  --font-arabic: var(--font-noto-sans-arabic);
 
-    --radius: 0.5rem;
+  /* Animations */
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-fade-in: fade-in 0.6s ease forwards;
+  --animate-slide-up: slide-up 0.5s ease forwards;
+  --animate-slide-down: slide-down 0.3s ease forwards;
+  --animate-scale-in: scale-in 0.2s ease forwards;
+
+  @keyframes spotlight {
+    0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+    100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
   }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+  @keyframes shimmer {
+    from { background-position: 0 0; }
+    to { background-position: -200% 0; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
   }
 }
 
-@layer base {
-  * {
-    @apply border-border !scroll-smooth;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  button {
-    @apply active:outline-none;
-  }
+/* ===== Base Styles ===== */
+* {
+  border-color: var(--border);
 }
 
-@layer utilities {
-  .heading {
-    @apply font-bold text-4xl md:text-5xl text-center;
-  }
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* ===== Blueprint Grid Texture ===== */
+.bg-blueprint {
+  background-image:
+    linear-gradient(rgba(203, 172, 249, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(203, 172, 249, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ===== Ghost Border (15% opacity) ===== */
+.ghost-border {
+  outline: 1px solid rgba(203, 172, 249, 0.15);
+}
+
+/* ===== Glass Effect ===== */
+.glass {
+  background: rgba(30, 30, 47, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ===== Section Styles ===== */
+.section-heading {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }

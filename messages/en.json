@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "Mohamed Hesham | Full Stack Developer",
+    "description": "Full Stack Developer specializing in Next.js, React, TypeScript, and modern web technologies."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "contact": "Contact"
+  },
+  "hero": {
+    "subtitle": "Dynamic Web Magic with Next.js",
+    "title": "Transforming Concepts into Seamless User Experiences",
+    "description": "Hi! I'm Mohamed Hesham, a Full Stack Developer based in Egypt.",
+    "cta": "Show my work"
+  },
+  "projects": {
+    "title": "A small selection of {highlight}",
+    "titleHighlight": "recent projects",
+    "featured": "Featured Projects",
+    "all": "All Projects",
+    "viewProject": "View Project",
+    "liveDemo": "Live Demo",
+    "sourceCode": "Source Code",
+    "techStack": "Tech Stack",
+    "search": "Search projects...",
+    "filterAll": "All",
+    "noResults": "No projects found matching your criteria.",
+    "backToProjects": "Back to Projects"
+  },
+  "testimonials": {
+    "title": "Kind words from {highlight}",
+    "titleHighlight": "satisfied clients"
+  },
+  "experience": {
+    "title": "My {highlight}",
+    "titleHighlight": "work experience",
+    "present": "Present",
+    "viewAll": "View Full Experience"
+  },
+  "about": {
+    "title": "About {highlight}",
+    "titleHighlight": "Me",
+    "bio": "I'm a Full Stack Developer with a passion for creating beautiful, functional, and user-centered digital experiences. With a strong foundation in both frontend and backend technologies, I build applications that are not only visually appealing but also performant and scalable.",
+    "bioExtended": "I specialize in the MERN stack and Next.js ecosystem, with experience in building everything from small business websites to enterprise-level applications. I'm always eager to learn new technologies and take on challenging projects that push the boundaries of what's possible on the web.",
+    "skills": "Skills & Technologies",
+    "approach": "My Approach",
+    "phase1Title": "Discovery & Planning",
+    "phase1Description": "Understanding your goals, target audience, and project requirements to create a solid foundation.",
+    "phase2Title": "Design & Development",
+    "phase2Description": "Building your solution with clean code, modern frameworks, and best practices for optimal performance.",
+    "phase3Title": "Testing & Launch",
+    "phase3Description": "Thorough testing, optimization, and a smooth deployment to ensure everything works perfectly."
+  },
+  "contact": {
+    "title": "Ready to take {highlight} digital presence to the next level?",
+    "titleHighlight": "your",
+    "description": "Reach out to me today and let's discuss how I can help you achieve your goals.",
+    "cta": "Let's get in touch",
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "submit": "Send Message",
+    "sending": "Sending...",
+    "success": "Message sent successfully! I'll get back to you soon.",
+    "error": "Something went wrong. Please try again.",
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMin": "Name must be at least 2 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "messageRequired": "Message is required",
+      "messageMin": "Message must be at least 10 characters"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Mohamed Hesham. All rights reserved.",
+    "builtWith": "Built with Next.js & Tailwind CSS"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "notFound": "Page not found",
+    "notFoundDescription": "The page you're looking for doesn't exist.",
+    "goHome": "Go Home",
+    "readMore": "Read More"
+  }
+}

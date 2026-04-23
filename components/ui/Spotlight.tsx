@@ -1,56 +1,51 @@
-import { cn } from "@/lib/utils";
-import React from "react";
+"use client";
 
-type SpotlightProps = {
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+
+interface SpotlightProps {
   className?: string;
   fill?: string;
-};
+}
 
-export const Spotlight = ({ className, fill }: SpotlightProps) => {
+export function Spotlight({ className, fill = "white" }: SpotlightProps) {
   return (
-    <svg
+    <motion.svg
       className={cn(
-        "animate-spotlight pointer-events-none absolute z-[1]  h-[169%] w-[138%] lg:w-[84%] opacity-0",
-        className
+        "pointer-events-none absolute z-[1] h-[169%] w-[138%] lg:w-[84%]",
+        "-top-40 left-0 md:-top-20 md:left-60",
+        className,
       )}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 3787 2842"
       fill="none"
+      initial={{ opacity: 0, scale: 0.5, x: "-72%", y: "-62%" }}
+      animate={{ opacity: 1, scale: 1, x: "-50%", y: "-40%" }}
+      transition={{ duration: 2, ease: "easeOut", delay: 0.75 }}
     >
-      <g filter="url(#filter)">
+      <g filter="url(#spotlight-filter)">
         <ellipse
-          cx="1924.71"
-          cy="273.501"
-          rx="1924.71"
-          ry="273.501"
-          transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)"
-          fill={fill || "white"}
+          cx="1924"
+          cy="1421"
+          rx="1924"
+          ry="1421"
+          fill={fill}
           fillOpacity="0.21"
-        ></ellipse>
+        />
       </g>
       <defs>
         <filter
-          id="filter"
-          x="0.860352"
-          y="0.838989"
-          width="3785.16"
-          height="2840.26"
-          filterUnits="userSpaceOnUse"
+          id="spotlight-filter"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+          filterUnits="objectBoundingBox"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="BackgroundImageFix"
-            result="shape"
-          ></feBlend>
-          <feGaussianBlur
-            stdDeviation="151"
-            result="effect1_foregroundBlur_1065_8"
-          ></feGaussianBlur>
+          <feGaussianBlur stdDeviation="300" />
         </filter>
       </defs>
-    </svg>
+    </motion.svg>
   );
-};
+}
