@@ -2,15 +2,15 @@ import { setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { getProjectBySlug, getProjects } from "@/app/actions/projects";
+import { getProjectBySlug } from "@/app/actions/projects";
+import { projects as fallbackProjects } from "@/data/temp";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { TechTag } from "@/components/ui/tech-tag";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import Image from "next/image";
 
 export async function generateStaticParams() {
-  const projects = await getProjects();
-  return projects.map((p) => ({ slug: p.slug }));
+  return fallbackProjects.map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProjectDetailPage({
