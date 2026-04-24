@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Spotlight } from "@/components/ui/spotlight";
 import { TextGenerate } from "@/components/ui/text-generate";
 import { MagicButton } from "@/components/ui/magic-button";
-import { FaLocationArrow } from "react-icons/fa6";
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 
 export function HeroSection() {
@@ -50,7 +50,7 @@ export function HeroSection() {
           <Link href={{ pathname: "/projects" }}>
             <MagicButton
               title={t("cta")}
-              icon={<FaLocationArrow />}
+              icon={<ArrowUpRight />}
               position="right"
             />
           </Link>

@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { MagicButton } from "@/components/ui/magic-button";
-import { FaLocationArrow } from "react-icons/fa6";
+import { ArrowUpRight } from "lucide-react";
 
 interface Experience {
   role_en: string;
@@ -57,7 +57,7 @@ export function ExperienceHighlights({ experiences, locale }: ExperienceHighligh
 
       <div className="mt-10 flex justify-center">
         <Link href={{ pathname: "/experience" }}>
-          <MagicButton title={t("viewAll")} icon={<FaLocationArrow />} position="right" />
+          <MagicButton title={t("viewAll")} icon={<ArrowUpRight />} position="right" />
         </Link>
       </div>
     </section>
