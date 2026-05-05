@@ -64,6 +64,7 @@ export default async function LocaleLayout({
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body
         className={`${inter.variable} ${notoSansArabic.variable} min-h-screen antialiased`}
+        suppressHydrationWarning
         style={{
           fontFamily:
             locale === "ar"

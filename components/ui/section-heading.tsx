@@ -1,5 +1,3 @@
-import { cn } from "@/lib/utils";
-
 interface SectionHeadingProps {
   text: string;
   highlight: string;
@@ -8,7 +6,6 @@ interface SectionHeadingProps {
 export function SectionHeading({ text, highlight }: SectionHeadingProps) {
   const parts = text.split(highlight);
 
-  // If the highlight string is not found, render the full text
   if (parts.length === 1) {
     return (
       <h2 className="section-heading text-foreground">
@@ -20,7 +17,9 @@ export function SectionHeading({ text, highlight }: SectionHeadingProps) {
   return (
     <h2 className="section-heading text-foreground">
       {parts[0]}
-      <span className="text-brand">{highlight}</span>
+      <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
+        {highlight}
+      </span>
       {parts[1]}
     </h2>
   );

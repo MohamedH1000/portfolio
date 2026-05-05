@@ -58,15 +58,15 @@ export function ProjectsGrid({ projects, locale }: ProjectsGridProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("search")}
-            className="w-full bg-surface-low rounded-lg ps-10 pe-4 py-2.5 text-sm outline-none focus:ring-1 focus:ring-brand transition-shadow text-foreground placeholder:text-muted-foreground/50"
+            className="w-full bg-surface-low border border-brand/10 rounded-xl ps-10 pe-4 py-3 text-sm outline-none focus:border-brand/40 focus:ring-1 focus:ring-brand/20 transition-all duration-200 text-foreground placeholder:text-muted-foreground/40"
           />
         </div>
 
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setActiveTech(null)}
-            className={`px-3 py-1 rounded-full text-xs transition-colors ${
-              !activeTech ? "bg-brand text-primary-foreground" : "bg-surface-high text-muted-foreground hover:bg-surface-bright"
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
+              !activeTech ? "bg-gradient-to-r from-brand to-purple-400 text-white" : "bg-surface-high text-muted-foreground hover:bg-brand/10 hover:text-brand"
             }`}
           >
             {t("filterAll")}
@@ -75,8 +75,8 @@ export function ProjectsGrid({ projects, locale }: ProjectsGridProps) {
             <button
               key={tech}
               onClick={() => setActiveTech(activeTech === tech ? null : tech)}
-              className={`px-3 py-1 rounded-full text-xs transition-colors ${
-                activeTech === tech ? "bg-brand text-primary-foreground" : "bg-surface-high text-muted-foreground hover:bg-surface-bright"
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
+                activeTech === tech ? "bg-gradient-to-r from-brand to-purple-400 text-white" : "bg-surface-high text-muted-foreground hover:bg-brand/10 hover:text-brand"
               }`}
             >
               {tech}

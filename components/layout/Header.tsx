@@ -20,7 +20,7 @@ export function Header() {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const locale = useLocale();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -28,12 +28,10 @@ export function Header() {
     setMounted(true);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
@@ -46,7 +44,7 @@ export function Header() {
   }, [mobileOpen]);
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   const isActive = (href: string) => {
@@ -54,12 +52,15 @@ export function Header() {
     return pathname.startsWith(href);
   };
 
+  const isDark = !mounted || resolvedTheme === "dark";
+
   return (
     <>
       <header
         className={cn(
           "fixed top-0 z-50 w-full",
-          "glass border-b border-border/40"
+          "glass border-b",
+          isDark ? "border-white/[0.06]" : "border-black/[0.06]"
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -68,7 +69,7 @@ export function Header() {
             href="/"
             className="text-xl font-bold tracking-tight text-foreground transition-colors hover:text-brand"
           >
-            MH
+            M<span className="text-brand">H</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -78,16 +79,13 @@ export function Header() {
                 key={key}
                 href={href}
                 className={cn(
-                  "relative rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "relative rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200",
                   isActive(href)
-                    ? "text-brand"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "text-brand bg-brand/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-surface-high/50"
                 )}
               >
                 {t(key)}
-                {isActive(href) && (
-                  <span className="absolute inset-x-1 -bottom-[1px] h-0.5 rounded-full bg-brand" />
-                )}
               </Link>
             ))}
           </nav>
@@ -98,10 +96,16 @@ export function Header() {
             {mounted && (
               <button
                 onClick={toggleTheme}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface-high text-muted-foreground transition-colors hover:bg-surface-highest hover:text-foreground cursor-pointer"
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                className={cn(
+                  "inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
+                  "border",
+                  isDark
+                    ? "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                    : "border-black/10 bg-black/5 text-muted-foreground hover:bg-black/10 hover:text-foreground"
+                )}
+                aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {theme === "dark" ? (
+                {resolvedTheme === "dark" ? (
                   <Sun className="h-4 w-4" />
                 ) : (
                   <Moon className="h-4 w-4" />
@@ -113,7 +117,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground md:hidden cursor-pointer"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:hidden cursor-pointer"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >
@@ -125,7 +129,7 @@ export function Header() {
       {/* Mobile Menu Overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
           onClick={() => setMobileOpen(false)}
           aria-hidden="true"
         />
@@ -135,7 +139,8 @@ export function Header() {
       <div
         className={cn(
           "fixed top-16 z-40 h-[calc(100dvh-4rem)] w-72 md:hidden",
-          "glass border-s border-border/40",
+          "glass border-s",
+          isDark ? "border-white/[0.06]" : "border-black/[0.06]",
           "transition-transform duration-300 ease-in-out",
           locale === "ar" ? "left-0" : "right-0",
           mobileOpen
@@ -152,10 +157,10 @@ export function Header() {
               href={href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                "rounded-md px-4 py-3 text-sm font-medium transition-colors",
+                "rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200",
                 isActive(href)
                   ? "bg-brand/10 text-brand"
-                  : "text-muted-foreground hover:bg-surface-high hover:text-foreground"
+                  : "text-muted-foreground hover:bg-surface-high/50 hover:text-foreground"
               )}
             >
               {t(key)}
@@ -169,10 +174,16 @@ export function Header() {
             {mounted && (
               <button
                 onClick={toggleTheme}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface-high text-muted-foreground transition-colors hover:bg-surface-highest hover:text-foreground cursor-pointer"
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                className={cn(
+                  "inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
+                  "border",
+                  isDark
+                    ? "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                    : "border-black/10 bg-black/5 text-muted-foreground hover:bg-black/10 hover:text-foreground"
+                )}
+                aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {theme === "dark" ? (
+                {resolvedTheme === "dark" ? (
                   <Sun className="h-4 w-4" />
                 ) : (
                   <Moon className="h-4 w-4" />

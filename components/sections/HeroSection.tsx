@@ -21,23 +21,32 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-blueprint" />
       <div className="absolute inset-0 bg-background/80 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
 
-      <div className="relative z-10 max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] flex flex-col items-center text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="uppercase tracking-widest text-xs text-muted-foreground mb-4"
-        >
-          {t("subtitle")}
-        </motion.p>
+      {/* Gradient orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
 
-        <TextGenerate words={t("title")} className="text-[40px] md:text-5xl lg:text-6xl font-bold leading-tight" />
+      <div className="relative z-10 max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] flex flex-col items-center text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="mb-6 px-4 py-1.5 rounded-full border border-brand/20 bg-brand/5"
+        >
+          <p className="uppercase tracking-[0.2em] text-xs font-medium text-brand">
+            {t("subtitle")}
+          </p>
+        </motion.div>
+
+        <TextGenerate
+          words={t("title")}
+          className="text-[40px] md:text-5xl lg:text-6xl font-bold leading-tight"
+        />
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="text-center md:tracking-wider mb-8 text-sm md:text-lg text-muted-foreground max-w-xl"
+          className="text-center md:tracking-wider mb-10 text-sm md:text-lg text-muted-foreground max-w-xl leading-relaxed"
         >
           {t("description")}
         </motion.p>

@@ -1,8 +1,11 @@
+"use client";
+
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { MagicButton } from "@/components/ui/magic-button";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Calendar } from "lucide-react";
 
 interface Experience {
   role_en: string;
@@ -24,7 +27,7 @@ export function ExperienceHighlights({ experiences, locale }: ExperienceHighligh
   const isAr = locale === "ar";
 
   return (
-    <section className="py-20">
+    <section className="py-24">
       <SectionHeading
         text={t("title", { highlight: t("titleHighlight") })}
         highlight={t("titleHighlight")}
@@ -32,30 +35,35 @@ export function ExperienceHighlights({ experiences, locale }: ExperienceHighligh
 
       <div className="mt-16 max-w-3xl mx-auto space-y-6">
         {experiences.slice(0, 3).map((exp, i) => (
-          <div
+          <motion.div
             key={i}
-            className="relative bg-surface-low rounded-xl p-6 group hover:bg-surface transition-colors"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.4, delay: i * 0.1 }}
+            className="relative rounded-2xl p-6 border border-transparent hover:border-brand/15 bg-surface-low transition-all duration-300 group"
           >
             <div className="flex flex-col md:flex-row md:items-center gap-4">
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-brand transition-colors duration-300">
                   {isAr ? exp.role_ar : exp.role_en}
                 </h3>
-                <p className="text-sm text-brand">{exp.company}</p>
+                <p className="text-sm text-brand/80 mt-0.5">{exp.company}</p>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Calendar className="w-4 h-4" />
                 {new Date(exp.start_date).getFullYear()} —{" "}
                 {exp.end_date ? new Date(exp.end_date).getFullYear() : t("present")}
-              </p>
+              </div>
             </div>
             <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
               {isAr ? exp.description_ar : exp.description_en}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      <div className="mt-10 flex justify-center">
+      <div className="mt-12 flex justify-center">
         <Link href={{ pathname: "/experience" }}>
           <MagicButton title={t("viewAll")} icon={<ArrowUpRight />} position="right" />
         </Link>

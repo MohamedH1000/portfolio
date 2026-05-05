@@ -29,11 +29,12 @@ export function MagicButton({
     "inline-flex items-center justify-center gap-2",
     "rounded-full px-8 py-3",
     "font-medium text-sm",
-    "bg-gradient-to-b from-primary/90 to-primary/70 text-primary-foreground",
+    "bg-gradient-to-r from-brand to-purple-400 text-white",
     "transition-all duration-300 ease-out",
-    "hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(203,172,249,0.4)]",
+    "hover:scale-[1.02] hover:shadow-[0_0_24px_rgba(203,172,249,0.35)]",
     "active:scale-[0.98]",
     "disabled:pointer-events-none disabled:opacity-50",
+    "dark:from-[#CBACF9] dark:to-[#9b7fd4]",
     className,
   );
 

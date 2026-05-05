@@ -43,13 +43,16 @@ export function ContactForm() {
     }
   }
 
+  const inputClasses =
+    "w-full bg-surface-low border border-brand/10 rounded-xl px-4 py-3 text-sm outline-none transition-all duration-200 text-foreground placeholder:text-muted-foreground/40 focus:border-brand/40 focus:ring-1 focus:ring-brand/20";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       {/* Honeypot */}
       <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
 
       <div>
-        <label htmlFor="name" className="block text-sm text-muted-foreground mb-2">
+        <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
           {t("name")}
         </label>
         <input
@@ -58,13 +61,13 @@ export function ContactForm() {
           type="text"
           required
           minLength={2}
-          className="w-full bg-transparent border-b border-surface-high focus:border-brand pb-2 outline-none transition-colors text-foreground placeholder:text-muted-foreground/50"
+          className={inputClasses}
           placeholder={t("name")}
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm text-muted-foreground mb-2">
+        <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
           {t("email")}
         </label>
         <input
@@ -72,26 +75,26 @@ export function ContactForm() {
           name="email"
           type="email"
           required
-          className="w-full bg-transparent border-b border-surface-high focus:border-brand pb-2 outline-none transition-colors text-foreground placeholder:text-muted-foreground/50"
+          className={inputClasses}
           placeholder={t("email")}
         />
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-sm text-muted-foreground mb-2">
+        <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
           {t("subject")}
         </label>
         <input
           id="subject"
           name="subject"
           type="text"
-          className="w-full bg-transparent border-b border-surface-high focus:border-brand pb-2 outline-none transition-colors text-foreground placeholder:text-muted-foreground/50"
+          className={inputClasses}
           placeholder={t("subject")}
         />
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm text-muted-foreground mb-2">
+        <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
           {t("message")}
         </label>
         <textarea
@@ -100,7 +103,7 @@ export function ContactForm() {
           required
           minLength={10}
           rows={5}
-          className="w-full bg-transparent border-b border-surface-high focus:border-brand pb-2 outline-none transition-colors text-foreground placeholder:text-muted-foreground/50 resize-none"
+          className={`${inputClasses} resize-none`}
           placeholder={t("message")}
         />
       </div>
@@ -114,7 +117,7 @@ export function ContactForm() {
       />
 
       {status === "success" && (
-        <p className="text-green-400 text-sm mt-2">{t("success")}</p>
+        <p className="text-green-500 text-sm mt-2">{t("success")}</p>
       )}
       {status === "error" && (
         <p className="text-destructive text-sm mt-2">{t("error")}</p>

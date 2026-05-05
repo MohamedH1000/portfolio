@@ -8,9 +8,10 @@ export function TechTag({ name }: TechTagProps) {
   return (
     <span
       className={cn(
-        "inline-block rounded-full px-2.5 py-0.5",
+        "inline-block rounded-full px-3 py-1",
         "text-xs font-medium",
-        "bg-surface-high text-muted-foreground",
+        "bg-brand/10 text-brand",
+        "border border-brand/15",
       )}
     >
       {name}
