@@ -9,6 +9,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { notFound } from "next/navigation";
 import { createMetadata, personJsonLd } from "@/lib/metadata";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -82,6 +83,7 @@ export default async function LocaleLayout({
             <Header />
             <div className="flex-1">{children}</div>
             <Footer locale={locale} />
+            <Analytics />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
