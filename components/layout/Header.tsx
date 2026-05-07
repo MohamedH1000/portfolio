@@ -4,9 +4,12 @@ import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTheme } from "next-themes";
+import { useSession } from "next-auth/react";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { UserMenu } from "@/components/ui/user-menu";
+import { LogIn } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "/", key: "home" },
@@ -18,9 +21,11 @@ const NAV_LINKS = [
 
 export function Header() {
   const t = useTranslations("nav");
+  const tAuth = useTranslations("Auth");
   const pathname = usePathname();
   const locale = useLocale();
   const { theme, setTheme, resolvedTheme } = useTheme();
+  const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -112,6 +117,17 @@ export function Header() {
                 )}
               </button>
             )}
+            {mounted && session?.user ? (
+              <UserMenu user={session.user} />
+            ) : (
+              <Link
+                href="/auth/signin"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl brand-gradient text-white text-sm font-medium hover:opacity-90 transition-opacity"
+              >
+                <LogIn className="h-4 w-4" />
+                {tAuth("signIn")}
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -189,6 +205,20 @@ export function Header() {
                   <Moon className="h-4 w-4" />
                 )}
               </button>
+            )}
+          </div>
+
+          <div className="mt-2 px-4">
+            {mounted && session?.user ? (
+              <UserMenu user={session.user} />
+            ) : (
+              <Link
+                href="/auth/signin"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl brand-gradient text-white text-sm font-medium hover:opacity-90 transition-opacity"
+              >
+                <LogIn className="h-4 w-4" />
+                {tAuth("signIn")}
+              </Link>
             )}
           </div>
         </nav>

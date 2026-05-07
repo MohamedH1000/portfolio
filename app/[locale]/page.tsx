@@ -34,7 +34,7 @@ export default async function HomePage({
       />
       <HeroSection />
       <FeaturedProjects projects={featuredProjects} locale={locale} />
-      <TestimonialsCarousel testimonials={testimonials} locale={locale} />
+      {/* <TestimonialsCarousel testimonials={testimonials} locale={locale} /> */}
       <ExperienceHighlights experiences={experiences} locale={locale} />
       <AboutPreview locale={locale} />
     </PageWrapper>
