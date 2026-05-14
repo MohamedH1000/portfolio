@@ -57,10 +57,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
       if (user) {
         token.id = user.id;
         token.is_admin = (user as unknown as Record<string, unknown>).is_admin as boolean;
+        const oauthPicture = (profile as Record<string, unknown>)?.picture as string | undefined;
+        token.picture = user.image ?? oauthPicture ?? token.picture;
+      }
+      // Fetch image from DB if token is missing picture (handles stale tokens)
+      if (!token.picture && token.id) {
+        try {
+          const { createClient } = await import("@supabase/supabase-js");
+          const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+          const { data } = await db.from("users").select("image").eq("id", token.id as string).single();
+          if (data?.image) token.picture = data.image;
+        } catch {}
       }
       return token;
     },
@@ -68,6 +79,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
         session.user.is_admin = token.is_admin as boolean;
+        session.user.image = token.picture ?? null;
       }
       return session;
     },

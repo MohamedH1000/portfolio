@@ -4,11 +4,11 @@ Update this file after every meaningful implementation change.
 
 ## Current Phase
 
-- **In Progress** — Auth implementation complete, ready for testing and deployment
+- **Complete** — Admin dashboard implemented, build passes, ready for testing
 
 ## Current Goal
 
-- Run SQL migration in Supabase Dashboard, generate AUTH_SECRET, add Google OAuth credentials, test sign-in flow
+- Run SQL migrations in Supabase Dashboard, test admin dashboard end-to-end, commit and deploy
 
 ## Completed
 
@@ -16,7 +16,7 @@ Update this file after every meaningful implementation change.
 - Supabase client utilities (client, server, middleware)
 - Bilingual routing with next-intl (EN/AR, RTL/LTR)
 - Dark/light theme with surface hierarchy design system
-- All 6 pages: home, about, projects, projects/[slug], experience, contact
+- All 6 public pages: home, about, projects, projects/[slug], experience, contact
 - Server actions for all data operations (projects, testimonials, experiences, settings, contact)
 - Contact form with Gmail SMTP email delivery via Nodemailer
 - Contact form saves to Supabase `contacts` table (service role key bypasses RLS)
@@ -28,87 +28,87 @@ Update this file after every meaningful implementation change.
 - Context files written: project-overview.md, architecture.md, code-standards.md, ui-context.md, ai-workflow-rules.md
 - **Auth feature: Google Sign-In + Credentials (email/password) with NextAuth v5**
   - `lib/auth.ts` — NextAuth config with Google + Credentials providers, JWT sessions
-  - `lib/auth-adapter.ts` — Custom Supabase adapter (service role key, no third-party adapter dependency)
+  - `lib/auth-adapter.ts` — Custom Supabase adapter (service role key)
   - `lib/auth-types.ts` — Extended User and Session types with `is_admin`
   - `lib/validations/auth.ts` — Zod schemas for sign-in and sign-up
   - `app/api/auth/[...nextauth]/route.ts` — NextAuth API route handler
-  - `app/actions/auth.ts` — `handleGoogleSignIn()`, `handleCredentialsSignIn()`, `handleSignUp()`, `handleSignOut()` server actions
+  - `app/actions/auth.ts` — Google, credentials, sign-up, sign-out server actions
   - `middleware.ts` — Combined i18n + auth middleware (protects `/admin/*` routes)
   - `components/providers/session-provider.tsx` — Client-side SessionProvider
   - `components/ui/user-menu.tsx` — Avatar dropdown with sign-out
   - `components/ui/google-button.tsx` — Google OAuth sign-in button
   - `components/ui/credentials-form.tsx` — Email/password sign-in form
-  - `components/ui/signup-form.tsx` — Registration form with name, username, email, password
-  - `app/[locale]/auth/signin/page.tsx` — Sign-in page with credentials form + Google + link to sign-up
-  - `app/[locale]/auth/signup/page.tsx` — Sign-up page with registration form + Google + link to sign-in
-  - `app/[locale]/auth/error/page.tsx` — Auth error page
-  - `app/auth/signin/page.tsx`, `app/auth/signup/page.tsx`, `app/auth/error/page.tsx` — Root redirects to locale versions
-  - Header updated with auth UI (link to sign-in page / user menu) in desktop and mobile nav
-  - `messages/en.json` and `messages/ar.json` updated with full Auth strings (credentials, sign-up, etc.)
-  - `.env.local` updated with AUTH_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ADMIN_EMAIL placeholders
-  - `lib/env.ts` updated with auth env var validation
-  - `supabase/migrations/004_auth_tables.sql` — Users (with username, password), accounts, sessions, verification_tokens tables
+  - `components/ui/signup-form.tsx` — Registration form
+  - Sign-in page with email/password + Google, sign-up page with name/username/email/password
+  - Auth error page, root-level redirects
+  - Header with auth UI, i18n strings for EN + AR
+  - `.env.local` with AUTH_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ADMIN_EMAIL
   - Password hashing with bcryptjs (12 salt rounds)
-  - `npm run build` passes with zero errors
+- **Admin Dashboard — full CRUD for all content**
+  - `features/admin/services/admin-guard.ts` — `requireAdmin()` session verification
+  - `app/(admin)/admin/layout.tsx` — Auth guard + sidebar + header shell
+  - `app/(admin)/admin/page.tsx` — Dashboard overview with stats cards + recent messages
+  - `components/admin/AdminSidebar.tsx` — Fixed sidebar with navigation + sign out
+  - `components/admin/AdminHeader.tsx` — Top bar with page title + user info + mobile sidebar
+  - `components/admin/StatsCard.tsx` — Stat card component
+  - `components/admin/BilingualInput.tsx` — Side-by-side EN/AR input (text + textarea)
+  - `components/admin/ImageUpload.tsx` — Drag-and-drop Supabase Storage upload
+  - `components/admin/DeleteDialog.tsx` — Confirmation dialog for deletions
+  - `components/admin/EmptyState.tsx` — Empty state with icon + message
+  - `app/(admin)/admin/projects/page.tsx` — Projects CRUD with table, search, slide-over form, tech stack tags, image upload, featured toggle
+  - `app/(admin)/admin/experiences/page.tsx` — Experiences CRUD with bilingual fields, date pickers, logo upload
+  - `app/(admin)/admin/testimonials/page.tsx` — Testimonials CRUD with avatar upload
+  - `app/(admin)/admin/contacts/page.tsx` — Contacts inbox with read/unread toggle, detail panel, reply via email
+  - `app/(admin)/admin/settings/page.tsx` — Grouped settings editor (Hero, About, Social, Footer) with save per group
+  - `app/api/admin/projects/` + `[id]/` — GET, POST, PUT, DELETE for projects
+  - `app/api/admin/experiences/` + `[id]/` — GET, POST, PUT, DELETE for experiences
+  - `app/api/admin/testimonials/` + `[id]/` — GET, POST, PUT, DELETE for testimonials
+  - `app/api/admin/contacts/` + `[id]/` — GET, PATCH (read toggle), DELETE for contacts
+  - `app/api/admin/settings/` — GET all, PUT by key
+  - `app/api/admin/upload/` — POST image to Supabase Storage
+  - `app/actions/admin-dashboard.ts` — Stats and recent contacts server actions
+  - Validation schemas: `lib/validations/admin-project.ts`, `admin-experience.ts`, `admin-testimonial.ts`, `admin-settings.ts`
+  - `npm run build` passes with zero errors — all 59 routes generated
 
 ## In Progress
 
-- Waiting for user to: run SQL migration in Supabase Dashboard, generate AUTH_SECRET, add Google OAuth credentials
+- Waiting for user to: run SQL migrations in Supabase Dashboard
 
 ## Next Up
 
-- Test sign-in flow end-to-end after Supabase tables are created and env vars are set
+- Test admin dashboard end-to-end after Supabase tables are created
 - Commit all changes and push to Vercel
-- Verify production deployment with all pages rendering
+- Verify production deployment
 - Lighthouse audit (target: Performance >90, Accessibility >95, SEO >95)
-- Future: Build admin dashboard at `/admin` (protected by auth middleware)
 
 ## Open Questions
 
-- Google OAuth Client ID and Client Secret need to be created in Google Cloud Console
-- AUTH_SECRET needs to be generated (run `npx auth secret`)
+- Supabase SQL migrations (001-004) need to be run manually in Supabase Dashboard
+- Supabase Storage bucket `portfolio-assets` needs to be created manually
 
 ## Architecture Decisions
 
-1. **Server actions as data layer** — Pages call server actions, never Supabase directly. This keeps the data layer centralized and makes future auth integration straightforward (add session checks in actions).
-   - *Why:* Separation of concerns, testable data layer, easy to add auth guards later.
-
-2. **API routes for third-party only** — No internal API routes. All internal data flows through server actions. Exception: NextAuth API route at `app/api/auth/[...nextauth]` for Google OAuth callback.
-   - *Why:* Reduces surface area, simpler mental model, Next.js best practice for App Router.
-
-3. **Service role key for contact form** — Anonymous users need to INSERT into `contacts` table. Service role key bypasses RLS.
-   - *Why:* RLS public INSERT policy was insufficient; service role key is server-only and never exposed to client.
-
-4. **Fallback data for `generateStaticParams`** — Import from `data/temp.ts` directly instead of calling server actions that use `cookies()`.
-   - *Why:* `generateStaticParams` runs at build time and cannot access request-specific cookies.
-
-5. **Named exports only** — No default exports for components or server actions.
-   - *Why:* Consistent imports, better refactoring, avoids naming confusion.
-
-6. **No component library (shadcn/ui, etc.)** — Custom components built with Tailwind and Framer Motion.
-   - *Why:* Full control over styling, smaller bundle, matches the unique portfolio aesthetic.
-
-7. **Auth via NextAuth v5 + custom Supabase adapter** — No dependency on `@auth/supabase-adapter`. Custom adapter talks directly to Supabase with service role key.
-   - *Why:* Full control over auth data flow, no third-party adapter dependency that may become outdated, easy to debug.
-
-8. **JWT sessions (not database)** — Sessions use JWT tokens, not database rows.
-   - *Why:* Required for Credentials provider compatibility. The adapter still stores users in Supabase for Google OAuth. JWT avoids the dual-strategy complexity.
-
+1. **Server actions as data layer** — Pages call server actions, never Supabase directly.
+2. **API routes for admin CRUD** — Admin pages use client-side fetch to API routes (valid since admin is a separate concern from public pages and needs client-side interactivity for forms/tables). API routes call `requireAdmin()` for auth.
+3. **Service role key for all admin writes** — Admin mutations bypass RLS via service role key; auth is enforced at the application level by `requireAdmin()`.
+4. **Fallback data for `generateStaticParams`** — Import from `data/temp.ts` directly.
+5. **Named exports only** — No default exports.
+6. **No component library** — Custom components with Tailwind.
+7. **Auth via NextAuth v5 + custom Supabase adapter** — No third-party adapter dependency.
+8. **JWT sessions** — Required for Credentials provider compatibility.
 9. **Credentials + Google dual auth** — Users can sign up with email/password or Google OAuth.
-   - *Why:* Flexibility. Google users get auto-created via adapter; credential users are created via `handleSignUp` server action with bcrypt hashed passwords.
-
-10. **Admin detection by email** — User with email matching `ADMIN_EMAIL` env var gets `is_admin = true` on account creation.
-    - *Why:* Simple, no admin UI needed. The portfolio owner's email is known in advance.
-
-11. **Combined middleware** — Auth check runs before i18n routing in a single middleware file.
-    - *Why:* Protected routes are enforced regardless of locale. Single source of truth for request handling.
+10. **Admin detection by email** — `ADMIN_EMAIL` env var.
+11. **Combined middleware** — Auth check before i18n routing.
+12. **Admin as route group** — `app/(admin)/admin/` separate from `[locale]`, English-only, no i18n overhead.
+13. **Admin uses API routes** — Admin CRUD pages are client components that fetch from API routes. This is the one case where API routes are justified for internal use — the admin pages need rich client-side interactivity (forms, modals, search, drag-drop). The API routes still enforce admin auth via `requireAdmin()`.
 
 ## Session Notes
 
-- Windows case-sensitivity: files renamed via `git mv` (e.g., `Spotlight.tsx` → `spotlight.tsx`) to fix Vercel builds
+- Windows case-sensitivity: files renamed via `git mv` to fix Vercel builds
 - Gmail app password configured for contact form email delivery
-- Supabase auth tables created in migration 004 but need to be run manually in Dashboard
+- All Supabase SQL migrations need to be run manually in Dashboard
 - NextAuth v5 beta.31 installed with @auth/core 0.41.2
 - Nodemailer v8 caused peer dep conflict with @auth/core — resolved with `--legacy-peer-deps`
 - Middleware convention deprecated in Next.js 16 (should use "proxy") — build still works, warning only
-- Build passes with zero errors: all routes generated including auth pages
+- `portfolio-assets` Storage bucket needs to be created in Supabase Dashboard
+- Build passes with zero errors: all 59 routes generated including admin pages and API routes

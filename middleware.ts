@@ -23,7 +23,12 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/en", req.url));
   }
 
-  // 2. Handle i18n routing for all other requests
+  // 2. Admin routes bypass i18n — they live outside [locale]
+  if (isProtected) {
+    return NextResponse.next();
+  }
+
+  // 3. Handle i18n routing for all other requests
   return intlMiddleware(req);
 });
 

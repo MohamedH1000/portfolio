@@ -1,3 +1,10 @@
+-- Grant service_role full access (bypasses RLS)
+GRANT ALL ON projects TO service_role;
+GRANT ALL ON experiences TO service_role;
+GRANT ALL ON testimonials TO service_role;
+GRANT ALL ON site_settings TO service_role;
+GRANT ALL ON contacts TO service_role;
+
 -- Enable RLS on all tables
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;

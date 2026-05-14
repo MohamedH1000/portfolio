@@ -73,16 +73,33 @@ ALTER TABLE accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE verification_tokens ENABLE ROW LEVEL SECURITY;
 
+-- Grant service_role full table access (bypasses RLS)
+GRANT ALL ON users TO service_role;
+GRANT ALL ON accounts TO service_role;
+GRANT ALL ON sessions TO service_role;
+GRANT ALL ON verification_tokens TO service_role;
+
+-- Grant anon/authenticated SELECT on users (RLS still applies)
+GRANT SELECT ON users TO anon, authenticated;
+
+-- Users: service role can do everything
+DROP POLICY IF EXISTS "Users are publicly readable" ON users;
+CREATE POLICY "Users managed by service role" ON users
+  FOR ALL USING (auth.role() = 'service_role');
+
 -- Users: public can read basic info
 CREATE POLICY "Users are publicly readable" ON users
   FOR SELECT USING (true);
 
 -- Auth tables managed by service role only
+DROP POLICY IF EXISTS "Accounts managed by service role" ON accounts;
 CREATE POLICY "Accounts managed by service role" ON accounts
   FOR ALL USING (auth.role() = 'service_role');
 
+DROP POLICY IF EXISTS "Sessions managed by service role" ON sessions;
 CREATE POLICY "Sessions managed by service role" ON sessions
   FOR ALL USING (auth.role() = 'service_role');
 
+DROP POLICY IF EXISTS "Verification tokens managed by service role" ON verification_tokens;
 CREATE POLICY "Verification tokens managed by service role" ON verification_tokens
   FOR ALL USING (auth.role() = 'service_role');

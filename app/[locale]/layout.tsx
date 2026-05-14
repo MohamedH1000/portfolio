@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Sans_Arabic } from "next/font/google";
-import "../globals.css";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
@@ -11,18 +9,6 @@ import { Footer } from "@/components/layout/Footer";
 import { notFound } from "next/navigation";
 import { createMetadata, personJsonLd } from "@/lib/metadata";
 import { Analytics } from "@vercel/analytics/next"
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const notoSansArabic = Noto_Sans_Arabic({
-  variable: "--font-noto-sans-arabic",
-  subsets: ["arabic"],
-  display: "swap",
-});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -63,33 +49,27 @@ export default async function LocaleLayout({
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir} suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${notoSansArabic.variable} min-h-screen antialiased`}
-        suppressHydrationWarning
-        style={{
-          fontFamily:
-            locale === "ar"
-              ? "var(--font-noto-sans-arabic), var(--font-inter), sans-serif"
-              : "var(--font-inter), sans-serif",
-        }}
+    <div dir={dir} lang={locale} style={{
+      fontFamily:
+        locale === "ar"
+          ? "var(--font-noto-sans-arabic), var(--font-inter), sans-serif"
+          : "var(--font-inter), sans-serif",
+    }}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        enableSystem
+        disableTransitionOnChange
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextIntlClientProvider messages={messages}>
-          <SessionProvider>
-            <Header />
-            <div className="flex-1">{children}</div>
-            <Footer locale={locale} />
-            <Analytics />
-          </SessionProvider>
-          </NextIntlClientProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+        <NextIntlClientProvider messages={messages}>
+        <SessionProvider>
+          <Header />
+          <div className="flex-1">{children}</div>
+          <Footer locale={locale} />
+          <Analytics />
+        </SessionProvider>
+        </NextIntlClientProvider>
+      </ThemeProvider>
+    </div>
   );
 }

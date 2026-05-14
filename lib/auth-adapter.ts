@@ -33,15 +33,16 @@ export function createSupabaseAdapter(): Adapter {
     async createUser(user) {
       const db = getSupabaseAdmin();
       const isAdmin = user.email === ADMIN_EMAIL;
+      const row = {
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        emailVerified: user.emailVerified?.toISOString() ?? null,
+        is_admin: isAdmin,
+      };
       const { data, error } = await db
         .from("users")
-        .insert({
-          name: user.name,
-          email: user.email,
-          image: user.image,
-          emailVerified: user.emailVerified?.toISOString() ?? null,
-          is_admin: isAdmin,
-        })
+        .insert(row)
         .select()
         .single();
 
@@ -97,7 +98,7 @@ export function createSupabaseAdapter(): Adapter {
 
     async linkAccount(account) {
       const db = getSupabaseAdmin();
-      const { error } = await db.from("accounts").insert({
+      const row = {
         user_id: account.userId,
         type: account.type,
         provider: account.provider,
@@ -109,7 +110,8 @@ export function createSupabaseAdapter(): Adapter {
         scope: account.scope,
         id_token: account.id_token,
         session_state: account.session_state,
-      });
+      };
+      const { error } = await db.from("accounts").insert(row);
       if (error) throw error;
     },
 
