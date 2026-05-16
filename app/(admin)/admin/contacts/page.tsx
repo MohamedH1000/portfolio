@@ -24,6 +24,7 @@ export function ContactsPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [selected, setSelected] = useState<Contact | null>(null);
+  const [error, setError] = useState("");
 
   const fetchItems = useCallback(async () => {
     setLoading(true);
