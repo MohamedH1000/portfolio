@@ -79,7 +79,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
         session.user.is_admin = token.is_admin as boolean;
-        session.user.image = token.picture ?? null;
+
+        if (token.picture) {
+          session.user.image = token.picture;
+        } else if (token.id) {
+          try {
+            const { createClient } = await import("@supabase/supabase-js");
+            const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+            const { data } = await db.from("users").select("image").eq("id", token.id as string).single();
+            session.user.image = data?.image ?? null;
+          } catch {
+            session.user.image = null;
+          }
+        } else {
+          session.user.image = null;
+        }
       }
       return session;
     },

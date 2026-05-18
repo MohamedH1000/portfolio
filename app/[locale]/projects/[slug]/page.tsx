@@ -4,13 +4,25 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { getProjectBySlug } from "@/app/actions/projects";
 import { projects as fallbackProjects } from "@/data/temp";
+import { createServerClient } from "@supabase/ssr";
+import { getPublicEnv } from "@/lib/env";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { TechTag } from "@/components/ui/tech-tag";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import Image from "next/image";
 
+const isDev = process.env.NODE_ENV === "development";
+
 export async function generateStaticParams() {
-  return fallbackProjects.map((p) => ({ slug: p.slug }));
+  if (isDev) return fallbackProjects.map((p) => ({ slug: p.slug }));
+
+  const env = getPublicEnv();
+  const supabase = createServerClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+    cookies: { getAll: () => [], setAll: () => {} },
+  });
+
+  const { data } = await supabase.from("projects").select("slug").order("sort_order", { ascending: true });
+  return (data ?? []).map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProjectDetailPage({

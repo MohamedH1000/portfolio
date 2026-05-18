@@ -1,9 +1,17 @@
 import { requireAdmin } from "@/features/admin/services/admin-guard";
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 function getDb() {
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+}
+
+function revalidateProjects() {
+  for (const locale of ["en", "ar"]) {
+    revalidatePath(`/${locale}`);
+    revalidatePath(`/${locale}/projects`);
+  }
 }
 
 // GET /api/admin/projects
@@ -32,6 +40,7 @@ export async function POST(req: NextRequest) {
     const db = getDb();
     const { data, error } = await db.from("projects").insert(body).select().single();
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+    revalidateProjects();
     return NextResponse.json({ project: data });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unauthorized";

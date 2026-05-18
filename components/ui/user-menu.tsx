@@ -33,9 +33,9 @@ export function UserMenu({ user }: UserMenuProps) {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 rounded-full p-0.5 hover:opacity-80 transition-opacity cursor-pointer"
       >
-        {user.image ? (
+        {user?.image ? (
           <img
-            src={user.image}
+            src={user?.image}
             alt={user.name || ""}
             className="h-8 w-8 rounded-full border border-border/40 object-cover"
           />
