@@ -1,13 +1,13 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { projects as fallbackData } from "@/data/temp";
 import type { Project } from "@/data/temp";
 
 const isDev = process.env.NODE_ENV === "development";
 
 export async function getProjects(): Promise<Project[]> {
-  const supabase = await createClient();
+  const supabase = await createAdminClient();
   const { data, error } = await supabase
     .from("projects")
     .select("*")
@@ -18,7 +18,7 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
-  const supabase = await createClient();
+  const supabase = await createAdminClient();
   const { data, error } = await supabase
     .from("projects")
     .select("*")
@@ -30,7 +30,7 @@ export async function getFeaturedProjects(): Promise<Project[]> {
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  const supabase = await createClient();
+  const supabase = await createAdminClient();
   const { data, error } = await supabase
     .from("projects")
     .select("*")
