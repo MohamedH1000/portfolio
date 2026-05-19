@@ -16,7 +16,8 @@ const securityHeaders = [
       "default-src 'self'",
       "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://*.supabase.co https://lh3.googleusercontent.com https://avatars.githubusercontent.com",
+      "img-src 'self' data: blob: https://*.supabase.co https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://res.cloudinary.com",
+      "media-src 'self' https://res.cloudinary.com",
       "font-src 'self' https://fonts.gstatic.com",
       "connect-src 'self' https://*.supabase.co",
     ].join("; "),
@@ -29,6 +30,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
       },
     ],
   },

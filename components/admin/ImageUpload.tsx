@@ -4,6 +4,19 @@ import { useState, useRef } from "react";
 import { Upload, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const ALLOWED_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "video/mp4",
+  "video/webm",
+];
+const MAX_SIZE = 25 * 1024 * 1024;
+
+function isVideo(type: string) {
+  return type.startsWith("video/");
+}
+
 interface ImageUploadProps {
   name: string;
   defaultValue?: string;
@@ -23,12 +36,12 @@ export function ImageUpload({
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFile(file: File) {
-    if (file.size > 5 * 1024 * 1024) {
-      alert("File must be under 5MB");
+    if (file.size > MAX_SIZE) {
+      alert("File must be under 25MB");
       return;
     }
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      alert("Only JPG, PNG, and WebP files are allowed");
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      alert("Only JPG, PNG, WebP, MP4, and WebM files are allowed");
       return;
     }
 
@@ -65,16 +78,26 @@ export function ImageUpload({
     if (file) handleFile(file);
   }
 
+  const previewIsVideo = preview && isVideo(preview);
+
   return (
     <div className="space-y-1.5">
       <input type="hidden" name={name} value={preview} />
       {preview ? (
         <div className="relative inline-block">
-          <img
-            src={preview}
-            alt="Preview"
-            className="h-32 w-32 rounded-lg border border-border/40 object-cover"
-          />
+          {previewIsVideo ? (
+            <video
+              src={preview}
+              className="h-32 w-32 rounded-lg border border-border/40 object-cover"
+              muted
+            />
+          ) : (
+            <img
+              src={preview}
+              alt="Preview"
+              className="h-32 w-32 rounded-lg border border-border/40 object-cover"
+            />
+          )}
           <button
             type="button"
             onClick={() => setPreview("")}
@@ -105,10 +128,10 @@ export function ImageUpload({
             <>
               <Upload className="h-6 w-6 text-muted-foreground mb-2" />
               <p className="text-xs text-muted-foreground">
-                Drop an image or click to upload
+                Drop an image or video or click to upload
               </p>
               <p className="text-xs text-muted-foreground/60 mt-1">
-                JPG, PNG, WebP — max 5MB
+                JPG, PNG, WebP, MP4, WebM — max 25MB
               </p>
             </>
           )}
@@ -117,7 +140,7 @@ export function ImageUpload({
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept={ALLOWED_TYPES.join(",")}
         onChange={handleChange}
         className="hidden"
       />

@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/features/admin/services/admin-guard";
-import { createClient } from "@supabase/supabase-js";
+import { cloudinary, ALLOWED_ALL_TYPES, MAX_FILE_SIZE } from "@/lib/cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -13,35 +13,36 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json({ error: "File must be under 5MB" }, { status: 400 });
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json({ error: "File must be under 25MB" }, { status: 400 });
     }
 
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      return NextResponse.json({ error: "Only JPG, PNG, and WebP allowed" }, { status: 400 });
+    if (!ALLOWED_ALL_TYPES.includes(file.type)) {
+      return NextResponse.json(
+        { error: "Only JPG, PNG, WebP, MP4, and WebM files are allowed" },
+        { status: 400 }
+      );
     }
 
-    const ext = file.name.split(".").pop() || "jpg";
-    const filename = `${folder}/${crypto.randomUUID()}.${ext}`;
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            folder: `portfolio/${folder}`,
+            resource_type: "auto",
+          },
+          (error, result) => {
+            if (error || !result) return reject(error ?? new Error("Upload failed"));
+            resolve(result);
+          }
+        )
+        .end(buffer);
+    });
 
-    const { error } = await supabase.storage
-      .from("portfolio-assets")
-      .upload(filename, file, { contentType: file.type, upsert: false });
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    const { data: urlData } = supabase.storage
-      .from("portfolio-assets")
-      .getPublicUrl(filename);
-
-    return NextResponse.json({ url: urlData.publicUrl });
+    return NextResponse.json({ url: result.secure_url });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error";
     return NextResponse.json({ error: msg }, { status: 400 });
