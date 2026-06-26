@@ -7,10 +7,13 @@ function getDb() {
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 }
 
-function revalidateProjects() {
+function revalidateProjects(slug?: string) {
   for (const locale of ["en", "ar"]) {
     revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/projects`);
+    if (slug) {
+      revalidatePath(`/${locale}/projects/${slug}`);
+    }
   }
 }
 
@@ -40,7 +43,7 @@ export async function POST(req: NextRequest) {
     const db = getDb();
     const { data, error } = await db.from("projects").insert(body).select().single();
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
-    revalidateProjects();
+    revalidateProjects(data?.slug);
     return NextResponse.json({ project: data });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unauthorized";

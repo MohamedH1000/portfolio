@@ -13,6 +13,9 @@ import Image from "next/image";
 
 const isDev = process.env.NODE_ENV === "development";
 
+export const dynamicParams = true;
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   if (isDev) return fallbackProjects.map((p) => ({ slug: p.slug }));
 

@@ -7,10 +7,13 @@ function getDb() {
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 }
 
-function revalidateProjects() {
+function revalidateProjects(slug?: string) {
   for (const locale of ["en", "ar"]) {
     revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/projects`);
+    if (slug) {
+      revalidatePath(`/${locale}/projects/${slug}`);
+    }
   }
 }
 
@@ -23,7 +26,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const db = getDb();
     const { data, error } = await db.from("projects").update(body).eq("id", id).select().single();
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
-    revalidateProjects();
+    revalidateProjects(data?.slug);
     return NextResponse.json({ project: data });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error";
@@ -37,8 +40,9 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await requireAdmin();
     const { id } = await params;
     const db = getDb();
+    const { data: project } = await db.from("projects").select("slug").eq("id", id).single();
     await db.from("projects").delete().eq("id", id);
-    revalidateProjects();
+    revalidateProjects(project?.slug);
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error";
