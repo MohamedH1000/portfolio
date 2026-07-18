@@ -1,9 +1,10 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProjectCard } from "@/components/ui/project-card";
+import { fadeInUp } from "@/lib/motion";
 
 interface Project {
   slug: string;
@@ -24,6 +25,7 @@ interface FeaturedProjectsProps {
 
 export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
   const t = useTranslations("projects");
+  const reduce = useReducedMotion();
 
   return (
     <section className="py-24">
@@ -31,13 +33,7 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
 
       <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project, i) => (
-          <motion.div
-            key={project.slug}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-          >
+          <motion.div key={project.slug} {...fadeInUp(i * 0.08, !!reduce)}>
             <ProjectCard
               title={locale === "ar" ? project.title_ar : project.title_en}
               description={locale === "ar" ? project.description_ar : project.description_en}

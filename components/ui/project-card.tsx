@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { TechTag } from "@/components/ui/tech-tag";
@@ -24,7 +27,7 @@ export function ProjectCard({
     <Link
       href={`/projects/${slug}`}
       className={cn(
-        "group block rounded-2xl overflow-hidden",
+        "focus-ring group block rounded-2xl overflow-hidden",
         "bg-surface-low transition-all duration-500",
         "card-hover",
         "border border-transparent",
@@ -55,8 +58,16 @@ export function ProjectCard({
 
         {/* Tech Stack */}
         <div className="flex flex-wrap gap-2 pt-1">
-          {techStack.map((tech) => (
-            <TechTag key={tech} name={tech} />
+          {techStack.map((tech, i) => (
+            <motion.span
+              key={tech}
+              initial={{ opacity: 0, y: 6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+            >
+              <TechTag name={tech} />
+            </motion.span>
           ))}
         </div>
       </div>

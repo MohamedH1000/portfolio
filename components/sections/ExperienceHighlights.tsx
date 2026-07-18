@@ -1,11 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { MagicButton } from "@/components/ui/magic-button";
 import { ArrowUpRight, Calendar } from "lucide-react";
+import { fadeInUp } from "@/lib/motion";
 
 interface Experience {
   role_en: string;
@@ -25,6 +26,7 @@ interface ExperienceHighlightsProps {
 export function ExperienceHighlights({ experiences, locale }: ExperienceHighlightsProps) {
   const t = useTranslations("experience");
   const isAr = locale === "ar";
+  const reduce = useReducedMotion();
 
   return (
     <section className="py-24">
@@ -37,10 +39,7 @@ export function ExperienceHighlights({ experiences, locale }: ExperienceHighligh
         {experiences.slice(0, 3).map((exp, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.4, delay: i * 0.1 }}
+            {...fadeInUp(i * 0.1, !!reduce)}
             className="relative rounded-2xl p-6 border border-transparent hover:border-brand/15 bg-surface-low transition-all duration-300 group"
           >
             <div className="flex flex-col md:flex-row md:items-center gap-4">

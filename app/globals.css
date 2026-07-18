@@ -156,12 +156,55 @@ body {
   color: var(--foreground);
 }
 
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Focus Ring ===== */
+.focus-ring {
+  outline: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #CBACF9;
+  outline-offset: 2px;
+}
+
 /* ===== Blueprint Grid Texture ===== */
 .bg-blueprint {
   background-image:
-    linear-gradient(rgba(203, 172, 249, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(203, 172, 249, 0.02) 1px, transparent 1px);
+    linear-gradient(rgba(203, 172, 249, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(203, 172, 249, 0.05) 1px, transparent 1px);
   background-size: 60px 60px;
+}
+
+.light .bg-blueprint {
+  background-image:
+    linear-gradient(rgba(108, 81, 150, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(108, 81, 150, 0.06) 1px, transparent 1px);
+}
+
+/* ===== Spotlight Colors (theme-aware) ===== */
+:root {
+  --spotlight-primary: #ffffff;
+  --spotlight-secondary: #CBACF9;
+}
+
+.light {
+  --spotlight-primary: #CBACF9;
+  --spotlight-secondary: #9b7fd4;
 }
 
 /* ===== Ghost Border (15% opacity) ===== */
@@ -200,16 +243,20 @@ body {
 
 /* ===== Card hover lift ===== */
 .card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.18),
+    0 4px 16px rgba(203, 172, 249, 0.12);
 }
 
 .light .card-hover:hover {
-  box-shadow: 0 12px 40px rgba(108, 81, 150, 0.1);
+  box-shadow:
+    0 16px 40px rgba(108, 81, 150, 0.12),
+    0 4px 16px rgba(108, 81, 150, 0.08);
 }
 
 /* ===== Section Styles ===== */

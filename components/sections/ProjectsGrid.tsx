@@ -2,9 +2,9 @@
 
 import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Search } from "lucide-react";
 import { ProjectCard } from "@/components/ui/project-card";
-import { TechTag } from "@/components/ui/tech-tag";
 
 interface Project {
   slug: string;
@@ -28,6 +28,7 @@ export function ProjectsGrid({ projects, locale }: ProjectsGridProps) {
   const isAr = locale === "ar";
   const [search, setSearch] = useState("");
   const [activeTech, setActiveTech] = useState<string | null>(null);
+  const reduce = useReducedMotion();
 
   const allTechs = useMemo(() => {
     const techs = new Set<string>();
@@ -58,14 +59,14 @@ export function ProjectsGrid({ projects, locale }: ProjectsGridProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("search")}
-            className="w-full bg-surface-low border border-brand/10 rounded-xl ps-10 pe-4 py-3 text-sm outline-none focus:border-brand/40 focus:ring-1 focus:ring-brand/20 transition-all duration-200 text-foreground placeholder:text-muted-foreground/40"
+            className="focus-ring w-full bg-surface-low border border-brand/10 rounded-xl ps-10 pe-4 py-3 text-sm outline-none focus:border-brand/40 transition-all duration-200 text-foreground placeholder:text-muted-foreground/40"
           />
         </div>
 
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setActiveTech(null)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
+            className={`focus-ring px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
               !activeTech ? "bg-gradient-to-r from-brand to-purple-400 text-white" : "bg-surface-high text-muted-foreground hover:bg-brand/10 hover:text-brand"
             }`}
           >
@@ -75,7 +76,7 @@ export function ProjectsGrid({ projects, locale }: ProjectsGridProps) {
             <button
               key={tech}
               onClick={() => setActiveTech(activeTech === tech ? null : tech)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
+              className={`focus-ring px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
                 activeTech === tech ? "bg-gradient-to-r from-brand to-purple-400 text-white" : "bg-surface-high text-muted-foreground hover:bg-brand/10 hover:text-brand"
               }`}
             >
@@ -85,24 +86,41 @@ export function ProjectsGrid({ projects, locale }: ProjectsGridProps) {
         </div>
       </div>
 
-      {filtered.length === 0 ? (
-        <p className="text-center text-muted-foreground py-12">{t("noResults")}</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((project) => (
-            <ProjectCard
-              key={project.slug}
-              title={isAr ? project.title_ar : project.title_en}
-              description={isAr ? project.description_ar : project.description_en}
-              imageUrl={project.image_url || "/grid.svg"}
-              techStack={project.tech_stack}
-              liveUrl={project.live_url ?? undefined}
-              slug={project.slug}
-              locale={locale}
-            />
-          ))}
-        </div>
-      )}
+      <AnimatePresence mode="wait">
+        {filtered.length === 0 ? (
+          <motion.p
+            key="empty"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="text-center text-muted-foreground py-12"
+          >
+            {t("noResults")}
+          </motion.p>
+        ) : (
+          <motion.div
+            key={`${search}-${activeTech}`}
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {filtered.map((project) => (
+              <ProjectCard
+                key={project.slug}
+                title={isAr ? project.title_ar : project.title_en}
+                description={isAr ? project.description_ar : project.description_en}
+                imageUrl={project.image_url || "/grid.svg"}
+                techStack={project.tech_stack}
+                liveUrl={project.live_url ?? undefined}
+                slug={project.slug}
+                locale={locale}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

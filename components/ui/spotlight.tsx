@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface SpotlightProps {
@@ -9,6 +9,8 @@ interface SpotlightProps {
 }
 
 export function Spotlight({ className, fill = "white" }: SpotlightProps) {
+  const reduce = useReducedMotion();
+
   return (
     <motion.svg
       className={cn(
@@ -19,9 +21,9 @@ export function Spotlight({ className, fill = "white" }: SpotlightProps) {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 3787 2842"
       fill="none"
-      initial={{ opacity: 0, scale: 0.5, x: "-72%", y: "-62%" }}
+      initial={reduce ? { opacity: 1, x: "-50%", y: "-40%" } : { opacity: 0, scale: 0.5, x: "-72%", y: "-62%" }}
       animate={{ opacity: 1, scale: 1, x: "-50%", y: "-40%" }}
-      transition={{ duration: 2, ease: "easeOut", delay: 0.75 }}
+      transition={{ duration: reduce ? 0 : 2, ease: "easeOut", delay: reduce ? 0 : 0.75 }}
     >
       <g filter="url(#spotlight-filter)">
         <ellipse

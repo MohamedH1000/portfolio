@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTheme } from "next-themes";
 import { useSession } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -28,9 +29,17 @@ export function Header() {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -64,15 +73,16 @@ export function Header() {
       <header
         className={cn(
           "fixed top-0 z-50 w-full",
-          "glass border-b",
-          isDark ? "border-white/[0.06]" : "border-black/[0.06]"
+          "glass border-b transition-[border-color,box-shadow] duration-300",
+          isDark ? "border-white/[0.06]" : "border-black/[0.06]",
+          scrolled && (isDark ? "shadow-[0_1px_0_rgba(255,255,255,0.06),0_12px_32px_-16px_rgba(0,0,0,0.5)]" : "shadow-[0_1px_0_rgba(0,0,0,0.06),0_12px_32px_-16px_rgba(108,81,150,0.2)]")
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link
             href="/"
-            className="text-xl font-bold tracking-tight text-foreground transition-colors hover:text-brand"
+            className="focus-ring rounded-lg text-xl font-bold tracking-tight text-foreground transition-colors hover:text-brand"
           >
             M<span className="text-brand">H</span>
           </Link>
@@ -84,13 +94,20 @@ export function Header() {
                 key={key}
                 href={href}
                 className={cn(
-                  "relative rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200",
+                  "focus-ring relative rounded-lg px-3.5 py-2 text-sm font-medium transition-colors duration-200",
                   isActive(href)
-                    ? "text-brand bg-brand/10"
-                    : "text-muted-foreground hover:text-foreground hover:bg-surface-high/50"
+                    ? "text-brand"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                {t(key)}
+                {isActive(href) && (
+                  <motion.span
+                    layoutId="nav-active-pill"
+                    className="absolute inset-0 rounded-lg bg-brand/10"
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  />
+                )}
+                <span className="relative">{t(key)}</span>
               </Link>
             ))}
           </nav>
@@ -102,7 +119,7 @@ export function Header() {
               <button
                 onClick={toggleTheme}
                 className={cn(
-                  "inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
+                  "focus-ring inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
                   "border",
                   isDark
                     ? "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
@@ -110,11 +127,22 @@ export function Header() {
                 )}
                 aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {resolvedTheme === "dark" ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={resolvedTheme}
+                    initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
+                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                    exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
+                    transition={{ duration: 0.25 }}
+                    className="inline-flex"
+                  >
+                    {resolvedTheme === "dark" ? (
+                      <Sun className="h-4 w-4" />
+                    ) : (
+                      <Moon className="h-4 w-4" />
+                    )}
+                  </motion.span>
+                </AnimatePresence>
               </button>
             )}
             {mounted && session?.user ? (
@@ -122,7 +150,7 @@ export function Header() {
             ) : (
               <Link
                 href="/auth/signin"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl brand-gradient text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                className="focus-ring inline-flex items-center gap-2 px-4 py-2 rounded-xl brand-gradient text-white text-sm font-medium transition-all duration-200 hover:opacity-90 hover:shadow-[0_0_20px_rgba(203,172,249,0.35)]"
               >
                 <LogIn className="h-4 w-4" />
                 {tAuth("signIn")}
@@ -133,96 +161,120 @@ export function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:hidden cursor-pointer"
+            className="focus-ring inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:hidden cursor-pointer"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={mobileOpen ? "close" : "open"}
+                initial={{ opacity: 0, rotate: -45 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 45 }}
+                transition={{ duration: 0.2 }}
+                className="inline-flex"
+              >
+                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </motion.span>
+            </AnimatePresence>
           </button>
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
-          onClick={() => setMobileOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Mobile Menu Panel */}
-      <div
-        className={cn(
-          "fixed top-16 z-40 h-[calc(100dvh-4rem)] w-72 md:hidden",
-          "glass border-s",
-          isDark ? "border-white/[0.06]" : "border-black/[0.06]",
-          "transition-transform duration-300 ease-in-out",
-          locale === "ar" ? "left-0" : "right-0",
-          mobileOpen
-            ? "translate-x-0"
-            : locale === "ar"
-              ? "-translate-x-full"
-              : "translate-x-full"
-        )}
-      >
-        <nav className="flex flex-col gap-1 p-4">
-          {NAV_LINKS.map(({ href, key }) => (
-            <Link
-              key={key}
-              href={href}
+      {/* Mobile Menu Overlay + Panel */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            <motion.div
+              key="overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
               onClick={() => setMobileOpen(false)}
+              aria-hidden="true"
+            />
+
+            <motion.div
+              key="panel"
+              initial={{ x: locale === "ar" ? "-100%" : "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: locale === "ar" ? "-100%" : "100%" }}
+              transition={{ type: "spring", stiffness: 320, damping: 32 }}
               className={cn(
-                "rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200",
-                isActive(href)
-                  ? "bg-brand/10 text-brand"
-                  : "text-muted-foreground hover:bg-surface-high/50 hover:text-foreground"
+                "fixed top-16 z-40 h-[calc(100dvh-4rem)] w-72 md:hidden",
+                "glass border-s",
+                isDark ? "border-white/[0.06]" : "border-black/[0.06]",
+                locale === "ar" ? "left-0" : "right-0"
               )}
             >
-              {t(key)}
-            </Link>
-          ))}
+              <nav className="flex flex-col gap-1 p-4">
+                {NAV_LINKS.map(({ href, key }, i) => (
+                  <motion.div
+                    key={key}
+                    initial={{ opacity: 0, x: locale === "ar" ? -16 : 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.25, delay: i * 0.04 }}
+                  >
+                    <Link
+                      href={href}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        "focus-ring block rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200",
+                        isActive(href)
+                          ? "bg-brand/10 text-brand"
+                          : "text-muted-foreground hover:bg-surface-high/50 hover:text-foreground"
+                      )}
+                    >
+                      {t(key)}
+                    </Link>
+                  </motion.div>
+                ))}
 
-          <div className="my-4 h-px bg-border/40" />
+                <div className="my-4 h-px bg-border/40" />
 
-          <div className="flex items-center gap-2 px-4">
-            <LanguageSwitcher />
-            {mounted && (
-              <button
-                onClick={toggleTheme}
-                className={cn(
-                  "inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
-                  "border",
-                  isDark
-                    ? "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
-                    : "border-black/10 bg-black/5 text-muted-foreground hover:bg-black/10 hover:text-foreground"
-                )}
-                aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              >
-                {resolvedTheme === "dark" ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-              </button>
-            )}
-          </div>
+                <div className="flex items-center gap-2 px-4">
+                  <LanguageSwitcher />
+                  {mounted && (
+                    <button
+                      onClick={toggleTheme}
+                      className={cn(
+                        "focus-ring inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
+                        "border",
+                        isDark
+                          ? "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                          : "border-black/10 bg-black/5 text-muted-foreground hover:bg-black/10 hover:text-foreground"
+                      )}
+                      aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                    >
+                      {resolvedTheme === "dark" ? (
+                        <Sun className="h-4 w-4" />
+                      ) : (
+                        <Moon className="h-4 w-4" />
+                      )}
+                    </button>
+                  )}
+                </div>
 
-          <div className="mt-2 px-4">
-            {mounted && session?.user ? (
-              <UserMenu user={session.user} />
-            ) : (
-              <Link
-                href="/auth/signin"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl brand-gradient text-white text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                <LogIn className="h-4 w-4" />
-                {tAuth("signIn")}
-              </Link>
-            )}
-          </div>
-        </nav>
-      </div>
+                <div className="mt-2 px-4">
+                  {mounted && session?.user ? (
+                    <UserMenu user={session.user} />
+                  ) : (
+                    <Link
+                      href="/auth/signin"
+                      className="focus-ring inline-flex items-center gap-2 px-4 py-2 rounded-xl brand-gradient text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                    >
+                      <LogIn className="h-4 w-4" />
+                      {tAuth("signIn")}
+                    </Link>
+                  )}
+                </div>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

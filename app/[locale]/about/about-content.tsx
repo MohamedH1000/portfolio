@@ -4,23 +4,12 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { Code2, CloudCog, Brain, Workflow, Sparkles } from "lucide-react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" as const },
-  }),
-};
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
+import { useStagger, useFadeUpItem } from "@/lib/motion";
 
 export function AboutContent() {
   const t = useTranslations("about");
+  const stagger = useStagger(0.12);
+  const fadeItem = useFadeUpItem();
 
   const stats = [
     { value: t("statsYearsValue"), label: t("statsYears") },
@@ -94,14 +83,14 @@ export function AboutContent() {
             variants={stagger}
             className="space-y-8"
           >
-            <motion.h1 variants={fadeUp} custom={0} className="section-heading">
+            <motion.h1 variants={fadeItem} className="section-heading">
               About{" "}
               <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
                 Me
               </span>
             </motion.h1>
 
-            <motion.div variants={fadeUp} custom={1} className="flex items-start gap-4">
+            <motion.div variants={fadeItem} className="flex items-start gap-4">
               <div className="hidden md:flex mt-2 shrink-0">
                 <Sparkles className="w-5 h-5 text-brand" />
               </div>
@@ -111,8 +100,7 @@ export function AboutContent() {
             </motion.div>
 
             <motion.p
-              variants={fadeUp}
-              custom={2}
+              variants={fadeItem}
               className="text-muted-foreground leading-relaxed"
             >
               {t("introExtended")}
@@ -133,8 +121,7 @@ export function AboutContent() {
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              variants={fadeUp}
-              custom={i}
+              variants={fadeItem}
               className="relative group text-center p-6 rounded-2xl bg-surface-low border border-brand/10 overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -160,7 +147,7 @@ export function AboutContent() {
           variants={stagger}
           className="max-w-4xl mx-auto"
         >
-          <motion.div variants={fadeUp} custom={0} className="text-center mb-16">
+          <motion.div variants={fadeItem} className="text-center mb-16">
             <h2 className="section-heading mb-4">
               {t("expertiseTitle")}
             </h2>
@@ -175,8 +162,7 @@ export function AboutContent() {
               return (
                 <motion.div
                   key={item.title}
-                  variants={fadeUp}
-                  custom={i + 1}
+                  variants={fadeItem}
                   className={`group relative rounded-2xl p-6 bg-surface-low border border-transparent ${item.borderHover} transition-all duration-500 card-hover overflow-hidden`}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -217,7 +203,7 @@ export function AboutContent() {
           variants={stagger}
           className="max-w-4xl mx-auto"
         >
-          <motion.div variants={fadeUp} custom={0} className="text-center mb-16">
+          <motion.div variants={fadeItem} className="text-center mb-16">
             <h2 className="section-heading mb-4">
               {t("journeyTitle")}
             </h2>
@@ -236,8 +222,7 @@ export function AboutContent() {
                 return (
                   <motion.div
                     key={phase.step}
-                    variants={fadeUp}
-                    custom={i + 1}
+                    variants={fadeItem}
                     className={`relative flex items-start gap-6 md:gap-0 ${
                       isLeft ? "md:flex-row" : "md:flex-row-reverse"
                     }`}
@@ -276,7 +261,7 @@ export function AboutContent() {
           variants={stagger}
           className="max-w-4xl mx-auto"
         >
-          <motion.div variants={fadeUp} custom={0} className="text-center mb-16">
+          <motion.div variants={fadeItem} className="text-center mb-16">
             <h2 className="section-heading mb-4">
               {t("philosophyTitle")}
             </h2>
@@ -289,8 +274,7 @@ export function AboutContent() {
             {philosophy.map((item, i) => (
               <motion.div
                 key={item.title}
-                variants={fadeUp}
-                custom={i + 1}
+                variants={fadeItem}
                 className="group rounded-2xl p-6 bg-surface-low border border-transparent hover:border-brand/15 transition-all duration-300 card-hover"
               >
                 <div className="flex items-start gap-4">

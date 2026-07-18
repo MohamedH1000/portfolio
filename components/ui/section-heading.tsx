@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 interface SectionHeadingProps {
   text: string;
   highlight: string;
@@ -6,21 +10,36 @@ interface SectionHeadingProps {
 export function SectionHeading({ text, highlight }: SectionHeadingProps) {
   const parts = text.split(highlight);
 
+  const underline = (
+    <motion.span
+      aria-hidden="true"
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+      className="block h-1 w-16 origin-start rounded-full bg-gradient-to-r from-brand to-purple-400 mt-4"
+    />
+  );
+
   if (parts.length === 1) {
     return (
-      <h2 className="section-heading text-foreground">
-        {text}
-      </h2>
+      <div>
+        <h2 className="section-heading text-foreground">{text}</h2>
+        {underline}
+      </div>
     );
   }
 
   return (
-    <h2 className="section-heading text-foreground">
-      {parts[0]}
-      <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
-        {highlight}
-      </span>
-      {parts[1]}
-    </h2>
+    <div>
+      <h2 className="section-heading text-foreground">
+        {parts[0]}
+        <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
+          {highlight}
+        </span>
+        {parts[1]}
+      </h2>
+      {underline}
+    </div>
   );
 }
