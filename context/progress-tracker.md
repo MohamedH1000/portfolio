@@ -143,3 +143,6 @@ Update this file after every meaningful implementation change.
 - Middleware convention deprecated in Next.js 16 (should use "proxy") — build still works, warning only
 - `portfolio-assets` Storage bucket needs to be created in Supabase Dashboard
 - Build passes with zero errors: all 59 routes generated including admin pages and API routes
+- Admin settings bilingual fields could not be saved — `BilingualInput` was always uncontrolled, so edits never reached the settings page `edited` state and the per-group Save button never appeared for Hero/About/Footer. Fixed by adding optional `onChangeEn`/`onChangeAr` props that switch a field to controlled only when supplied; the projects/experiences/testimonials forms omit them and stay uncontrolled (FormData on submit)
+- The "Other Settings" (ungrouped) panel on `/admin/settings` still has no Save button, so those fields remain display-only — left uncontrolled deliberately
+- Dev server caused system-wide lag and V8 heap OOM: a stray empty `C:\projects\package-lock.json` made Next.js infer the workspace root as `C:\projects`, so Turbopack watched every sibling project and could not resolve `tailwindcss`. Fixed by deleting that stub lockfile and pinning `turbopack.root` to `__dirname` in `next.config.ts`. Dev startup went from 4.9s to ~0.75s

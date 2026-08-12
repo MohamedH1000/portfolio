@@ -8,9 +8,24 @@ interface BilingualInputProps {
   nameAr: string;
   valueEn?: string;
   valueAr?: string;
+  /** Supply to make the English field controlled. Omit to keep it uncontrolled (read via FormData on submit). */
+  onChangeEn?: (value: string) => void;
+  /** Supply to make the Arabic field controlled. Omit to keep it uncontrolled (read via FormData on submit). */
+  onChangeAr?: (value: string) => void;
   required?: boolean;
   type?: "text" | "textarea";
   placeholder?: string;
+}
+
+type FieldChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+
+type FieldValueProps =
+  | { value: string; onChange: (event: FieldChangeEvent) => void }
+  | { defaultValue: string };
+
+function valueProps(value: string, onChange?: (value: string) => void): FieldValueProps {
+  if (!onChange) return { defaultValue: value };
+  return { value, onChange: (event: FieldChangeEvent) => onChange(event.target.value) };
 }
 
 export function BilingualInput({
@@ -19,12 +34,17 @@ export function BilingualInput({
   nameAr,
   valueEn = "",
   valueAr = "",
+  onChangeEn,
+  onChangeAr,
   required = false,
   type = "text",
   placeholder,
 }: BilingualInputProps) {
   const localeChip =
     "inline-flex items-center rounded-md bg-surface-high/70 px-1.5 py-0.5 text-[0.6875rem] font-medium tracking-wide text-muted-foreground ring-1 ring-[var(--hairline)]";
+
+  const enProps = valueProps(valueEn, onChangeEn);
+  const arProps = valueProps(valueAr, onChangeAr);
 
   return (
     <div className="space-y-2">
@@ -43,7 +63,7 @@ export function BilingualInput({
           {type === "textarea" ? (
             <textarea
               name={nameEn}
-              defaultValue={valueEn}
+              {...enProps}
               required={required}
               rows={4}
               placeholder={placeholder}
@@ -53,7 +73,7 @@ export function BilingualInput({
             <input
               name={nameEn}
               type="text"
-              defaultValue={valueEn}
+              {...enProps}
               required={required}
               placeholder={placeholder}
               className="field"
@@ -66,7 +86,7 @@ export function BilingualInput({
           {type === "textarea" ? (
             <textarea
               name={nameAr}
-              defaultValue={valueAr}
+              {...arProps}
               required={required}
               rows={4}
               dir="rtl"
@@ -77,7 +97,7 @@ export function BilingualInput({
             <input
               name={nameAr}
               type="text"
-              defaultValue={valueAr}
+              {...arProps}
               required={required}
               dir="rtl"
               placeholder={placeholder}

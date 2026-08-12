@@ -133,6 +133,8 @@ export function SettingsPage() {
                       nameAr={`${key}__ar`}
                       valueEn={getValue(key, "value_en")}
                       valueAr={getValue(key, "value_ar")}
+                      onChangeEn={(value) => setValue(key, "value_en", value)}
+                      onChangeAr={(value) => setValue(key, "value_ar", value)}
                     />
                   ) : (
                     <FormField label={label} htmlFor={`setting-${key}`} className="capitalize">

@@ -72,7 +72,7 @@ These live in `shared/components/admin/` since they're reusable across admin pag
 | Component | Purpose |
 |-----------|---------|
 | `DataTable` | Generic table with columns, search, pagination |
-| `BilingualInput` | Side-by-side EN/AR input (text, textarea, rich text) |
+| `BilingualInput` | Side-by-side EN/AR input (text, textarea, rich text). Uncontrolled by default (read via FormData on submit); pass `onChangeEn`/`onChangeAr` to make a side controlled, as the settings page does |
 | `ImageUpload` | Drag-and-drop upload to Supabase Storage with preview |
 | `DeleteDialog` | Modal confirmation before delete |
 | `StatsCard` | Number + label + trend indicator for dashboard |

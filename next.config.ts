@@ -25,6 +25,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Pin the workspace root. Without this, Next.js walks up and finds the stray
+  // lockfile in C:\projects, making Turbopack watch every sibling project.
+  turbopack: {
+    root: __dirname,
+  },
   images: {
     remotePatterns: [
       {
