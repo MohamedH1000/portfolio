@@ -40,7 +40,7 @@ export function ExperienceHighlights({ experiences, locale }: ExperienceHighligh
           <motion.div
             key={i}
             {...fadeInUp(i * 0.1, !!reduce)}
-            className="relative rounded-2xl p-6 border border-transparent hover:border-brand/15 bg-surface-low transition-all duration-300 group"
+            className="surface-card border-gradient card-hover group relative rounded-2xl p-6 hover:border-brand/20"
           >
             <div className="flex flex-col md:flex-row md:items-center gap-4">
               <div className="flex-1">

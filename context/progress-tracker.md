@@ -70,6 +70,31 @@ Update this file after every meaningful implementation change.
   - Validation schemas: `lib/validations/admin-project.ts`, `admin-experience.ts`, `admin-testimonial.ts`, `admin-settings.ts`
   - `npm run build` passes with zero errors — all 59 routes generated
 
+- **Design system pass — public + admin styling overhaul**
+  - `globals.css` restructured into Tailwind's `base` / `components` cascade
+    layers (custom classes were unlayered and silently beat every utility)
+  - Added motion tokens (easing/duration), a 5-step elevation scale,
+    compositional surface tokens (`--glass-bg`, `--hairline`, `--sheen`, `--scrim`)
+  - `--brand` is now theme-aware (`#CBACF9` dark / `#6c5196` light) — fixes
+    brand text failing contrast on light backgrounds
+  - New utilities: `.surface-card`, `.glass-panel`, `.border-gradient`,
+    `.text-gradient-brand`, `.shimmer`, `.sheen-hover`, `.field`, `.press`,
+    `.lift-sm`, `.link-underline`, `.divider-gradient`, `.bg-blueprint-fade`
+  - Admin brought to parity with the public site: animated sidebar with
+    `layoutId` active pill, glass header, count-up stats, motion slide-over
+    forms, animated delete dialog, shimmer skeletons, animated table rows
+  - New admin primitives: `AdminNav`, `AdminPanel`, `AdminButton`, `SlideOver`,
+    `SearchInput`, `FormField`, `TableSkeleton`, `ErrorState`, `AdminPageTransition`
+  - Public polish: gradient-border project cards, refined header/footer,
+    `MagicButton` `variant` prop, polished forms, auth pages, 404/error pages
+  - Bugs fixed along the way:
+    - Admin mobile drawer rendered `AdminSidebar` (`hidden lg:flex`) so the
+      menu was **always empty** — nav contents extracted to `AdminNav`
+    - `-webkit-backdrop-filter` written after `backdrop-filter` made the
+      minifier drop the standard property — **glass blur did nothing in Chrome**
+    - Unlayered `* { border-color }` flattened every brand-tinted border
+  - `npm run build` passes; verified in both themes and both locales (EN/RTL)
+
 ## In Progress
 
 - Waiting for user to: run SQL migrations in Supabase Dashboard
@@ -83,6 +108,12 @@ Update this file after every meaningful implementation change.
 
 ## Open Questions
 
+- **Admin settings: bilingual fields cannot be saved.** `BilingualInput` is
+  uncontrolled (`defaultValue`, no `onChange`), so edits never reach the
+  `edited` state in `app/(admin)/admin/settings/page.tsx`. `hasChanges` stays
+  false and the Save button never appears for the Hero/About/Footer groups —
+  only the Social Links group (a plain controlled input) can be saved.
+  Left as-is during the styling pass; needs a logic fix.
 - Supabase SQL migrations (001-004) need to be run manually in Supabase Dashboard
 - Supabase Storage bucket `portfolio-assets` needs to be created manually
 

@@ -66,18 +66,25 @@ export function Header() {
     return pathname.startsWith(href);
   };
 
-  const isDark = !mounted || resolvedTheme === "dark";
-
   return (
     <>
       <header
         className={cn(
           "fixed top-0 z-50 w-full",
-          "glass border-b transition-[border-color,box-shadow] duration-300",
-          isDark ? "border-white/[0.06]" : "border-black/[0.06]",
-          scrolled && (isDark ? "shadow-[0_1px_0_rgba(255,255,255,0.06),0_12px_32px_-16px_rgba(0,0,0,0.5)]" : "shadow-[0_1px_0_rgba(0,0,0,0.06),0_12px_32px_-16px_rgba(108,81,150,0.2)]")
+          "glass border-b border-[var(--hairline)]",
+          "transition-[box-shadow,height] duration-300 ease-[var(--ease-quart)]",
+          scrolled && "shadow-[var(--shadow-3)]"
         )}
       >
+        {/* Brand hairline that fades in once the page is scrolled */}
+        <span
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-x-0 bottom-0 h-px transition-opacity duration-500",
+            "bg-gradient-to-r from-transparent via-brand/40 to-transparent",
+            scrolled ? "opacity-100" : "opacity-0"
+          )}
+        />
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link
@@ -119,11 +126,10 @@ export function Header() {
               <button
                 onClick={toggleTheme}
                 className={cn(
-                  "focus-ring inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
-                  "border",
-                  isDark
-                    ? "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
-                    : "border-black/10 bg-black/5 text-muted-foreground hover:bg-black/10 hover:text-foreground"
+                  "focus-ring press inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full",
+                  "border border-[var(--hairline)] bg-surface-high/60 text-muted-foreground",
+                  "transition-all duration-300 ease-[var(--ease-quart)]",
+                  "hover:border-brand/30 hover:bg-brand/10 hover:text-brand"
                 )}
                 aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               >
@@ -150,7 +156,7 @@ export function Header() {
             ) : (
               <Link
                 href="/auth/signin"
-                className="focus-ring inline-flex items-center gap-2 px-4 py-2 rounded-xl brand-gradient text-white text-sm font-medium transition-all duration-200 hover:opacity-90 hover:shadow-[0_0_20px_rgba(203,172,249,0.35)]"
+                className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-300 hover:shadow-[var(--shadow-brand)]"
               >
                 <LogIn className="h-4 w-4" />
                 {tAuth("signIn")}
@@ -191,7 +197,7 @@ export function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-40 bg-[var(--scrim)] backdrop-blur-sm md:hidden"
               onClick={() => setMobileOpen(false)}
               aria-hidden="true"
             />
@@ -204,8 +210,7 @@ export function Header() {
               transition={{ type: "spring", stiffness: 320, damping: 32 }}
               className={cn(
                 "fixed top-16 z-40 h-[calc(100dvh-4rem)] w-72 md:hidden",
-                "glass border-s",
-                isDark ? "border-white/[0.06]" : "border-black/[0.06]",
+                "glass border-s border-[var(--hairline)] shadow-[var(--shadow-4)]",
                 locale === "ar" ? "left-0" : "right-0"
               )}
             >
@@ -232,7 +237,7 @@ export function Header() {
                   </motion.div>
                 ))}
 
-                <div className="my-4 h-px bg-border/40" />
+                <div className="divider-gradient my-4" />
 
                 <div className="flex items-center gap-2 px-4">
                   <LanguageSwitcher />
@@ -240,11 +245,10 @@ export function Header() {
                     <button
                       onClick={toggleTheme}
                       className={cn(
-                        "focus-ring inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
-                        "border",
-                        isDark
-                          ? "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
-                          : "border-black/10 bg-black/5 text-muted-foreground hover:bg-black/10 hover:text-foreground"
+                        "focus-ring press inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full",
+                        "border border-[var(--hairline)] bg-surface-high/60 text-muted-foreground",
+                        "transition-all duration-300 ease-[var(--ease-quart)]",
+                        "hover:border-brand/30 hover:bg-brand/10 hover:text-brand"
                       )}
                       aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
                     >
@@ -263,7 +267,7 @@ export function Header() {
                   ) : (
                     <Link
                       href="/auth/signin"
-                      className="focus-ring inline-flex items-center gap-2 px-4 py-2 rounded-xl brand-gradient text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                      className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-300 hover:shadow-[var(--shadow-brand)]"
                     >
                       <LogIn className="h-4 w-4" />
                       {tAuth("signIn")}

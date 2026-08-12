@@ -11,17 +11,21 @@ export default async function SignInPage() {
   const t = await getTranslations("Auth");
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-20">
-      <div className="w-full max-w-md">
-        <div className="bg-card border border-border/40 rounded-2xl p-8 shadow-lg">
-          <div className="text-center mb-8">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand/10 mb-4">
-              <span className="text-2xl font-bold text-brand">MH</span>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-20">
+      <div aria-hidden="true" className="bg-blueprint bg-blueprint-fade pointer-events-none absolute inset-0" />
+      <div aria-hidden="true" className="pointer-events-none absolute -top-24 start-1/3 h-[28rem] w-[28rem] rounded-full bg-brand/10 blur-[120px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 end-1/4 h-[24rem] w-[24rem] rounded-full bg-purple-500/10 blur-[110px]" />
+
+      <div className="relative w-full max-w-md">
+        <div className="glass-panel border-gradient border-gradient-static rounded-2xl p-8">
+          <div className="mb-8 text-center">
+            <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl brand-gradient text-2xl font-bold text-white shadow-[var(--shadow-brand)]">
+              MH
             </div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">
               {t("welcomeBack")}
             </h1>
-            <p className="text-muted-foreground mt-2 text-sm">
+            <p className="mt-2 text-sm text-muted-foreground">
               {t("signInDescription")}
             </p>
           </div>
@@ -29,11 +33,9 @@ export default async function SignInPage() {
           <CredentialsSignInForm />
 
           <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border/40" />
-            </div>
+            <div className="divider-gradient absolute inset-x-0 top-1/2" />
             <div className="relative flex justify-center text-xs">
-              <span className="bg-card px-3 text-muted-foreground">
+              <span className="rounded-full bg-[var(--card)] px-3 text-muted-foreground">
                 {t("orContinueWith")}
               </span>
             </div>
@@ -41,11 +43,11 @@ export default async function SignInPage() {
 
           <GoogleSignInButton />
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
+          <p className="mt-6 text-center text-sm text-muted-foreground">
             {t("noAccount")}{" "}
             <Link
               href="/auth/signup"
-              className="text-brand hover:underline font-medium"
+              className="focus-ring link-underline font-medium text-brand"
             >
               {t("signUp")}
             </Link>

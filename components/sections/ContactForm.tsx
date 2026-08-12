@@ -45,8 +45,7 @@ export function ContactForm() {
     }
   }
 
-  const inputClasses =
-    "focus-ring w-full bg-surface-low border border-brand/10 rounded-xl px-4 py-3 text-sm outline-none transition-colors duration-200 text-foreground placeholder:text-muted-foreground/40 focus:border-brand/40";
+  const inputClasses = "field rounded-xl px-4 py-3";
 
   const whileFocus = reduce ? undefined : { scale: 1.01 };
 
@@ -56,7 +55,7 @@ export function ContactForm() {
       <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+        <label htmlFor="name" className="mb-2 block text-sm font-medium text-foreground">
           {t("name")}
         </label>
         <motion.input
@@ -73,7 +72,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+        <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground">
           {t("email")}
         </label>
         <motion.input
@@ -89,7 +88,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
+        <label htmlFor="subject" className="mb-2 block text-sm font-medium text-foreground">
           {t("subject")}
         </label>
         <motion.input
@@ -104,7 +103,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+        <label htmlFor="message" className="mb-2 block text-sm font-medium text-foreground">
           {t("message")}
         </label>
         <motion.textarea
@@ -132,26 +131,28 @@ export function ContactForm() {
         {status === "success" && (
           <motion.p
             key="success"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.25 }}
-            className="flex items-center gap-2 text-green-500 text-sm mt-2"
+            role="status"
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-2 flex items-center gap-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-500"
           >
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
             {t("success")}
           </motion.p>
         )}
         {status === "error" && (
           <motion.p
             key="error"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.25 }}
-            className="flex items-center gap-2 text-destructive text-sm mt-2"
+            role="alert"
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-2 flex items-center gap-2.5 rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive"
           >
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <AlertCircle className="h-4 w-4 shrink-0" />
             {t("error")}
           </motion.p>
         )}

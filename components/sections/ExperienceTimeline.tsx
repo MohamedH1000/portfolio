@@ -31,9 +31,15 @@ export function ExperienceTimeline({ experiences, locale }: ExperienceTimelinePr
       <div className="space-y-10">
         {experiences.map((exp, i) => (
           <motion.div key={i} {...fadeInUp(i * 0.1, !!reduce)} className="relative ps-10">
-            <div className="absolute start-0 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-brand bg-background -translate-x-[7px]" />
+            <span className="absolute start-0 top-1.5 -translate-x-[7px] rtl:translate-x-[7px]">
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 rounded-full bg-brand/40 motion-safe:animate-[pulse-ring_2.8s_ease-out_infinite]"
+              />
+              <span className="relative block h-3.5 w-3.5 rounded-full border-2 border-brand bg-background shadow-[var(--shadow-brand)]" />
+            </span>
 
-            <div className="rounded-2xl p-6 bg-surface-low border border-transparent hover:border-brand/15 transition-all duration-300 card-hover">
+            <div className="surface-card border-gradient card-hover rounded-2xl p-6 hover:border-brand/20">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                 <h3 className="text-lg font-semibold">
                   {isAr ? exp.role_ar : exp.role_en}
@@ -45,7 +51,7 @@ export function ExperienceTimeline({ experiences, locale }: ExperienceTimelinePr
                     : t("present")}
                 </span>
               </div>
-              <p className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent text-sm font-medium mb-2">{exp.company}</p>
+              <p className="text-gradient-brand text-sm font-medium mb-2">{exp.company}</p>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 {isAr ? exp.description_ar : exp.description_en}
               </p>

@@ -88,9 +88,7 @@ export function HeroSection() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4"
         >
-          <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
-            {t("name")}
-          </span>
+          <span className="text-gradient-brand">{t("name")}</span>
         </motion.h1>
 
         <motion.div
@@ -149,7 +147,7 @@ export function HeroSection() {
               title={t("ctaSecondary")}
               icon={<Mail />}
               position="left"
-              className="bg-transparent border border-brand/30 text-brand hover:bg-brand/10 hover:shadow-none dark:from-transparent dark:to-transparent dark:text-brand"
+              variant="ghost"
             />
           </Link>
         </motion.div>

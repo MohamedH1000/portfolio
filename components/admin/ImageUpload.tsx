@@ -84,30 +84,34 @@ export function ImageUpload({
     <div className="space-y-1.5">
       <input type="hidden" name={name} value={preview} />
       {preview ? (
-        <div className="relative inline-block">
+        <div className="group relative inline-block">
           {previewIsVideo ? (
             <video
               src={preview}
-              className="h-32 w-32 rounded-lg border border-border/40 object-cover"
+              className="h-32 w-32 rounded-xl border border-[var(--hairline)] object-cover shadow-[var(--shadow-2)]"
               muted
             />
           ) : (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={preview}
               alt="Preview"
-              className="h-32 w-32 rounded-lg border border-border/40 object-cover"
+              className="h-32 w-32 rounded-xl border border-[var(--hairline)] object-cover shadow-[var(--shadow-2)] transition-transform duration-300 ease-[var(--ease-spring)] group-hover:scale-[1.03]"
             />
           )}
           <button
             type="button"
             onClick={() => setPreview("")}
-            className="absolute -top-2 -end-2 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-white cursor-pointer"
+            aria-label="Remove upload"
+            className="focus-ring press absolute -top-2 -end-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-destructive text-[var(--destructive-foreground)] shadow-[var(--shadow-3)] transition-transform duration-200 hover:scale-110"
           >
-            <X className="h-3 w-3" />
+            <X className="h-3.5 w-3.5" />
           </button>
         </div>
       ) : (
         <div
+          role="button"
+          tabIndex={0}
           onDragOver={(e) => {
             e.preventDefault();
             setDragOver(true);
@@ -115,22 +119,39 @@ export function ImageUpload({
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              inputRef.current?.click();
+            }
+          }}
           className={cn(
-            "flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors",
+            "focus-ring group flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed",
+            "transition-all duration-300 ease-[var(--ease-quart)]",
             dragOver
-              ? "border-brand bg-brand/5"
-              : "border-border/40 hover:border-brand/30 hover:bg-surface-high/30"
+              ? "scale-[1.01] border-brand bg-brand/10 shadow-[var(--shadow-brand)]"
+              : "border-border/50 hover:border-brand/40 hover:bg-surface-high/40"
           )}
         >
           {uploading ? (
-            <Loader2 className="h-6 w-6 animate-spin text-brand" />
+            <>
+              <Loader2 className="h-6 w-6 animate-spin text-brand" />
+              <p className="mt-2 text-xs text-muted-foreground">Uploading…</p>
+            </>
           ) : (
             <>
-              <Upload className="h-6 w-6 text-muted-foreground mb-2" />
-              <p className="text-xs text-muted-foreground">
+              <Upload
+                className={cn(
+                  "mb-2 h-6 w-6 transition-all duration-300 ease-[var(--ease-spring)]",
+                  dragOver
+                    ? "-translate-y-1 scale-110 text-brand"
+                    : "text-muted-foreground group-hover:-translate-y-0.5 group-hover:text-brand"
+                )}
+              />
+              <p className="text-xs font-medium text-muted-foreground">
                 Drop an image or video or click to upload
               </p>
-              <p className="text-xs text-muted-foreground/60 mt-1">
+              <p className="mt-1 text-xs text-muted-foreground/60">
                 JPG, PNG, WebP, MP4, WebM — max 25MB
               </p>
             </>

@@ -1,11 +1,19 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Plus, Pencil, Trash2, Search, Star, X, Loader2 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Plus, Pencil, Trash2, Star, X, FolderKanban } from "lucide-react";
 import { BilingualInput } from "@/components/admin/BilingualInput";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
 import { EmptyState } from "@/components/admin/EmptyState";
+import { AdminPanel } from "@/components/admin/AdminPanel";
+import { AdminButton } from "@/components/admin/AdminButton";
+import { SearchInput } from "@/components/admin/SearchInput";
+import { TableSkeleton } from "@/components/admin/TableSkeleton";
+import { ErrorState } from "@/components/admin/ErrorState";
+import { SlideOver } from "@/components/admin/SlideOver";
+import { FormField } from "@/components/admin/FormField";
 import { cn } from "@/lib/utils";
 
 interface Project {
@@ -151,146 +159,266 @@ export function ProjectsPage() {
     setFormOpen(true);
   }
 
+  function closeForm() {
+    setFormOpen(false);
+    setEditing(null);
+  }
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search projects..."
-            className="w-full rounded-lg border border-border/40 bg-surface-low px-3 py-2 ps-9 text-sm focus:border-brand/40 focus:outline-none"
-          />
-        </div>
-        <button onClick={openNew} className="flex items-center gap-2 px-4 py-2 rounded-lg brand-gradient text-white text-sm font-medium hover:opacity-90 cursor-pointer">
-          <Plus className="h-4 w-4" /> New Project
-        </button>
+    <div className="space-y-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder="Search projects…"
+          className="w-full sm:max-w-sm"
+        />
+        <AdminButton onClick={openNew} icon={<Plus className="h-4 w-4" />}>
+          New Project
+        </AdminButton>
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-brand" /></div>
-      ) : error ? (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center">
-          <p className="text-sm text-destructive font-medium">{error}</p>
-          <button onClick={fetchItems} className="mt-3 text-sm text-brand hover:underline cursor-pointer">Retry</button>
-        </div>
+        <TableSkeleton rows={5} />
+      ) : error && !formOpen ? (
+        <ErrorState message={error} onRetry={fetchItems} />
       ) : filtered.length === 0 ? (
-        <EmptyState icon={Star} title="No projects" description="Create your first project to get started." />
+        <AdminPanel bodyClassName="p-0">
+          <EmptyState
+            icon={search ? Star : FolderKanban}
+            title={search ? "No matches" : "No projects yet"}
+            description={
+              search
+                ? "Try a different search term."
+                : "Create your first project to get started."
+            }
+            action={
+              !search && (
+                <AdminButton onClick={openNew} icon={<Plus className="h-4 w-4" />}>
+                  New Project
+                </AdminButton>
+              )
+            }
+          />
+        </AdminPanel>
       ) : (
-        <div className="rounded-xl border border-border/30 overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-surface-high/50">
-              <tr className="text-left text-xs font-medium text-muted-foreground">
-                <th className="px-4 py-3">Image</th>
-                <th className="px-4 py-3">Title</th>
-                <th className="px-4 py-3 hidden md:table-cell">Tech Stack</th>
-                <th className="px-4 py-3">Featured</th>
-                <th className="px-4 py-3 text-end">Actions</th>
+        <AdminPanel bodyClassName="overflow-x-auto">
+          <table className="w-full min-w-[42rem]">
+            <thead className="border-b border-[var(--hairline)] bg-surface-high/40">
+              <tr className="text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <th className="px-4 py-3 text-start font-semibold">Image</th>
+                <th className="px-4 py-3 text-start font-semibold">Title</th>
+                <th className="hidden px-4 py-3 text-start font-semibold md:table-cell">Tech Stack</th>
+                <th className="px-4 py-3 text-start font-semibold">Featured</th>
+                <th className="px-4 py-3 text-end font-semibold">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/20">
-              {filtered.map((item) => (
-                <tr key={item.id} className="hover:bg-surface-high/20 transition-colors">
-                  <td className="px-4 py-3">
-                    {item.image_url ? (
-                      <img src={item.image_url} alt="" className="h-10 w-14 rounded object-cover border border-border/30" />
-                    ) : (
-                      <div className="h-10 w-14 rounded bg-surface-high flex items-center justify-center text-xs text-muted-foreground">—</div>
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <p className="text-sm font-medium text-foreground">{item.title_en}</p>
-                    <p className="text-xs text-muted-foreground">{item.slug}</p>
-                  </td>
-                  <td className="px-4 py-3 hidden md:table-cell">
-                    <div className="flex flex-wrap gap-1">
-                      {item.tech_stack.slice(0, 3).map((t) => (
-                        <span key={t} className="text-xs px-1.5 py-0.5 rounded bg-brand/10 text-brand">{t}</span>
-                      ))}
-                      {item.tech_stack.length > 3 && <span className="text-xs text-muted-foreground">+{item.tech_stack.length - 3}</span>}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <button onClick={() => toggleFeatured(item.id)} className={cn("text-xs px-2 py-1 rounded-full cursor-pointer transition-colors", item.featured ? "bg-brand/20 text-brand" : "bg-surface-high text-muted-foreground")}>
-                      {item.featured ? "Featured" : "Standard"}
-                    </button>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex justify-end gap-2">
-                      <button onClick={() => openEdit(item)} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-high cursor-pointer"><Pencil className="h-4 w-4" /></button>
-                      <button onClick={() => setDeleteId(item.id)} className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 cursor-pointer"><Trash2 className="h-4 w-4" /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+            <tbody className="divide-y divide-[var(--hairline)]">
+              <AnimatePresence initial={false}>
+                {filtered.map((item, i) => (
+                  <motion.tr
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.32, delay: Math.min(i * 0.035, 0.25), ease: [0.16, 1, 0.3, 1] }}
+                    className="group transition-colors duration-200 hover:bg-surface-high/40"
+                  >
+                    <td className="px-4 py-3">
+                      {item.image_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.image_url}
+                          alt=""
+                          className="h-10 w-14 rounded-lg border border-[var(--hairline)] object-cover shadow-[var(--shadow-1)] transition-transform duration-300 ease-[var(--ease-spring)] group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="flex h-10 w-14 items-center justify-center rounded-lg bg-surface-high text-xs text-muted-foreground">
+                          —
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <p className="text-sm font-medium text-foreground transition-colors group-hover:text-brand">
+                        {item.title_en}
+                      </p>
+                      <p className="font-mono text-xs text-muted-foreground">{item.slug}</p>
+                    </td>
+                    <td className="hidden px-4 py-3 md:table-cell">
+                      <div className="flex flex-wrap gap-1.5">
+                        {item.tech_stack.slice(0, 3).map((t) => (
+                          <span
+                            key={t}
+                            className="rounded-md bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand ring-1 ring-brand/15"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                        {item.tech_stack.length > 3 && (
+                          <span className="px-1 text-xs text-muted-foreground">
+                            +{item.tech_stack.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => toggleFeatured(item.id)}
+                        aria-pressed={item.featured}
+                        className={cn(
+                          "focus-ring press inline-flex cursor-pointer items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium",
+                          "ring-1 transition-all duration-200",
+                          item.featured
+                            ? "bg-brand/15 text-brand ring-brand/25 hover:bg-brand/25"
+                            : "bg-surface-high text-muted-foreground ring-transparent hover:text-foreground"
+                        )}
+                      >
+                        <Star
+                          className={cn(
+                            "h-3 w-3 transition-transform duration-300 ease-[var(--ease-spring)]",
+                            item.featured && "scale-110 fill-current"
+                          )}
+                        />
+                        {item.featured ? "Featured" : "Standard"}
+                      </button>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex justify-end gap-1.5 opacity-70 transition-opacity duration-200 group-hover:opacity-100">
+                        <button
+                          onClick={() => openEdit(item)}
+                          aria-label={`Edit ${item.title_en}`}
+                          className="focus-ring press cursor-pointer rounded-lg p-2 text-muted-foreground transition-colors duration-200 hover:bg-brand/10 hover:text-brand"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => setDeleteId(item.id)}
+                          aria-label={`Delete ${item.title_en}`}
+                          className="focus-ring press cursor-pointer rounded-lg p-2 text-muted-foreground transition-colors duration-200 hover:bg-destructive/10 hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </AnimatePresence>
             </tbody>
           </table>
-        </div>
+        </AdminPanel>
       )}
 
-      {/* Create/Edit Form Modal */}
-      {formOpen && editing && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          <div className="absolute inset-0 bg-black/40" onClick={() => { setFormOpen(false); setEditing(null); }} />
-          <div className="relative w-full max-w-xl bg-card border-s border-border/30 overflow-y-auto">
-            <div className="sticky top-0 flex items-center justify-between border-b border-border/30 bg-card px-6 py-4">
-              <h2 className="text-lg font-semibold text-foreground">{editing.id ? "Edit Project" : "New Project"}</h2>
-              <button onClick={() => { setFormOpen(false); setEditing(null); }} className="text-muted-foreground hover:text-foreground cursor-pointer"><X className="h-5 w-5" /></button>
+      <SlideOver
+        open={formOpen && !!editing}
+        onClose={closeForm}
+        title={editing?.id ? "Edit Project" : "New Project"}
+      >
+        {editing && (
+          <form onSubmit={handleSubmit} className="space-y-5 p-6">
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  role="alert"
+                  className="rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-2.5 text-sm text-destructive"
+                >
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <BilingualInput label="Title" nameEn="title_en" nameAr="title_ar" valueEn={editing.title_en} valueAr={editing.title_ar} required />
+
+            <FormField label="Slug" required htmlFor="project-slug" hint="Used in the public URL — lowercase, hyphenated.">
+              <input id="project-slug" name="slug" defaultValue={editing.slug} required className="field font-mono" />
+            </FormField>
+
+            <BilingualInput label="Description" nameEn="description_en" nameAr="description_ar" valueEn={editing.description_en} valueAr={editing.description_ar} type="textarea" required />
+
+            <FormField label="Tech Stack" htmlFor="project-tech">
+              {(editing.tech_stack ?? []).length > 0 && (
+                <div className="mb-2 flex flex-wrap gap-1.5">
+                  <AnimatePresence initial={false}>
+                    {(editing.tech_stack ?? []).map((tag) => (
+                      <motion.span
+                        key={tag}
+                        layout
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.85 }}
+                        transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                        className="inline-flex items-center gap-1 rounded-full bg-brand/10 px-2.5 py-1 text-xs font-medium text-brand ring-1 ring-brand/15"
+                      >
+                        {tag}
+                        <button
+                          type="button"
+                          onClick={() => removeTag(tag)}
+                          aria-label={`Remove ${tag}`}
+                          className="focus-ring cursor-pointer rounded-full transition-colors hover:text-destructive"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </motion.span>
+                    ))}
+                  </AnimatePresence>
+                </div>
+              )}
+              <div className="flex gap-2">
+                <input
+                  id="project-tech"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
+                  placeholder="Add technology…"
+                  className="field flex-1"
+                />
+                <AdminButton type="button" variant="secondary" onClick={addTag}>
+                  Add
+                </AdminButton>
+              </div>
+            </FormField>
+
+            <ImageUpload name="image_url" defaultValue={editing.image_url || ""} folder="projects" />
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <FormField label="Live URL" htmlFor="project-live">
+                <input id="project-live" name="live_url" defaultValue={editing.live_url || ""} className="field" />
+              </FormField>
+              <FormField label="GitHub URL" htmlFor="project-github">
+                <input id="project-github" name="github_url" defaultValue={editing.github_url || ""} className="field" />
+              </FormField>
             </div>
-            <form onSubmit={handleSubmit} className="p-6 space-y-5">
-              {error && <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-2 text-sm text-destructive">{error}</div>}
-              <BilingualInput label="Title" nameEn="title_en" nameAr="title_ar" valueEn={editing.title_en} valueAr={editing.title_ar} required />
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Slug <span className="text-brand">*</span></label>
-                <input name="slug" defaultValue={editing.slug} required className="w-full rounded-lg border border-border/40 bg-surface-low px-3 py-2 text-sm focus:border-brand/40 focus:outline-none" />
-              </div>
-              <BilingualInput label="Description" nameEn="description_en" nameAr="description_ar" valueEn={editing.description_en} valueAr={editing.description_ar} type="textarea" required />
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Tech Stack</label>
-                <div className="flex flex-wrap gap-1.5 mb-2">
-                  {(editing.tech_stack ?? []).map((tag) => (
-                    <span key={tag} className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-brand/10 text-brand">
-                      {tag}
-                      <button type="button" onClick={() => removeTag(tag)} className="hover:text-destructive cursor-pointer"><X className="h-3 w-3" /></button>
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-2">
-                  <input value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())} placeholder="Add technology..." className="flex-1 rounded-lg border border-border/40 bg-surface-low px-3 py-2 text-sm focus:border-brand/40 focus:outline-none" />
-                  <button type="button" onClick={addTag} className="px-3 py-2 rounded-lg bg-surface-high text-sm hover:bg-surface-highest cursor-pointer">Add</button>
-                </div>
-              </div>
-              <ImageUpload name="image_url" defaultValue={editing.image_url || ""} folder="projects" />
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">Live URL</label>
-                  <input name="live_url" defaultValue={editing.live_url || ""} className="w-full rounded-lg border border-border/40 bg-surface-low px-3 py-2 text-sm focus:border-brand/40 focus:outline-none" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">GitHub URL</label>
-                  <input name="github_url" defaultValue={editing.github_url || ""} className="w-full rounded-lg border border-border/40 bg-surface-low px-3 py-2 text-sm focus:border-brand/40 focus:outline-none" />
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <label className="text-sm font-medium text-foreground">Featured</label>
-                <input type="checkbox" name="featured" defaultChecked={editing.featured} className="h-4 w-4 accent-brand cursor-pointer" />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Sort Order</label>
-                <input name="sort_order" type="number" defaultValue={editing.sort_order ?? 0} className="w-24 rounded-lg border border-border/40 bg-surface-low px-3 py-2 text-sm focus:border-brand/40 focus:outline-none" />
-              </div>
-              <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => { setFormOpen(false); setEditing(null); }} className="px-4 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground cursor-pointer">Cancel</button>
-                <button type="submit" disabled={saving} className="flex items-center gap-2 px-4 py-2 rounded-lg brand-gradient text-white text-sm font-medium disabled:opacity-50 cursor-pointer">
-                  {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {editing.id ? "Update" : "Create"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+
+            <div className="flex flex-wrap items-end gap-6">
+              <label className="group flex cursor-pointer items-center gap-2.5 text-sm font-medium text-foreground">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  defaultChecked={editing.featured}
+                  className="h-4 w-4 cursor-pointer accent-[var(--brand)]"
+                />
+                Featured
+              </label>
+
+              <FormField label="Sort Order" htmlFor="project-sort" className="w-28">
+                <input id="project-sort" name="sort_order" type="number" defaultValue={editing.sort_order ?? 0} className="field tabular-nums" />
+              </FormField>
+            </div>
+
+            <div className="flex justify-end gap-3 border-t border-[var(--hairline)] pt-5">
+              <AdminButton type="button" variant="ghost" onClick={closeForm}>
+                Cancel
+              </AdminButton>
+              <AdminButton type="submit" loading={saving}>
+                {editing.id ? "Update" : "Create"}
+              </AdminButton>
+            </div>
+          </form>
+        )}
+      </SlideOver>
 
       <DeleteDialog open={!!deleteId} onClose={() => setDeleteId(null)} onConfirm={handleDelete} loading={deleting} title="Delete project" message="This project will be permanently deleted." />
     </div>

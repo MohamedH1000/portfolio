@@ -33,7 +33,7 @@ export function AboutPreview({ locale }: AboutPreviewProps) {
       >
         <motion.h2 variants={item} className="section-heading mb-6">
           About{" "}
-          <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
+          <span className="text-gradient-brand">
             Me
           </span>
         </motion.h2>
@@ -46,9 +46,9 @@ export function AboutPreview({ locale }: AboutPreviewProps) {
           {highlights.map(({ icon: Icon, key }) => (
             <div
               key={key}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-low border border-brand/10 text-sm text-muted-foreground transition-all duration-200 hover:border-brand/30 hover:-translate-y-0.5"
+              className="group flex items-center gap-2 rounded-full border border-[var(--hairline)] bg-surface-low/80 px-4 py-2 text-sm text-muted-foreground shadow-[var(--shadow-1)] transition-all duration-300 ease-[var(--ease-quart)] hover:-translate-y-1 hover:border-brand/30 hover:bg-brand/[0.06] hover:text-foreground hover:shadow-[var(--shadow-3)]"
             >
-              <Icon className="w-4 h-4 text-brand" />
+              <Icon className="h-4 w-4 text-brand transition-transform duration-300 ease-[var(--ease-spring)] group-hover:scale-110" />
               {t(key)}
             </div>
           ))}

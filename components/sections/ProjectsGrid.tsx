@@ -52,36 +52,30 @@ export function ProjectsGrid({ projects, locale }: ProjectsGridProps) {
   return (
     <div>
       <div className="mb-8 space-y-4">
-        <div className="relative max-w-md">
-          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <div className="group relative max-w-md">
+          <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors duration-200 group-focus-within:text-brand" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("search")}
-            className="focus-ring w-full bg-surface-low border border-brand/10 rounded-xl ps-10 pe-4 py-3 text-sm outline-none focus:border-brand/40 transition-all duration-200 text-foreground placeholder:text-muted-foreground/40"
+            className="field rounded-xl py-3 ps-10 pe-4"
           />
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <button
+          <FilterPill
+            active={!activeTech}
             onClick={() => setActiveTech(null)}
-            className={`focus-ring px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
-              !activeTech ? "bg-gradient-to-r from-brand to-purple-400 text-white" : "bg-surface-high text-muted-foreground hover:bg-brand/10 hover:text-brand"
-            }`}
-          >
-            {t("filterAll")}
-          </button>
+            label={t("filterAll")}
+          />
           {allTechs.map((tech) => (
-            <button
+            <FilterPill
               key={tech}
+              active={activeTech === tech}
               onClick={() => setActiveTech(activeTech === tech ? null : tech)}
-              className={`focus-ring px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
-                activeTech === tech ? "bg-gradient-to-r from-brand to-purple-400 text-white" : "bg-surface-high text-muted-foreground hover:bg-brand/10 hover:text-brand"
-              }`}
-            >
-              {tech}
-            </button>
+              label={tech}
+            />
           ))}
         </div>
       </div>
@@ -100,27 +94,70 @@ export function ProjectsGrid({ projects, locale }: ProjectsGridProps) {
         ) : (
           <motion.div
             key={`${search}-${activeTech}`}
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            animate="visible"
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: reduce ? 0 : 0.07 } },
+            }}
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
           >
             {filtered.map((project) => (
-              <ProjectCard
+              <motion.div
                 key={project.slug}
-                title={isAr ? project.title_ar : project.title_en}
-                description={isAr ? project.description_ar : project.description_en}
-                imageUrl={project.image_url || "/grid.svg"}
-                techStack={project.tech_stack}
-                liveUrl={project.live_url ?? undefined}
-                slug={project.slug}
-                locale={locale}
-              />
+                variants={{
+                  hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: reduce ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] },
+                  },
+                }}
+              >
+                <ProjectCard
+                  title={isAr ? project.title_ar : project.title_en}
+                  description={isAr ? project.description_ar : project.description_en}
+                  imageUrl={project.image_url || "/grid.svg"}
+                  techStack={project.tech_stack}
+                  liveUrl={project.live_url ?? undefined}
+                  slug={project.slug}
+                  locale={locale}
+                />
+              </motion.div>
             ))}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+interface FilterPillProps {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+}
+
+function FilterPill({ active, onClick, label }: FilterPillProps) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={active}
+      className={`focus-ring press relative cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors duration-200 ${
+        active
+          ? "text-white"
+          : "bg-surface-high text-muted-foreground hover:bg-brand/10 hover:text-brand"
+      }`}
+    >
+      {active && (
+        <motion.span
+          layoutId="projects-filter-pill"
+          className="absolute inset-0 rounded-full brand-gradient shadow-[var(--shadow-brand)]"
+          transition={{ type: "spring", stiffness: 380, damping: 32 }}
+        />
+      )}
+      <span className="relative">{label}</span>
+    </button>
   );
 }

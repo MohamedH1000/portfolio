@@ -30,7 +30,10 @@ export function CredentialsSignInForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="rounded-xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
+        <div
+          role="alert"
+          className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        >
           {error}
         </div>
       )}
@@ -48,12 +51,7 @@ export function CredentialsSignInForm() {
             required
             autoComplete="email"
             placeholder="you@example.com"
-            className={cn(
-              "w-full rounded-xl border bg-surface-low px-4 py-3 ps-10 text-sm text-foreground",
-              "placeholder:text-muted-foreground/50",
-              "border-brand/10 focus:border-brand/40 focus:ring-1 focus:ring-brand/20 focus:outline-none",
-              "transition-colors"
-            )}
+            className={cn("field rounded-xl px-4 py-3 ps-10")}
           />
         </div>
       </div>
@@ -71,17 +69,13 @@ export function CredentialsSignInForm() {
             required
             autoComplete="current-password"
             placeholder="••••••••"
-            className={cn(
-              "w-full rounded-xl border bg-surface-low px-4 py-3 ps-10 pe-10 text-sm text-foreground",
-              "placeholder:text-muted-foreground/50",
-              "border-brand/10 focus:border-brand/40 focus:ring-1 focus:ring-brand/20 focus:outline-none",
-              "transition-colors"
-            )}
+            className={cn("field rounded-xl px-4 py-3 pe-10 ps-10")}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            className="focus-ring absolute end-3 top-1/2 -translate-y-1/2 cursor-pointer rounded-md text-muted-foreground transition-colors duration-200 hover:text-brand"
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -91,7 +85,7 @@ export function CredentialsSignInForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl brand-gradient text-white text-sm font-medium transition-all duration-200 hover:opacity-90 disabled:opacity-50 cursor-pointer"
+        className="focus-ring press sheen-hover flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl brand-gradient px-4 py-3 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-300 hover:shadow-[var(--shadow-brand)] disabled:opacity-50"
       >
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         {t("signIn")}

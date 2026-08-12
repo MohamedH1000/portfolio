@@ -23,22 +23,23 @@ export function BilingualInput({
   type = "text",
   placeholder,
 }: BilingualInputProps) {
-  const inputClasses = cn(
-    "w-full rounded-lg border bg-surface-low px-3 py-2 text-sm text-foreground",
-    "placeholder:text-muted-foreground/50",
-    "border-border/40 focus:border-brand/40 focus:ring-1 focus:ring-brand/20 focus:outline-none",
-    "transition-colors"
-  );
+  const localeChip =
+    "inline-flex items-center rounded-md bg-surface-high/70 px-1.5 py-0.5 text-[0.6875rem] font-medium tracking-wide text-muted-foreground ring-1 ring-[var(--hairline)]";
 
   return (
-    <div className="space-y-1.5">
-      <label className="text-sm font-medium text-foreground">
+    <div className="space-y-2">
+      <label className="flex items-center gap-1 text-sm font-medium text-foreground">
         {label}
-        {required && <span className="text-brand ms-1">*</span>}
+        {required && (
+          <span className="text-brand" aria-hidden="true">
+            *
+          </span>
+        )}
       </label>
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <div className="mb-1 text-xs text-muted-foreground">English</div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="space-y-1.5">
+          <span className={localeChip}>EN</span>
           {type === "textarea" ? (
             <textarea
               name={nameEn}
@@ -46,7 +47,7 @@ export function BilingualInput({
               required={required}
               rows={4}
               placeholder={placeholder}
-              className={cn(inputClasses, "resize-y")}
+              className={cn("field resize-y")}
             />
           ) : (
             <input
@@ -55,12 +56,13 @@ export function BilingualInput({
               defaultValue={valueEn}
               required={required}
               placeholder={placeholder}
-              className={inputClasses}
+              className="field"
             />
           )}
         </div>
-        <div>
-          <div className="mb-1 text-xs text-muted-foreground">العربية</div>
+
+        <div className="space-y-1.5">
+          <span className={localeChip}>العربية</span>
           {type === "textarea" ? (
             <textarea
               name={nameAr}
@@ -69,7 +71,7 @@ export function BilingualInput({
               rows={4}
               dir="rtl"
               placeholder={placeholder}
-              className={cn(inputClasses, "resize-y")}
+              className={cn("field resize-y")}
             />
           ) : (
             <input
@@ -79,7 +81,7 @@ export function BilingualInput({
               required={required}
               dir="rtl"
               placeholder={placeholder}
-              className={inputClasses}
+              className="field"
             />
           )}
         </div>

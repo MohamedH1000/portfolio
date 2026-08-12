@@ -38,9 +38,9 @@ export function ProjectDetailContent({
     <>
       <Link
         href={{ pathname: "/projects" }}
-        className="focus-ring inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 rounded-md"
+        className="focus-ring group mb-8 inline-flex items-center gap-2 rounded-md text-muted-foreground transition-colors duration-200 hover:text-brand"
       >
-        <ArrowLeft className="w-4 h-4 rtl:rotate-180" />
+        <ArrowLeft className="h-4 w-4 transition-transform duration-300 ease-[var(--ease-spring)] group-hover:-translate-x-1 rtl:rotate-180 rtl:group-hover:translate-x-1" />
         {backLabel}
       </Link>
 
@@ -48,7 +48,7 @@ export function ProjectDetailContent({
         initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative aspect-video rounded-xl overflow-hidden bg-surface-low mb-8"
+        className="border-gradient border-gradient-static relative mb-8 aspect-video overflow-hidden rounded-2xl bg-surface-low shadow-[var(--shadow-4)]"
       >
         <Image src={imageUrl} alt={title} fill className="object-cover" priority />
       </motion.div>
@@ -74,7 +74,7 @@ export function ProjectDetailContent({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-brand text-primary-foreground font-medium transition-all duration-200 hover:bg-brand/90 hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(203,172,249,0.3)]"
+              className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl brand-gradient px-6 py-3 font-medium text-white shadow-[var(--shadow-2)] transition-all duration-300 ease-[var(--ease-quart)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-brand)]"
             >
               <ExternalLink className="w-4 h-4" />
               {liveDemoLabel}
@@ -85,7 +85,7 @@ export function ProjectDetailContent({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-surface-high text-foreground font-medium transition-all duration-200 hover:bg-surface-bright hover:-translate-y-0.5"
+              className="focus-ring press inline-flex items-center gap-2 rounded-xl border border-[var(--hairline)] bg-surface-high px-6 py-3 font-medium text-foreground shadow-[var(--shadow-1)] transition-all duration-300 ease-[var(--ease-quart)] hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[var(--shadow-3)]"
             >
               {sourceCodeLabel}
             </a>

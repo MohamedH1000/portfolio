@@ -2,6 +2,7 @@
 
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 
@@ -21,26 +22,37 @@ export function LanguageSwitcher() {
   };
 
   if (!mounted) {
-    return (
-      <div className="h-8 w-16 rounded-full bg-surface-high" />
-    );
+    return <div className="h-9 w-16 rounded-full bg-surface-high/60" />;
   }
+
+  const label = locale === "en" ? "عربي" : "EN";
 
   return (
     <button
       onClick={switchLocale}
       className={cn(
-        "relative inline-flex h-8 items-center rounded-full px-3",
-        "bg-surface-high text-sm font-medium",
-        "text-muted-foreground transition-colors",
-        "hover:bg-surface-highest hover:text-foreground",
+        "focus-ring press relative inline-flex h-9 min-w-16 items-center justify-center rounded-full px-3.5",
+        "border border-[var(--hairline)] bg-surface-high/60 text-sm font-medium",
+        "text-muted-foreground",
+        "transition-all duration-300 ease-[var(--ease-quart)]",
+        "hover:border-brand/30 hover:bg-brand/10 hover:text-brand",
         "cursor-pointer select-none"
       )}
       aria-label={
         locale === "en" ? "Switch to Arabic" : "التبديل إلى الإنجليزية"
       }
     >
-      {locale === "en" ? "عربي" : "EN"}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={label}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {label}
+        </motion.span>
+      </AnimatePresence>
     </button>
   );
 }

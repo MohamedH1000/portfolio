@@ -31,6 +31,37 @@
   --surface-container-high: #29283a;
   --surface-container-highest: #333345;
   --surface-bright: #38374a;
+
+  /* --- Brand accent (theme-aware so light mode stays legible) --- */
+  --brand: #CBACF9;
+  --brand-strong: #9b7fd4;
+  --brand-contrast: #27074e;
+  --brand-rgb: 203, 172, 249;
+
+  /* --- Motion tokens --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 160ms;
+  --dur-base: 260ms;
+  --dur-slow: 420ms;
+  --dur-slower: 640ms;
+
+  /* --- Elevation scale --- */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.28);
+  --shadow-2: 0 2px 6px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.22);
+  --shadow-3: 0 8px 24px -8px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-4: 0 18px 44px -12px rgba(0, 0, 0, 0.55), 0 6px 16px rgba(0, 0, 0, 0.28);
+  --shadow-5: 0 32px 72px -20px rgba(0, 0, 0, 0.65), 0 10px 24px rgba(0, 0, 0, 0.32);
+  --shadow-brand: 0 8px 32px -8px rgba(203, 172, 249, 0.35);
+
+  /* --- Compositional surfaces --- */
+  --glass-bg: rgba(24, 24, 40, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --hairline: rgba(255, 255, 255, 0.07);
+  --sheen: rgba(255, 255, 255, 0.06);
+  --scrim: rgba(6, 6, 16, 0.62);
 }
 
 /* ===== Light Theme ===== */
@@ -62,6 +93,25 @@
   --surface-container-high: #e5dff0;
   --surface-container-highest: #dfd9ea;
   --surface-bright: #faf8ff;
+
+  /* Deeper purple in light mode — #CBACF9 on white fails contrast */
+  --brand: #6c5196;
+  --brand-strong: #533a7b;
+  --brand-contrast: #ffffff;
+  --brand-rgb: 108, 81, 150;
+
+  --shadow-1: 0 1px 2px rgba(60, 40, 95, 0.08);
+  --shadow-2: 0 2px 6px rgba(60, 40, 95, 0.10), 0 1px 2px rgba(60, 40, 95, 0.06);
+  --shadow-3: 0 8px 24px -8px rgba(60, 40, 95, 0.16), 0 2px 8px rgba(60, 40, 95, 0.08);
+  --shadow-4: 0 18px 44px -12px rgba(60, 40, 95, 0.20), 0 6px 16px rgba(60, 40, 95, 0.10);
+  --shadow-5: 0 32px 72px -20px rgba(60, 40, 95, 0.26), 0 10px 24px rgba(60, 40, 95, 0.12);
+  --shadow-brand: 0 8px 32px -8px rgba(108, 81, 150, 0.30);
+
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(28, 27, 46, 0.08);
+  --hairline: rgba(28, 27, 46, 0.08);
+  --sheen: rgba(255, 255, 255, 0.75);
+  --scrim: rgba(40, 30, 60, 0.38);
 }
 
 @theme inline {
@@ -96,13 +146,27 @@
   --color-surface-bright: var(--surface-bright);
 
   /* Brand */
-  --color-brand: #CBACF9;
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-contrast: var(--brand-contrast);
 
   /* Radii */
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 4px);
   --radius-xl: calc(var(--radius) + 8px);
+
+  /* Elevation (exposed as shadow-* utilities) */
+  --shadow-e1: var(--shadow-1);
+  --shadow-e2: var(--shadow-2);
+  --shadow-e3: var(--shadow-3);
+  --shadow-e4: var(--shadow-4);
+  --shadow-e5: var(--shadow-5);
+
+  /* Easing (exposed as ease-* utilities) */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Fonts */
   --font-sans: var(--font-inter);
@@ -115,13 +179,18 @@
   --animate-slide-up: slide-up 0.5s ease forwards;
   --animate-slide-down: slide-down 0.3s ease forwards;
   --animate-scale-in: scale-in 0.2s ease forwards;
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-aurora: aurora 18s ease-in-out infinite;
+  --animate-sheen: sheen 2.4s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.4s ease-out infinite;
+  --animate-gradient-pan: gradient-pan 6s linear infinite;
 
   @keyframes spotlight {
     0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
     100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
   }
   @keyframes shimmer {
-    from { background-position: 0 0; }
+    from { background-position: 200% 0; }
     to { background-position: -200% 0; }
   }
   @keyframes fade-in {
@@ -140,23 +209,98 @@
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
   }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-18px) translateX(10px); }
+  }
+  @keyframes aurora {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.85; }
+    33% { transform: translate(6%, -4%) scale(1.08); opacity: 1; }
+    66% { transform: translate(-5%, 5%) scale(0.96); opacity: 0.75; }
+  }
+  @keyframes sheen {
+    0% { transform: translateX(-120%) skewX(-18deg); }
+    60%, 100% { transform: translateX(220%) skewX(-18deg); }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.9); opacity: 0.55; }
+    70% { transform: scale(1.6); opacity: 0; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  @keyframes gradient-pan {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 }
 
-/* ===== Base Styles ===== */
+/* ===== Base Styles =====
+   Everything below lives in Tailwind's `base` layer so utility classes
+   (border-*, tracking-*, …) still win. Unlayered CSS beats every layered
+   utility regardless of specificity, which would silently break overrides. */
+@layer base {
 * {
   border-color: var(--border);
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* ===== Reduced Motion ===== */
+/* Headings get tighter optical spacing */
+h1, h2, h3, h4 {
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: rgba(var(--brand-rgb), 0.28);
+  color: var(--foreground);
+}
+
+/* ===== Scrollbar ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--brand-rgb), 0.35) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--brand-rgb), 0.28);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--brand-rgb), 0.5);
+  background-clip: content-box;
+}
+} /* end @layer base */
+
+/* ===== Reduced Motion (unlayered — needs to win over everything) ===== */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -172,13 +316,24 @@ body {
   }
 }
 
+/* ===== Component classes =====
+   In the `components` layer so Tailwind utilities layered after it can
+   override individual declarations (e.g. `ps-10` over `.field`'s padding). */
+@layer components {
+
 /* ===== Focus Ring ===== */
 .focus-ring {
   outline: none;
 }
 
-.focus-ring:focus-visible {
-  outline: 2px solid #CBACF9;
+.focus-ring:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
 }
 
@@ -196,6 +351,22 @@ body {
     linear-gradient(90deg, rgba(108, 81, 150, 0.06) 1px, transparent 1px);
 }
 
+/* Radial fade so the grid dissolves toward the edges instead of hard-stopping */
+.bg-blueprint-fade {
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 78%);
+}
+
+/* ===== Fine grain / noise overlay ===== */
+.bg-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 /* ===== Spotlight Colors (theme-aware) ===== */
 :root {
   --spotlight-primary: #ffffff;
@@ -209,18 +380,91 @@ body {
 
 /* ===== Ghost Border (15% opacity) ===== */
 .ghost-border {
-  outline: 1px solid rgba(203, 172, 249, 0.15);
+  outline: 1px solid rgba(var(--brand-rgb), 0.15);
 }
 
 /* ===== Glass Effect ===== */
+/* Prefixed property must come FIRST: the minifier merges the pair and keeps
+   the last-seen prefix, which drops unprefixed `backdrop-filter` in Chrome. */
 .glass {
-  background: rgba(30, 30, 47, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
 }
 
-.light .glass {
-  background: rgba(250, 248, 255, 0.8);
+/* Panel-grade glass: adds a hairline and inner top highlight */
+.glass-panel {
+  position: relative;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-3), inset 0 1px 0 var(--sheen);
+}
+
+/* ===== Elevated card ===== */
+.surface-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-2);
+  transition:
+    transform var(--dur-slow) var(--ease-out-expo),
+    box-shadow var(--dur-slow) var(--ease-out-expo),
+    border-color var(--dur-base) var(--ease-out-expo);
+}
+
+/* Top-edge highlight — reads as a light source above the card */
+.surface-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--sheen), transparent 42%);
+  opacity: 0.7;
+}
+
+/* ===== Gradient hairline border ===== */
+.border-gradient {
+  position: relative;
+}
+
+.border-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    140deg,
+    rgba(var(--brand-rgb), 0.55),
+    rgba(var(--brand-rgb), 0.06) 38%,
+    transparent 60%,
+    rgba(var(--brand-rgb), 0.22)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out-expo);
+}
+
+.border-gradient:hover::after,
+.border-gradient:focus-visible::after,
+.group:hover .border-gradient::after {
+  opacity: 1;
+}
+
+/* Always-on variant for hero/feature panels */
+.border-gradient-static::after {
+  opacity: 1;
 }
 
 /* ===== Brand gradient for buttons ===== */
@@ -232,31 +476,129 @@ body {
   background: linear-gradient(135deg, #6c5196 0%, #8b6bb8 100%);
 }
 
-/* ===== Glow effects ===== */
-.glow-brand {
-  box-shadow: 0 0 20px rgba(203, 172, 249, 0.15);
+/* Animated gradient — pans slowly, used on primary CTAs */
+.brand-gradient-animated {
+  background: linear-gradient(120deg, #CBACF9, #9b7fd4, #b58ef0, #CBACF9);
+  background-size: 300% 100%;
+  animation: gradient-pan 6s linear infinite;
 }
 
-.light .glow-brand {
-  box-shadow: 0 0 20px rgba(108, 81, 150, 0.12);
+.light .brand-gradient-animated {
+  background: linear-gradient(120deg, #6c5196, #8b6bb8, #5b4380, #6c5196);
+  background-size: 300% 100%;
+}
+
+/* ===== Gradient text (theme-aware, stays legible in light mode) ===== */
+.text-gradient-brand {
+  background: linear-gradient(120deg, var(--brand) 0%, var(--brand-strong) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Some browsers drop the clip mid-paint on RTL — this keeps it stable */
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== Glow effects ===== */
+.glow-brand {
+  box-shadow: 0 0 20px rgba(var(--brand-rgb), 0.15);
+}
+
+.glow-brand-strong {
+  box-shadow:
+    0 0 0 1px rgba(var(--brand-rgb), 0.18),
+    0 8px 32px -8px rgba(var(--brand-rgb), 0.42);
 }
 
 /* ===== Card hover lift ===== */
 .card-hover {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    transform var(--dur-slow) var(--ease-out-expo),
+    box-shadow var(--dur-slow) var(--ease-out-expo),
+    border-color var(--dur-base) var(--ease-out-expo);
+  will-change: transform;
 }
 
 .card-hover:hover {
   transform: translateY(-6px);
-  box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.18),
-    0 4px 16px rgba(203, 172, 249, 0.12);
+  box-shadow: var(--shadow-4), 0 4px 16px rgba(var(--brand-rgb), 0.12);
 }
 
-.light .card-hover:hover {
-  box-shadow:
-    0 16px 40px rgba(108, 81, 150, 0.12),
-    0 4px 16px rgba(108, 81, 150, 0.08);
+/* Gentler lift for dense UI (admin tables, list rows) */
+.lift-sm {
+  transition:
+    transform var(--dur-base) var(--ease-out-expo),
+    box-shadow var(--dur-base) var(--ease-out-expo),
+    background-color var(--dur-base) var(--ease-out-expo);
+}
+
+.lift-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-3);
+}
+
+/* ===== Interactive press feedback ===== */
+.press {
+  transition: transform var(--dur-fast) var(--ease-out-quart);
+}
+
+.press:active {
+  transform: scale(0.97);
+}
+
+/* ===== Shimmer skeleton ===== */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-container-high);
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--brand-rgb), 0.14),
+    transparent
+  );
+  animation: shimmer-sweep 1.6s var(--ease-in-out-soft) infinite;
+}
+
+@keyframes shimmer-sweep {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ===== Sheen sweep (buttons on hover) ===== */
+.sheen-hover {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sheen-hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  transform: translateX(-160%) skewX(-18deg);
+  transition: transform var(--dur-slower) var(--ease-out-expo);
+}
+
+.sheen-hover:hover::before {
+  transform: translateX(320%) skewX(-18deg);
 }
 
 /* ===== Section Styles ===== */
@@ -266,3 +608,96 @@ body {
   letter-spacing: -0.02em;
   line-height: 1.1;
 }
+
+/* Fading hairline divider */
+.divider-gradient {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(var(--brand-rgb), 0.25),
+    transparent
+  );
+}
+
+/* ===== Field styling (inputs, textareas, selects) ===== */
+.field {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-container-high) 60%, transparent);
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  transition:
+    border-color var(--dur-base) var(--ease-out-expo),
+    box-shadow var(--dur-base) var(--ease-out-expo),
+    background-color var(--dur-base) var(--ease-out-expo);
+}
+
+.field::placeholder {
+  color: color-mix(in srgb, var(--muted-foreground) 70%, transparent);
+}
+
+.field:hover:not(:disabled) {
+  border-color: rgba(var(--brand-rgb), 0.35);
+}
+
+.field:focus {
+  outline: none;
+  border-color: rgba(var(--brand-rgb), 0.7);
+  box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.16);
+  background: color-mix(in srgb, var(--surface-container-high) 85%, transparent);
+}
+
+.field:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.field[aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+
+.field[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--destructive) 22%, transparent);
+}
+
+/* ===== Animated underline for text links ===== */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ===== Scroll-driven entrance (progressive enhancement) ===== */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-on-scroll {
+      animation: slide-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 42%;
+    }
+  }
+}
+
+} /* end @layer components */

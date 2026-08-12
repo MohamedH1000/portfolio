@@ -79,9 +79,13 @@ export function TestimonialsCarousel({ testimonials, locale }: TestimonialsCarou
           onMouseLeave={() => setPaused(false)}
           onFocus={() => setPaused(true)}
           onBlur={() => setPaused(false)}
-          className="focus-ring relative rounded-2xl p-8 md:p-12 min-h-[220px] flex flex-col items-center justify-center text-center border border-brand/10 bg-surface-low overflow-hidden"
+          className="surface-card border-gradient border-gradient-static focus-ring relative flex min-h-[220px] flex-col items-center justify-center overflow-hidden rounded-2xl p-8 text-center md:p-12"
         >
-          <Quote className="absolute top-6 start-6 w-10 h-10 text-brand/10" />
+          <Quote className="absolute top-6 start-6 h-10 w-10 text-brand/15 rtl:-scale-x-100" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-16 -end-16 h-48 w-48 rounded-full bg-brand/[0.07] blur-3xl"
+          />
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -100,7 +104,7 @@ export function TestimonialsCarousel({ testimonials, locale }: TestimonialsCarou
                 &ldquo;{isAr ? item.message_ar : item.message_en}&rdquo;
               </p>
               <div>
-                <p className="font-semibold bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
+                <p className="font-semibold text-gradient-brand">
                   {isAr ? item.name_ar : item.name_en}
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
@@ -114,7 +118,7 @@ export function TestimonialsCarousel({ testimonials, locale }: TestimonialsCarou
         <div className="flex items-center justify-center gap-4 mt-8">
           <button
             onClick={prev}
-            className="focus-ring p-2.5 rounded-full bg-surface-high hover:bg-brand/20 transition-colors cursor-pointer"
+            className="focus-ring press cursor-pointer rounded-full border border-[var(--hairline)] bg-surface-high/60 p-2.5 text-muted-foreground transition-all duration-300 ease-[var(--ease-quart)] hover:border-brand/30 hover:bg-brand/10 hover:text-brand"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="w-5 h-5 rtl:rotate-180" />
@@ -125,8 +129,10 @@ export function TestimonialsCarousel({ testimonials, locale }: TestimonialsCarou
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                className={`focus-ring w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  i === current ? "bg-brand w-6" : "bg-surface-high hover:bg-muted-foreground"
+                className={`focus-ring h-2.5 cursor-pointer rounded-full transition-all duration-400 ease-[var(--ease-expo)] ${
+                  i === current
+                    ? "w-7 brand-gradient shadow-[var(--shadow-brand)]"
+                    : "w-2.5 bg-surface-highest hover:bg-brand/40"
                 }`}
                 aria-label={`Go to testimonial ${i + 1}`}
                 aria-current={i === current}
@@ -136,7 +142,7 @@ export function TestimonialsCarousel({ testimonials, locale }: TestimonialsCarou
 
           <button
             onClick={next}
-            className="focus-ring p-2.5 rounded-full bg-surface-high hover:bg-brand/20 transition-colors cursor-pointer"
+            className="focus-ring press cursor-pointer rounded-full border border-[var(--hairline)] bg-surface-high/60 p-2.5 text-muted-foreground transition-all duration-300 ease-[var(--ease-quart)] hover:border-brand/30 hover:bg-brand/10 hover:text-brand"
             aria-label="Next testimonial"
           >
             <ChevronRight className="w-5 h-5 rtl:rotate-180" />

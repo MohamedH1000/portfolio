@@ -27,11 +27,11 @@ function ContactContent({ locale }: { locale: string }) {
             <h1 className="section-heading">
               {isAr ? (
                 <>
-                  هل أنت مستعد للارتقاء بحضورك <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">الرقمي</span> إلى المستوى التالي؟
+                  هل أنت مستعد للارتقاء بحضورك <span className="text-gradient-brand">الرقمي</span> إلى المستوى التالي؟
                 </>
               ) : (
                 <>
-                  Ready to take your <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">digital</span> presence to the next level?
+                  Ready to take your <span className="text-gradient-brand">digital</span> presence to the next level?
                 </>
               )}
             </h1>

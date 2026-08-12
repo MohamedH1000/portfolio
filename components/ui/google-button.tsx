@@ -7,7 +7,7 @@ export function GoogleSignInButton() {
     <form action={handleGoogleSignIn} className="w-full">
       <button
         type="submit"
-        className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl border border-border/40 bg-surface-high/50 hover:bg-surface-high text-foreground text-sm font-medium transition-all duration-200 cursor-pointer hover:border-brand/30"
+        className="focus-ring press flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-[var(--hairline)] bg-surface-high/50 px-4 py-3 text-sm font-medium text-foreground shadow-[var(--shadow-1)] transition-all duration-300 ease-[var(--ease-quart)] hover:border-brand/30 hover:bg-surface-high hover:shadow-[var(--shadow-3)]"
       >
         <svg className="h-5 w-5" viewBox="0 0 24 24">
           <path

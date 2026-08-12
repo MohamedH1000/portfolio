@@ -11,6 +11,7 @@ interface MagicButtonProps {
   title: string;
   icon?: React.ReactNode;
   position?: "left" | "right";
+  variant?: "primary" | "ghost";
   href?: string;
   onClick?: () => void;
   type?: "button" | "submit";
@@ -25,6 +26,7 @@ export function MagicButton({
   title,
   icon,
   position = "left",
+  variant = "primary",
   href,
   onClick,
   type = "button",
@@ -56,12 +58,12 @@ export function MagicButton({
   const baseStyles = cn(
     "focus-ring inline-flex items-center justify-center gap-2",
     "rounded-full px-8 py-3",
-    "font-medium text-sm",
-    "bg-gradient-to-r from-brand to-purple-400 text-white",
-    "transition-shadow duration-300 ease-out",
-    "hover:shadow-[0_0_24px_rgba(203,172,249,0.35)]",
+    "text-sm font-medium",
+    "transition-[box-shadow,background-color,border-color] duration-300 ease-out",
     "disabled:pointer-events-none disabled:opacity-50",
-    "dark:from-[#CBACF9] dark:to-[#9b7fd4]",
+    variant === "primary"
+      ? "sheen-hover brand-gradient text-white shadow-[var(--shadow-2)] hover:shadow-[var(--shadow-brand)]"
+      : "border border-brand/30 bg-brand/[0.04] text-brand hover:border-brand/50 hover:bg-brand/10",
     className,
   );
 

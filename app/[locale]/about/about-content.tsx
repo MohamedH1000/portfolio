@@ -85,7 +85,7 @@ export function AboutContent() {
           >
             <motion.h1 variants={fadeItem} className="section-heading">
               About{" "}
-              <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
+              <span className="text-gradient-brand">
                 Me
               </span>
             </motion.h1>
@@ -122,11 +122,11 @@ export function AboutContent() {
             <motion.div
               key={stat.label}
               variants={fadeItem}
-              className="relative group text-center p-6 rounded-2xl bg-surface-low border border-brand/10 overflow-hidden"
+              className="surface-card border-gradient border-gradient-static lift-sm group relative overflow-hidden rounded-2xl p-6 text-center"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10">
-                <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent mb-2">
+                <p className="text-3xl md:text-4xl font-bold text-gradient-brand mb-2">
                   {stat.value}
                 </p>
                 <p className="text-xs md:text-sm text-muted-foreground font-medium">
@@ -163,7 +163,7 @@ export function AboutContent() {
                 <motion.div
                   key={item.title}
                   variants={fadeItem}
-                  className={`group relative rounded-2xl p-6 bg-surface-low border border-transparent ${item.borderHover} transition-all duration-500 card-hover overflow-hidden`}
+                  className={`surface-card card-hover group relative overflow-hidden rounded-2xl p-6 ${item.borderHover}`}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
@@ -232,7 +232,7 @@ export function AboutContent() {
 
                     {/* Content */}
                     <div className={`ms-14 md:ms-0 md:w-1/2 ${isLeft ? "md:pe-12" : "md:ps-12"}`}>
-                      <div className="group rounded-2xl p-6 bg-surface-low border border-transparent hover:border-brand/15 transition-all duration-300 card-hover space-y-3">
+                      <div className="surface-card border-gradient card-hover group rounded-2xl p-6 hover:border-brand/20 space-y-3">
                         <span className="text-xs font-bold text-brand/50 tracking-widest">
                           {phase.step}
                         </span>
@@ -275,7 +275,7 @@ export function AboutContent() {
               <motion.div
                 key={item.title}
                 variants={fadeItem}
-                className="group rounded-2xl p-6 bg-surface-low border border-transparent hover:border-brand/15 transition-all duration-300 card-hover"
+                className="surface-card border-gradient card-hover group rounded-2xl p-6 hover:border-brand/20"
               >
                 <div className="flex items-start gap-4">
                   <span className="text-2xl font-bold text-brand/20 mt-1">
