@@ -1,6 +1,6 @@
 "use server";
 
-import { requireAdmin } from "@/features/admin/services/admin-guard";
+import { requireAdminPage } from "@/features/admin/services/admin-guard";
 import { createClient } from "@supabase/supabase-js";
 
 function getDb() {
@@ -11,7 +11,7 @@ function getDb() {
 }
 
 export async function getDashboardStats() {
-  await requireAdmin();
+  await requireAdminPage();
   const db = getDb();
 
   const [projects, experiences, testimonials, unread] = await Promise.all([
@@ -30,7 +30,7 @@ export async function getDashboardStats() {
 }
 
 export async function getRecentContacts() {
-  await requireAdmin();
+  await requireAdminPage();
   const db = getDb();
 
   const { data } = await db

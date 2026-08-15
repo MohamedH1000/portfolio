@@ -5,6 +5,9 @@ import { contactSchema } from "@/lib/validations/contact";
 import { sanitizeInput } from "@/lib/sanitize";
 import nodemailer from "nodemailer";
 
+/** Resolves true when a notification actually went out, false when Gmail is
+ *  not configured. Throws on an SMTP failure — the caller decides what that
+ *  means for the request. */
 async function sendEmail({
   name,
   email,
@@ -15,14 +18,14 @@ async function sendEmail({
   email: string;
   subject: string | null;
   message: string;
-}) {
+}): Promise<boolean> {
   const gmailUser = process.env.GMAIL_USER;
   const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
   const recipientEmail = process.env.GMAIL_RECIPIENT || gmailUser;
 
   if (!gmailUser || !gmailAppPassword) {
     console.log("Gmail not configured, skipping email send");
-    return;
+    return false;
   }
 
   const transporter = nodemailer.createTransport({
@@ -60,6 +63,8 @@ async function sendEmail({
       </div>
     `,
   });
+
+  return true;
 }
 
 export async function submitContactForm(data: unknown) {
@@ -76,7 +81,9 @@ export async function submitContactForm(data: unknown) {
     message: sanitizeInput(message),
   };
 
-  // Save to Supabase (if configured) — best effort, don't block email
+  // The stored row is the real delivery — /admin/contacts reads from it. The
+  // insert is the one step whose failure genuinely loses the message.
+  let saved = false;
   if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
     try {
       const { createServerClient } = await import("@supabase/ssr");
@@ -85,14 +92,31 @@ export async function submitContactForm(data: unknown) {
         process.env.SUPABASE_SERVICE_ROLE_KEY!,
         { cookies: { getAll() { return []; }, setAll() {} } }
       );
-      await supabase.from("contacts").insert(sanitized);
+      // supabase-js reports failures on the result rather than throwing, so
+      // without this check `saved` would be true even for a rejected insert.
+      const { error } = await supabase.from("contacts").insert(sanitized);
+      if (error) throw error;
+      saved = true;
     } catch (err) {
       console.error("Failed to insert contact:", err);
     }
   }
 
-  // Send email via Gmail (if configured)
-  await sendEmail(sanitized);
+  // Gmail is a convenience notification on top of the stored row, so an SMTP
+  // outage (a revoked app password, most likely) must not fail the request —
+  // it previously threw straight through the API route as a bare 500, telling
+  // the visitor their message was lost when it had already been saved.
+  let notified = false;
+  try {
+    notified = await sendEmail(sanitized);
+  } catch (err) {
+    console.error("Failed to send contact email:", err);
+  }
+
+  // Only a total loss is worth reporting: nothing stored and nothing sent.
+  if (!saved && !notified) {
+    return { success: false, error: "Could not deliver your message. Please try again later." };
+  }
 
   return { success: true };
 }
