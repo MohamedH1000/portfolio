@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
-import { fadeInUp } from "@/lib/motion";
+import { flipInUp } from "@/lib/motion";
 
 interface Experience {
   role_en: string;
@@ -26,11 +26,12 @@ export function ExperienceTimeline({ experiences, locale }: ExperienceTimelinePr
 
   return (
     <div className="mt-16 relative">
-      <div className="absolute start-0 top-0 bottom-0 w-px bg-gradient-to-b from-brand/50 via-brand/20 to-transparent" />
+      {/* The spine ramps to transparent at both ends rather than stopping cleanly */}
+      <div className="rule-fade-y absolute start-0 top-0 bottom-0" />
 
-      <div className="space-y-10">
+      <div className="space-y-8">
         {experiences.map((exp, i) => (
-          <motion.div key={i} {...fadeInUp(i * 0.1, !!reduce)} className="relative ps-10">
+          <motion.div key={i} {...flipInUp(i * 0.1, !!reduce)} className="relative ps-10">
             <span className="absolute start-0 top-1.5 -translate-x-[7px] rtl:translate-x-[7px]">
               <span
                 aria-hidden="true"
@@ -39,9 +40,9 @@ export function ExperienceTimeline({ experiences, locale }: ExperienceTimelinePr
               <span className="relative block h-3.5 w-3.5 rounded-full border-2 border-brand bg-background shadow-[var(--shadow-brand)]" />
             </span>
 
-            <div className="surface-card border-gradient card-hover rounded-2xl p-6 hover:border-brand/20">
+            <div className="surface-card border-gradient card-hover rounded-2xl p-5 hover:border-brand/25">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                <h3 className="text-lg font-semibold">
+                <h3 className="text-lg font-medium">
                   {isAr ? exp.role_ar : exp.role_en}
                 </h3>
                 <span className="text-sm text-muted-foreground whitespace-nowrap">

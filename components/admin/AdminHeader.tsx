@@ -86,7 +86,7 @@ export function AdminHeader({ user }: AdminHeaderProps) {
               className="h-9 w-9 rounded-full ring-2 ring-brand/25 ring-offset-2 ring-offset-[var(--background)] transition-transform duration-300 ease-[var(--ease-spring)] hover:scale-105"
             />
           ) : (
-            <div className="flex h-9 w-9 items-center justify-center rounded-full brand-gradient text-sm font-semibold text-white shadow-[var(--shadow-brand)] transition-transform duration-300 ease-[var(--ease-spring)] hover:scale-105">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full btn-accent text-sm font-medium transition-transform duration-300 ease-[var(--ease-spring)] hover:scale-105">
               {(user?.name || user?.email || "A")[0].toUpperCase()}
             </div>
           )}

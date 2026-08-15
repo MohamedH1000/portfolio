@@ -1,42 +1,85 @@
 @import "tailwindcss";
 
+/* ===========================================================================
+   Nocturne — a quiet, compact interface.
+
+   A near-neutral blue-grey ground, Inter at medium weight, soft 8px radii,
+   and a single blurple accent used as a line and a glow rather than a flood.
+   Rules fade to transparent at their ends rather than stopping cleanly.
+   Contrast comes from the tonal ramps, not from saturation.
+
+   The dark band is the system as authored. The light band is derived from the
+   same OKLCH ramps and the same hue, so both themes stay one system.
+   =========================================================================== */
+
+/* ===== Tonal ramps — theme-independent =====
+   Generated in OKLCH on one shared lightness scale, so the same step of any
+   role carries the same visual weight. On a dark ground use 700–900 for
+   tinted fills and subtle borders, 500 as the base, 100–300 for text on those
+   tints. On a light ground the roles invert. Prefer a ramp step over an
+   ad-hoc color-mix(). */
+:root {
+  --ink-100: #f3f5fe;
+  --ink-200: #e4e7f5;
+  --ink-300: #cfd3e5;
+  --ink-400: #b2b6ca;
+  --ink-500: #9397ab;
+  --ink-600: #75798c;
+  --ink-700: #595d6c;
+  --ink-800: #3f424d;
+  --ink-900: #292b31;
+
+  --accent-100: #f5f4ff;
+  --accent-200: #e7e5fe;
+  --accent-300: #d2cefd;
+  --accent-400: #b5abfc;
+  --accent-500: #968ae0;
+  --accent-600: #796cbf;
+  --accent-700: #5d5294;
+  --accent-800: #423a6a;
+  --accent-900: #2b2741;
+}
+
 /* ===== Dark Theme (Default) ===== */
 :root {
-  --background: #121222;
-  --foreground: #e3e0f8;
-  --card: #1a1a2b;
-  --card-foreground: #e3e0f8;
-  --popover: #1e1e2f;
-  --popover-foreground: #e3e0f8;
-  --primary: #CBACF9;
-  --primary-foreground: #27074e;
-  --secondary: #29283a;
-  --secondary-foreground: #e3e0f8;
-  --muted: #1e1e2f;
-  --muted-foreground: #ccc4d1;
-  --accent: #29283a;
-  --accent-foreground: #e3e0f8;
+  --background: #161826;
+  --foreground: #e9e9ed;
+  --card: #232532;
+  --card-foreground: #e9e9ed;
+  --popover: #2b2d3b;
+  --popover-foreground: #e9e9ed;
+  --primary: #9184d9;
+  --primary-foreground: #161826;
+  --secondary: #2b2d3b;
+  --secondary-foreground: #e9e9ed;
+  --muted: #1c1e2b;
+  --muted-foreground: #a2a6b8;
+  --accent: #2b2d3b;
+  --accent-foreground: #e9e9ed;
   --destructive: #ffb4ab;
   --destructive-foreground: #690005;
-  --border: #4a454f;
-  --input: #333345;
-  --ring: #CBACF9;
+  --border: #3f424d;
+  --input: #232532;
+  --ring: #9184d9;
   --radius: 0.5rem;
 
-  /* Surface hierarchy */
-  --surface-dim: #121222;
-  --surface-container-lowest: #0c0c1d;
-  --surface-container-low: #1a1a2b;
-  --surface-container: #1e1e2f;
-  --surface-container-high: #29283a;
-  --surface-container-highest: #333345;
-  --surface-bright: #38374a;
+  /* Surface hierarchy — desaturated, close-valued steps.
+     Depth is a hairline edge plus ambient darkness, never a saturated fill. */
+  --surface-dim: #121420;
+  --surface-container-lowest: #0f1119;
+  --surface-container-low: #1c1e2b;
+  --surface-container: #232532;
+  --surface-container-high: #2b2d3b;
+  --surface-container-highest: #343646;
+  --surface-bright: #3d3f50;
 
-  /* --- Brand accent (theme-aware so light mode stays legible) --- */
-  --brand: #CBACF9;
-  --brand-strong: #9b7fd4;
-  --brand-contrast: #27074e;
-  --brand-rgb: 203, 172, 249;
+  /* --- Brand accent — the product blurple, OKLCH hue 289.
+     5.6:1 against the ground, so it carries small text as well as chrome. --- */
+  --brand: #9184d9;
+  --brand-strong: #b5abfc; /* one step lighter — hover/pressed on a dark ground */
+  --brand-deep: #5d5294;
+  --brand-contrast: #161826;
+  --brand-rgb: 145, 132, 217;
 
   /* --- Motion tokens --- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -48,70 +91,89 @@
   --dur-slow: 420ms;
   --dur-slower: 640ms;
 
-  /* --- Elevation scale --- */
-  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.28);
-  --shadow-2: 0 2px 6px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.22);
-  --shadow-3: 0 8px 24px -8px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.24);
-  --shadow-4: 0 18px 44px -12px rgba(0, 0, 0, 0.55), 0 6px 16px rgba(0, 0, 0, 0.28);
-  --shadow-5: 0 32px 72px -20px rgba(0, 0, 0, 0.65), 0 10px 24px rgba(0, 0, 0, 0.32);
-  --shadow-brand: 0 8px 32px -8px rgba(203, 172, 249, 0.35);
+  /* --- Compact spacing scale (density 0.7x) --- */
+  --space-1: 2.8px;
+  --space-2: 5.6px;
+  --space-3: 8.4px;
+  --space-4: 11.2px;
+  --space-6: 16.8px;
+  --space-8: 22.4px;
+
+  /* --- Elevation — an edge plus ambient darkness. Never stack these. --- */
+  --shadow-1: 0 0 0 1px #3f424d;
+  --shadow-2: 0 0 0 1px #3f424d, 0 2px 8px rgba(0, 0, 0, 0.40);
+  --shadow-3: 0 0 0 1px #595d6c, 0 6px 18px rgba(0, 0, 0, 0.55);
+  --shadow-4: 0 0 0 1px #595d6c, 0 12px 30px rgba(0, 0, 0, 0.60);
+  --shadow-5: 0 0 0 1px #9397ab, 0 16px 40px rgba(0, 0, 0, 0.65);
+  --shadow-brand:
+    0 0 0 1px rgba(145, 132, 217, 0.35),
+    0 8px 28px -10px rgba(145, 132, 217, 0.45);
 
   /* --- Compositional surfaces --- */
-  --glass-bg: rgba(24, 24, 40, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --hairline: rgba(255, 255, 255, 0.07);
-  --sheen: rgba(255, 255, 255, 0.06);
-  --scrim: rgba(6, 6, 16, 0.62);
+  --glass-bg: rgba(22, 24, 38, 0.68);
+  --glass-border: rgba(233, 233, 237, 0.10);
+  --hairline: rgba(233, 233, 237, 0.10);
+  --sheen: rgba(233, 233, 237, 0.06);
+  --scrim: rgba(10, 11, 20, 0.65);
+  --divider: rgba(233, 233, 237, 0.16);
 }
 
-/* ===== Light Theme ===== */
+/* ===== Light Theme =====
+   Derived from the same ramps: the ground rises to the 100 step, text drops to
+   the 900 step, and the accent moves to `--accent-700` so paragraph-size text
+   in the accent still clears 6:1. */
 .light {
-  --background: #faf8ff;
-  --foreground: #1c1b2e;
-  --card: #ffffff;
-  --card-foreground: #1c1b2e;
-  --popover: #ffffff;
-  --popover-foreground: #1c1b2e;
-  --primary: #6c5196;
-  --primary-foreground: #ffffff;
-  --secondary: #e8e0f5;
-  --secondary-foreground: #1c1b2e;
-  --muted: #f0ecf7;
-  --muted-foreground: #5a5670;
-  --accent: #e8e0f5;
-  --accent-foreground: #1c1b2e;
+  --background: #f6f7fd;
+  --foreground: #23252e;
+  --card: #fdfdff;
+  --card-foreground: #23252e;
+  --popover: #fdfdff;
+  --popover-foreground: #23252e;
+  --primary: #5d5294;
+  --primary-foreground: #fdfdff;
+  --secondary: #e4e7f5;
+  --secondary-foreground: #23252e;
+  --muted: #eaedf9;
+  --muted-foreground: #62667a;
+  --accent: #e4e7f5;
+  --accent-foreground: #23252e;
   --destructive: #ba1a1a;
-  --destructive-foreground: #ffffff;
-  --border: #cbc4d7;
-  --input: #cbc4d7;
-  --ring: #6c5196;
+  --destructive-foreground: #fdfdff;
+  --border: #cfd3e5;
+  --input: #eaedf9;
+  --ring: #5d5294;
 
-  --surface-dim: #e3e0f8;
-  --surface-container-lowest: #ffffff;
-  --surface-container-low: #f0ecf7;
-  --surface-container: #ebe5f3;
-  --surface-container-high: #e5dff0;
-  --surface-container-highest: #dfd9ea;
-  --surface-bright: #faf8ff;
+  --surface-dim: #e4e7f5;
+  --surface-container-lowest: #fdfdff;
+  --surface-container-low: #f9fafe;
+  --surface-container: #f3f5fe;
+  --surface-container-high: #eaedf9;
+  --surface-container-highest: #e4e7f5;
+  --surface-bright: #fdfdff;
 
-  /* Deeper purple in light mode — #CBACF9 on white fails contrast */
-  --brand: #6c5196;
-  --brand-strong: #533a7b;
-  --brand-contrast: #ffffff;
-  --brand-rgb: 108, 81, 150;
+  /* `--accent-500` on a light ground fails body-copy contrast; the deep step
+     clears 6:1, so the accent stays usable as text and not only as chrome. */
+  --brand: #5d5294;
+  --brand-strong: #423a6a;
+  --brand-deep: #423a6a;
+  --brand-contrast: #fdfdff;
+  --brand-rgb: 93, 82, 148;
 
-  --shadow-1: 0 1px 2px rgba(60, 40, 95, 0.08);
-  --shadow-2: 0 2px 6px rgba(60, 40, 95, 0.10), 0 1px 2px rgba(60, 40, 95, 0.06);
-  --shadow-3: 0 8px 24px -8px rgba(60, 40, 95, 0.16), 0 2px 8px rgba(60, 40, 95, 0.08);
-  --shadow-4: 0 18px 44px -12px rgba(60, 40, 95, 0.20), 0 6px 16px rgba(60, 40, 95, 0.10);
-  --shadow-5: 0 32px 72px -20px rgba(60, 40, 95, 0.26), 0 10px 24px rgba(60, 40, 95, 0.12);
-  --shadow-brand: 0 8px 32px -8px rgba(108, 81, 150, 0.30);
+  --shadow-1: 0 0 0 1px rgba(63, 66, 77, 0.10);
+  --shadow-2: 0 0 0 1px rgba(63, 66, 77, 0.10), 0 2px 8px rgba(41, 43, 49, 0.06);
+  --shadow-3: 0 0 0 1px rgba(63, 66, 77, 0.12), 0 6px 18px rgba(41, 43, 49, 0.09);
+  --shadow-4: 0 0 0 1px rgba(63, 66, 77, 0.14), 0 12px 30px rgba(41, 43, 49, 0.12);
+  --shadow-5: 0 0 0 1px rgba(63, 66, 77, 0.16), 0 16px 40px rgba(41, 43, 49, 0.16);
+  --shadow-brand:
+    0 0 0 1px rgba(93, 82, 148, 0.28),
+    0 8px 28px -10px rgba(93, 82, 148, 0.35);
 
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(28, 27, 46, 0.08);
-  --hairline: rgba(28, 27, 46, 0.08);
-  --sheen: rgba(255, 255, 255, 0.75);
-  --scrim: rgba(40, 30, 60, 0.38);
+  --glass-bg: rgba(253, 253, 255, 0.72);
+  --glass-border: rgba(35, 37, 46, 0.10);
+  --hairline: rgba(35, 37, 46, 0.10);
+  --sheen: rgba(255, 255, 255, 0.70);
+  --scrim: rgba(35, 37, 46, 0.45);
+  --divider: rgba(35, 37, 46, 0.16);
 }
 
 @theme inline {
@@ -148,13 +210,39 @@
   /* Brand */
   --color-brand: var(--brand);
   --color-brand-strong: var(--brand-strong);
+  --color-brand-deep: var(--brand-deep);
   --color-brand-contrast: var(--brand-contrast);
 
-  /* Radii */
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 4px);
-  --radius-xl: calc(var(--radius) + 8px);
+  /* Brand tonal ramp — `bg-brand-800`, `text-brand-300`, … */
+  --color-brand-100: var(--accent-100);
+  --color-brand-200: var(--accent-200);
+  --color-brand-300: var(--accent-300);
+  --color-brand-400: var(--accent-400);
+  --color-brand-500: var(--accent-500);
+  --color-brand-600: var(--accent-600);
+  --color-brand-700: var(--accent-700);
+  --color-brand-800: var(--accent-800);
+  --color-brand-900: var(--accent-900);
+
+  /* Neutral tonal ramp — `border-ink-800`, `text-ink-500`, … */
+  --color-ink-100: var(--ink-100);
+  --color-ink-200: var(--ink-200);
+  --color-ink-300: var(--ink-300);
+  --color-ink-400: var(--ink-400);
+  --color-ink-500: var(--ink-500);
+  --color-ink-600: var(--ink-600);
+  --color-ink-700: var(--ink-700);
+  --color-ink-800: var(--ink-800);
+  --color-ink-900: var(--ink-900);
+
+  /* Radii — the 8px system. `rounded-lg` is the interface default,
+     `rounded-2xl` the large-container step. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 14px;
+  --radius-3xl: 18px;
 
   /* Elevation (exposed as shadow-* utilities) */
   --shadow-e1: var(--shadow-1);
@@ -184,6 +272,7 @@
   --animate-sheen: sheen 2.4s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 2.4s ease-out infinite;
   --animate-gradient-pan: gradient-pan 6s linear infinite;
+  --animate-drift: drift 22s ease-in-out infinite;
 
   @keyframes spotlight {
     0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
@@ -232,6 +321,11 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
+  /* Slow parallax drift for the depth layers behind the hero */
+  @keyframes drift {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    50% { transform: translate3d(2%, -3%, 0) rotate(1.5deg); }
+  }
 }
 
 /* ===== Base Styles =====
@@ -251,15 +345,20 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
+  /* Nocturne body: 15px / 1.55 — the compact reading size */
+  font-size: 15px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Headings get tighter optical spacing */
-h1, h2, h3, h4 {
-  letter-spacing: -0.02em;
+/* Hierarchy here is size and space — headings are never bolder than 500. */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
   text-wrap: balance;
 }
 
@@ -267,8 +366,12 @@ p {
   text-wrap: pretty;
 }
 
+a {
+  text-underline-offset: 3px;
+}
+
 ::selection {
-  background: rgba(var(--brand-rgb), 0.28);
+  background: rgba(var(--brand-rgb), 0.30);
   color: var(--foreground);
 }
 
@@ -321,7 +424,8 @@ p {
    override individual declarations (e.g. `ps-10` over `.field`'s padding). */
 @layer components {
 
-/* ===== Focus Ring ===== */
+/* ===== Focus Ring =====
+   Keyboard focus is always the 2px accent ring — never the browser default. */
 .focus-ring {
   outline: none;
 }
@@ -340,15 +444,15 @@ select:focus-visible,
 /* ===== Blueprint Grid Texture ===== */
 .bg-blueprint {
   background-image:
-    linear-gradient(rgba(203, 172, 249, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(203, 172, 249, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(145, 132, 217, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(145, 132, 217, 0.05) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
 .light .bg-blueprint {
   background-image:
-    linear-gradient(rgba(108, 81, 150, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(108, 81, 150, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(93, 82, 148, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(93, 82, 148, 0.07) 1px, transparent 1px);
 }
 
 /* Radial fade so the grid dissolves toward the edges instead of hard-stopping */
@@ -367,15 +471,30 @@ select:focus-visible,
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ===== Spotlight Colors (theme-aware) ===== */
+/* ===== Spotlight Colors (theme-aware) =====
+   No pure white — the brightest value the system uses is the text tone. */
 :root {
-  --spotlight-primary: #ffffff;
-  --spotlight-secondary: #CBACF9;
+  --spotlight-primary: #e9e9ed;
+  --spotlight-secondary: #9184d9;
 }
 
 .light {
-  --spotlight-primary: #CBACF9;
-  --spotlight-secondary: #9b7fd4;
+  --spotlight-primary: #9184d9;
+  --spotlight-secondary: #796cbf;
+}
+
+/* ===== Image treatment =====
+   Every content photograph goes through `.lighten`: anything darker than the
+   backdrop falls away, so photos blend into the page instead of sitting on it. */
+.lighten {
+  mix-blend-mode: lighten;
+  background-color: transparent;
+}
+
+/* On the light ground `lighten` would erase the subject — darken is its
+   mirror, and gives the same "blends into the page" read. */
+.light .lighten {
+  mix-blend-mode: darken;
 }
 
 /* ===== Ghost Border (15% opacity) ===== */
@@ -388,16 +507,16 @@ select:focus-visible,
    the last-seen prefix, which drops unprefixed `backdrop-filter` in Chrome. */
 .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
 }
 
 /* Panel-grade glass: adds a hairline and inner top highlight */
 .glass-panel {
   position: relative;
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-3), inset 0 1px 0 var(--sheen);
 }
@@ -407,7 +526,7 @@ select:focus-visible,
   position: relative;
   background: var(--card);
   border: 1px solid var(--hairline);
-  box-shadow: var(--shadow-2);
+  box-shadow: var(--shadow-1);
   transition:
     transform var(--dur-slow) var(--ease-out-expo),
     box-shadow var(--dur-slow) var(--ease-out-expo),
@@ -467,25 +586,70 @@ select:focus-visible,
   opacity: 1;
 }
 
-/* ===== Brand gradient for buttons ===== */
+/* ===== Accent gradient =====
+   Reserved for short solid marks — an avatar tile, an active indicator, the
+   rule under a section heading. Never used to flood a large area. */
 .brand-gradient {
-  background: linear-gradient(135deg, #CBACF9 0%, #9b7fd4 100%);
+  background: linear-gradient(135deg, #9184d9 0%, #6f63b8 100%);
 }
 
 .light .brand-gradient {
-  background: linear-gradient(135deg, #6c5196 0%, #8b6bb8 100%);
+  background: linear-gradient(135deg, #5d5294 0%, #796cbf 100%);
 }
 
-/* Animated gradient — pans slowly, used on primary CTAs */
+/* Animated gradient — pans slowly, for the same short marks */
 .brand-gradient-animated {
-  background: linear-gradient(120deg, #CBACF9, #9b7fd4, #b58ef0, #CBACF9);
+  background: linear-gradient(120deg, #9184d9, #6f63b8, #b5abfc, #9184d9);
   background-size: 300% 100%;
   animation: gradient-pan 6s linear infinite;
 }
 
 .light .brand-gradient-animated {
-  background: linear-gradient(120deg, #6c5196, #8b6bb8, #5b4380, #6c5196);
+  background: linear-gradient(120deg, #5d5294, #796cbf, #423a6a, #5d5294);
   background-size: 300% 100%;
+}
+
+/* ===== Outlined action =====
+   The primary action is an accent outline on transparent, never a fill.
+   Hover and pressed states come from the accent ramp. */
+.btn-accent {
+  position: relative;
+  color: var(--brand);
+  border: 1px solid var(--brand);
+  background: rgba(var(--brand-rgb), 0.06);
+  transition:
+    background-color var(--dur-base) var(--ease-out-expo),
+    box-shadow var(--dur-base) var(--ease-out-expo),
+    border-color var(--dur-base) var(--ease-out-expo),
+    color var(--dur-base) var(--ease-out-expo);
+}
+
+.btn-accent:hover:not(:disabled) {
+  background: rgba(var(--brand-rgb), 0.14);
+  box-shadow: 0 0 0 1px rgba(var(--brand-rgb), 0.35), 0 6px 22px -10px rgba(var(--brand-rgb), 0.55);
+}
+
+.btn-accent:active:not(:disabled) {
+  background: rgba(var(--brand-rgb), 0.22);
+}
+
+/* The quieter sibling — a neutral hairline outline */
+.btn-outline {
+  color: var(--foreground);
+  border: 1px solid var(--divider);
+  background: transparent;
+  transition:
+    background-color var(--dur-base) var(--ease-out-expo),
+    border-color var(--dur-base) var(--ease-out-expo);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: rgba(var(--brand-rgb), 0.07);
+  border-color: rgba(var(--brand-rgb), 0.45);
+}
+
+.btn-outline:active:not(:disabled) {
+  background: rgba(var(--brand-rgb), 0.13);
 }
 
 /* ===== Gradient text (theme-aware, stays legible in light mode) ===== */
@@ -498,7 +662,7 @@ select:focus-visible,
   -webkit-text-fill-color: transparent;
 }
 
-/* ===== Glow effects ===== */
+/* ===== Glow effects — the accent as light, not as fill ===== */
 .glow-brand {
   box-shadow: 0 0 20px rgba(var(--brand-rgb), 0.15);
 }
@@ -519,8 +683,9 @@ select:focus-visible,
 }
 
 .card-hover:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-4), 0 4px 16px rgba(var(--brand-rgb), 0.12);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-3);
+  border-color: rgba(var(--brand-rgb), 0.28);
 }
 
 /* Gentler lift for dense UI (admin tables, list rows) */
@@ -533,7 +698,7 @@ select:focus-visible,
 
 .lift-sm:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-3);
+  box-shadow: var(--shadow-2);
 }
 
 /* ===== Interactive press feedback ===== */
@@ -590,7 +755,7 @@ select:focus-visible,
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.28),
+    rgba(var(--brand-rgb), 0.22),
     transparent
   );
   transform: translateX(-160%) skewX(-18deg);
@@ -601,35 +766,100 @@ select:focus-visible,
   transform: translateX(320%) skewX(-18deg);
 }
 
-/* ===== Section Styles ===== */
+/* ===== Section Styles =====
+   Flush-left, weight 500. Hierarchy is size and space, not weight. */
 .section-heading {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
 }
 
-/* Fading hairline divider */
+/* The compact vertical rhythm (density 0.7x) */
+.section-y {
+  padding-block: clamp(3.5rem, 7vw, 5.5rem);
+}
+
+/* ===== Fading rules — a Nocturne signature =====
+   Freestanding rules ramp to transparent over 48px an end instead of stopping
+   cleanly. Box outlines and short accent marks stay solid. */
+.rule-fade {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--divider) 48px,
+    var(--divider) calc(100% - 48px),
+    transparent
+  );
+}
+
+.rule-fade-accent {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(var(--brand-rgb), 0.35) 48px,
+    rgba(var(--brand-rgb), 0.35) calc(100% - 48px),
+    transparent
+  );
+}
+
+/* Vertical counterpart — timeline spines, split rules */
+.rule-fade-y {
+  width: 1px;
+  border: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--divider) 48px,
+    var(--divider) calc(100% - 48px),
+    transparent
+  );
+}
+
+/* Existing call sites keep working and now paint the fading shape */
 .divider-gradient {
   height: 1px;
   border: 0;
   background: linear-gradient(
     to right,
     transparent,
-    rgba(var(--brand-rgb), 0.25),
+    rgba(var(--brand-rgb), 0.28) 48px,
+    rgba(var(--brand-rgb), 0.28) calc(100% - 48px),
     transparent
   );
+}
+
+/* ===== 3D scene helpers =====
+   Shared by the hero composition and the tilting cards. `perspective` lives on
+   the parent, `preserve-3d` on the group whose children carry translateZ. */
+.scene-3d {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+.layer-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.flat-3d {
+  transform-style: flat;
 }
 
 /* ===== Field styling (inputs, textareas, selects) ===== */
 .field {
   width: 100%;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--surface-container-high) 60%, transparent);
-  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--divider);
+  background: var(--input);
+  padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   color: var(--foreground);
+  caret-color: var(--brand);
   transition:
     border-color var(--dur-base) var(--ease-out-expo),
     box-shadow var(--dur-base) var(--ease-out-expo),
@@ -646,13 +876,12 @@ select:focus-visible,
 
 .field:focus {
   outline: none;
-  border-color: rgba(var(--brand-rgb), 0.7);
+  border-color: var(--brand);
   box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.16);
-  background: color-mix(in srgb, var(--surface-container-high) 85%, transparent);
 }
 
 .field:disabled {
-  opacity: 0.55;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 

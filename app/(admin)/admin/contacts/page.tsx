@@ -278,7 +278,7 @@ export function ContactsPage() {
 
                   <a
                     href={`mailto:${selected.email}?subject=Re: ${selected.subject || ""}`}
-                    className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-200 hover:shadow-[var(--shadow-brand)]"
+                    className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl btn-accent px-4 py-2 text-sm font-medium"
                   >
                     <ExternalLink className="h-4 w-4" />
                     Reply via Email

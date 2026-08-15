@@ -33,7 +33,7 @@ export default function Error({
 
         <button
           onClick={reset}
-          className="focus-ring press sheen-hover mt-6 inline-flex cursor-pointer items-center gap-2 rounded-xl brand-gradient px-6 py-3 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-300 hover:shadow-[var(--shadow-brand)]"
+          className="focus-ring press sheen-hover mt-6 inline-flex cursor-pointer items-center gap-2 rounded-xl btn-accent px-6 py-3 text-sm font-medium"
         >
           <RotateCw className="h-4 w-4" />
           {t("retry")}

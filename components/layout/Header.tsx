@@ -156,7 +156,7 @@ export function Header() {
             ) : (
               <Link
                 href="/auth/signin"
-                className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-300 hover:shadow-[var(--shadow-brand)]"
+                className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl btn-accent px-4 py-2 text-sm font-medium"
               >
                 <LogIn className="h-4 w-4" />
                 {tAuth("signIn")}
@@ -267,7 +267,7 @@ export function Header() {
                   ) : (
                     <Link
                       href="/auth/signin"
-                      className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-300 hover:shadow-[var(--shadow-brand)]"
+                      className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl btn-accent px-4 py-2 text-sm font-medium"
                     >
                       <LogIn className="h-4 w-4" />
                       {tAuth("signIn")}

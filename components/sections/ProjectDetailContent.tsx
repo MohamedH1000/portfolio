@@ -74,7 +74,7 @@ export function ProjectDetailContent({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl brand-gradient px-6 py-3 font-medium text-white shadow-[var(--shadow-2)] transition-all duration-300 ease-[var(--ease-quart)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-brand)]"
+              className="focus-ring press sheen-hover inline-flex items-center gap-2 rounded-xl btn-accent px-6 py-3 font-medium transition-all duration-300 ease-[var(--ease-quart)] hover:-translate-y-0.5"
             >
               <ExternalLink className="w-4 h-4" />
               {liveDemoLabel}

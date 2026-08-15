@@ -14,7 +14,7 @@ interface AdminButtonProps
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    "brand-gradient text-white shadow-[var(--shadow-2)] hover:shadow-[var(--shadow-brand)] sheen-hover",
+    "btn-accent sheen-hover",
   secondary:
     "border border-border/60 bg-surface-high/60 text-foreground hover:bg-surface-highest hover:border-brand/30",
   ghost:

@@ -27,7 +27,7 @@ export default async function AdminLayout({
         className="pointer-events-none fixed inset-0 z-0"
       >
         <div className="absolute -top-40 start-1/4 h-[32rem] w-[32rem] rounded-full bg-brand/[0.07] blur-[120px]" />
-        <div className="absolute bottom-0 end-0 h-[26rem] w-[26rem] rounded-full bg-purple-500/[0.05] blur-[110px]" />
+        <div className="absolute bottom-0 end-0 h-[26rem] w-[26rem] rounded-full bg-brand/[0.05] blur-[110px]" />
       </div>
 
       <div className="relative z-10">

@@ -55,7 +55,7 @@ export function AdminNav({ idPrefix, onNavigate }: AdminNavProps) {
           onClick={onNavigate}
           className="focus-ring group flex items-center gap-2.5 rounded-lg"
         >
-          <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-lg brand-gradient text-sm font-bold text-white shadow-[var(--shadow-brand)] transition-transform duration-300 ease-[var(--ease-spring)] group-hover:scale-105">
+          <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-lg btn-accent text-sm font-medium transition-transform duration-300 ease-[var(--ease-spring)] group-hover:scale-105">
             MH
           </span>
           <span className="text-sm font-semibold tracking-tight text-foreground">

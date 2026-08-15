@@ -36,7 +36,7 @@ export default async function HomePage({
       <FeaturedProjects projects={featuredProjects} locale={locale} />
       {/* <TestimonialsCarousel testimonials={testimonials} locale={locale} /> */}
       <ExperienceHighlights experiences={experiences} locale={locale} />
-      <AboutPreview locale={locale} />
+      <AboutPreview />
     </PageWrapper>
   );
 }

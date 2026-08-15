@@ -27,7 +27,7 @@ export default function NotFound() {
         </p>
         <Link
           href={{ pathname: "/" }}
-          className="focus-ring press sheen-hover mt-8 inline-flex items-center gap-2 rounded-xl brand-gradient px-6 py-3 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-300 hover:shadow-[var(--shadow-brand)]"
+          className="focus-ring press sheen-hover mt-8 inline-flex items-center gap-2 rounded-xl btn-accent px-6 py-3 text-sm font-medium"
         >
           {t("goHome")}
         </Link>

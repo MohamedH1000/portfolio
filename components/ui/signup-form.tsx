@@ -152,7 +152,7 @@ export function SignUpForm() {
       <button
         type="submit"
         disabled={loading}
-        className="focus-ring press sheen-hover flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl brand-gradient px-4 py-3 text-sm font-medium text-white shadow-[var(--shadow-2)] transition-shadow duration-300 hover:shadow-[var(--shadow-brand)] disabled:opacity-50"
+        className="focus-ring press sheen-hover flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl btn-accent px-4 py-3 text-sm font-medium disabled:opacity-50"
       >
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         {t("createAccount")}

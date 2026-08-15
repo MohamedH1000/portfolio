@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { Code2, CloudCog, Brain, Workflow, Sparkles } from "lucide-react";
 import { useStagger, useFadeUpItem } from "@/lib/motion";
+import { StatCounter } from "@/components/ui/stat-counter";
 
 export function AboutContent() {
   const t = useTranslations("about");
@@ -18,42 +19,44 @@ export function AboutContent() {
     { value: t("statsSatisfiedValue"), label: t("statsSatisfied") },
   ];
 
+  // Mono palette: the four cards separate by depth, not by hue. Chroma stays
+  // low outside the accent, so each tint is a step of the same ramp.
   const expertise = [
     {
       title: t("fullStackTitle"),
       description: t("fullStackDescription"),
       skills: t("fullStackSkills"),
       icon: Code2,
-      gradient: "from-blue-500/20 to-cyan-500/20",
-      borderHover: "hover:border-blue-500/30",
-      iconColor: "text-blue-400",
+      gradient: "from-brand/[0.14] to-brand-600/[0.05]",
+      borderHover: "hover:border-brand/30",
+      iconColor: "text-brand",
     },
     {
       title: t("devOpsTitle"),
       description: t("devOpsDescription"),
       skills: t("devOpsSkills"),
       icon: CloudCog,
-      gradient: "from-emerald-500/20 to-teal-500/20",
-      borderHover: "hover:border-emerald-500/30",
-      iconColor: "text-emerald-400",
+      gradient: "from-brand/[0.10] to-brand-700/[0.06]",
+      borderHover: "hover:border-brand/30",
+      iconColor: "text-brand",
     },
     {
       title: t("aiTitle"),
       description: t("aiDescription"),
       skills: t("aiSkills"),
       icon: Brain,
-      gradient: "from-purple-500/20 to-pink-500/20",
-      borderHover: "hover:border-purple-500/30",
-      iconColor: "text-purple-400",
+      gradient: "from-brand-500/[0.12] to-brand-800/[0.07]",
+      borderHover: "hover:border-brand/30",
+      iconColor: "text-brand",
     },
     {
       title: t("automationTitle"),
       description: t("automationDescription"),
       skills: t("automationSkills"),
       icon: Workflow,
-      gradient: "from-amber-500/20 to-orange-500/20",
-      borderHover: "hover:border-amber-500/30",
-      iconColor: "text-amber-400",
+      gradient: "from-brand-600/[0.12] to-brand-900/[0.08]",
+      borderHover: "hover:border-brand/30",
+      iconColor: "text-brand",
     },
   ];
 
@@ -124,11 +127,12 @@ export function AboutContent() {
               variants={fadeItem}
               className="surface-card border-gradient border-gradient-static lift-sm group relative overflow-hidden rounded-2xl p-6 text-center"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-br from-brand/[0.06] to-brand-600/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10">
-                <p className="text-3xl md:text-4xl font-bold text-gradient-brand mb-2">
-                  {stat.value}
-                </p>
+                <StatCounter
+                  value={stat.value}
+                  className="mb-2 block text-3xl font-medium text-gradient-brand md:text-4xl"
+                />
                 <p className="text-xs md:text-sm text-muted-foreground font-medium">
                   {stat.label}
                 </p>

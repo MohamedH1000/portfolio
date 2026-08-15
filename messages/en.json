@@ -17,7 +17,10 @@
     "title": "I build digital experiences that matter.",
     "description": "Full Stack Developer with deep roots in the JavaScript ecosystem, hands-on DevOps experience, and a passion for training large language models and building smart automation systems. From pixel-perfect frontends to resilient cloud infrastructure — I ship end to end.",
     "cta": "See my work",
-    "ctaSecondary": "Get in touch"
+    "ctaSecondary": "Get in touch",
+    "panelKicker": "Working with",
+    "panelUptime": "Production uptime",
+    "panelStatus": "Available for new work"
   },
   "projects": {
     "title": "A small selection of {highlight}",
@@ -46,6 +49,7 @@
   "about": {
     "intro": "I'm Mohamed Hesham — a Full Stack Developer who doesn't just write code, but architects complete solutions. My work spans the entire lifecycle: from designing intuitive interfaces and building robust APIs, to deploying on cloud infrastructure and training AI models that power intelligent features.",
     "introExtended": "JavaScript is my foundation. I've built production applications with Next.js, React, Node.js, and TypeScript — but I don't stop at the web layer. I've designed CI/CD pipelines, managed containerized deployments, automated repetitive workflows, and fine-tuned large language models for real-world applications. I bring a rare combination of frontend polish, backend depth, and infrastructure expertise to every project.",
+    "previewTitle": "About Me",
     "statsYears": "Years of Experience",
     "statsYearsValue": "3+",
     "statsProjects": "Projects Delivered",

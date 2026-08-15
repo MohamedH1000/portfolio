@@ -55,15 +55,16 @@ export function MagicButton({
     y.set(0);
   };
 
+  // Nocturne actions are outlined, never filled: the primary carries the
+  // accent border and a hover glow, the ghost a neutral hairline.
   const baseStyles = cn(
     "focus-ring inline-flex items-center justify-center gap-2",
-    "rounded-full px-8 py-3",
+    "rounded-lg px-6 py-2.5",
     "text-sm font-medium",
-    "transition-[box-shadow,background-color,border-color] duration-300 ease-out",
-    "disabled:pointer-events-none disabled:opacity-50",
+    "disabled:pointer-events-none disabled:opacity-45",
     variant === "primary"
-      ? "sheen-hover brand-gradient text-white shadow-[var(--shadow-2)] hover:shadow-[var(--shadow-brand)]"
-      : "border border-brand/30 bg-brand/[0.04] text-brand hover:border-brand/50 hover:bg-brand/10",
+      ? "sheen-hover btn-accent"
+      : "btn-outline text-muted-foreground hover:text-foreground",
     className,
   );
 
