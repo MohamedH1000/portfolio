@@ -1,9 +1,5 @@
 import { redirect } from "next/navigation";
 
-export default function SignInRedirect({
-  searchParams,
-}: {
-  searchParams: Promise<{ callbackUrl?: string }>;
-}) {
+export default function SignInRedirect() {
   redirect("/en/auth/signin");
 }

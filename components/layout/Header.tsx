@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { UserMenu } from "@/components/ui/user-menu";
 import { LogIn } from "lucide-react";
+import { useHydrated } from "@/lib/hooks";
 
 const NAV_LINKS = [
   { href: "/", key: "home" },
@@ -25,15 +26,11 @@ export function Header() {
   const tAuth = useTranslations("Auth");
   const pathname = usePathname();
   const locale = useLocale();
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useHydrated();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -42,9 +39,15 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
+  // Close the drawer whenever the route changes. React's documented way to
+  // reset state in response to a changed value is to adjust it during render
+  // rather than in an effect — the effect version renders the stale open
+  // drawer for a frame first, and costs an extra pass every navigation.
+  const [drawerPath, setDrawerPath] = useState(pathname);
+  if (pathname !== drawerPath) {
+    setDrawerPath(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     if (mobileOpen) {

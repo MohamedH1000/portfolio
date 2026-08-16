@@ -33,7 +33,7 @@ Update this file after every meaningful implementation change.
   - `lib/validations/auth.ts` — Zod schemas for sign-in and sign-up
   - `app/api/auth/[...nextauth]/route.ts` — NextAuth API route handler
   - `app/actions/auth.ts` — Google, credentials, sign-up, sign-out server actions
-  - `middleware.ts` — Combined i18n + auth middleware (protects `/admin/*` routes)
+  - `proxy.ts` — Combined i18n + auth proxy (protects `/admin/*` routes)
   - `components/providers/session-provider.tsx` — Client-side SessionProvider
   - `components/ui/user-menu.tsx` — Avatar dropdown with sign-out
   - `components/ui/google-button.tsx` — Google OAuth sign-in button
@@ -140,7 +140,7 @@ Update this file after every meaningful implementation change.
 - All Supabase SQL migrations need to be run manually in Dashboard
 - NextAuth v5 beta.31 installed with @auth/core 0.41.2
 - Nodemailer v8 caused peer dep conflict with @auth/core — resolved with `--legacy-peer-deps`
-- Middleware convention deprecated in Next.js 16 (should use "proxy") — build still works, warning only
+- ~~Middleware convention deprecated in Next.js 16~~ — migrated to `proxy.ts` (named `proxy` export); build is warning-free
 - `portfolio-assets` Storage bucket needs to be created in Supabase Dashboard
 - Build passes with zero errors: all 59 routes generated including admin pages and API routes
 - Admin settings bilingual fields could not be saved — `BilingualInput` was always uncontrolled, so edits never reached the settings page `edited` state and the per-group Save button never appeared for Hero/About/Footer. Fixed by adding optional `onChangeEn`/`onChangeAr` props that switch a field to controlled only when supplied; the projects/experiences/testimonials forms omit them and stay uncontrolled (FormData on submit)

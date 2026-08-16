@@ -121,7 +121,7 @@ portfolio/
 │   ├── seed.sql                      #   Development seed data
 │   └── setup_all.sql                 #   Full setup script
 │
-├── middleware.ts                      # Next.js middleware (i18n routing + auth session)
+├── proxy.ts                           # Next.js proxy (i18n routing + auth session)
 ├── next.config.ts                     # Next.js configuration
 └── public/                           # Static assets (images, fonts, icons)
 ```

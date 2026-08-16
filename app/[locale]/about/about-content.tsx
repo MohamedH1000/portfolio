@@ -121,7 +121,7 @@ export function AboutContent() {
           variants={stagger}
           className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6"
         >
-          {stats.map((stat, i) => (
+          {stats.map((stat) => (
             <motion.div
               key={stat.label}
               variants={fadeItem}
@@ -161,7 +161,7 @@ export function AboutContent() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {expertise.map((item, i) => {
+            {expertise.map((item) => {
               const Icon = item.icon;
               return (
                 <motion.div

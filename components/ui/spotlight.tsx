@@ -14,7 +14,9 @@ export function Spotlight({ className, fill = "white" }: SpotlightProps) {
   return (
     <motion.svg
       className={cn(
-        "pointer-events-none absolute z-[1] h-[169%] w-[138%] lg:w-[84%]",
+        // `overflow-visible` matters: an SVG root clips to its viewport by
+        // default, which cuts the blurred falloff into a hard-edged rectangle.
+        "pointer-events-none absolute z-[1] h-[169%] w-[138%] overflow-visible lg:w-[84%]",
         "-top-40 left-0 md:-top-20 md:left-60",
         className,
       )}
@@ -25,14 +27,16 @@ export function Spotlight({ className, fill = "white" }: SpotlightProps) {
       animate={{ opacity: 1, scale: 1, x: "-50%", y: "-40%" }}
       transition={{ duration: reduce ? 0 : 2, ease: "easeOut", delay: reduce ? 0 : 0.75 }}
     >
+      {/* Inset from the viewBox edges so the 300-unit blur has room to fade
+          out inside the box rather than running straight off it. */}
       <g filter="url(#spotlight-filter)">
         <ellipse
-          cx="1924"
+          cx="1893"
           cy="1421"
-          rx="1924"
-          ry="1421"
+          rx="1350"
+          ry="900"
           fill={fill}
-          fillOpacity="0.21"
+          fillOpacity="0.24"
         />
       </g>
       <defs>

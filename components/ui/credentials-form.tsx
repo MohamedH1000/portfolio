@@ -21,7 +21,7 @@ export function CredentialsSignInForm() {
 
     try {
       await handleCredentialsSignIn(formData);
-    } catch (err) {
+    } catch {
       setError(t("invalidCredentials"));
       setLoading(false);
     }

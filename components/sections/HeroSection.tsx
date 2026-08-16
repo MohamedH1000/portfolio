@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Spotlight } from "@/components/ui/spotlight";
 import { MagicButton } from "@/components/ui/magic-button";
 import { ArrowUpRight, Mail } from "lucide-react";
@@ -49,14 +49,17 @@ export function HeroSection() {
   }, [roles.length, reduce]);
 
   return (
+    // `full-bleed` escapes PageWrapper's max-width container and `-mt-24`
+    // cancels its top padding, so the aurora, spotlight and scrim span the
+    // viewport instead of being clipped to the content column.
     <div
       ref={heroRef}
       onPointerMove={tilt.onPointerMove}
       onPointerLeave={tilt.onPointerLeave}
-      className="relative flex min-h-screen items-center overflow-hidden"
+      className="full-bleed relative -mt-24 flex min-h-screen items-center overflow-hidden"
     >
-      {/* Base texture */}
-      <div className="absolute inset-0 bg-blueprint bg-blueprint-fade" />
+      {/* PageWrapper already paints the blueprint grid across `main`; a second
+          copy here would just double its contrast. */}
 
       {/* Aurora glow orbs — layered depth across the whole hero, not just the center */}
       <motion.div
@@ -114,18 +117,28 @@ export function HeroSection() {
             transition={{ duration: 0.4, delay: 0.3 }}
             className="mb-6 rounded-lg border border-brand/25 bg-brand/[0.06] px-4 py-1.5"
           >
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={roleIndex}
-                initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-                transition={{ duration: 0.3 }}
-                className="text-xs font-medium tracking-[0.2em] text-brand uppercase md:text-sm"
-              >
-                {roles[roleIndex]}
-              </motion.p>
-            </AnimatePresence>
+            {/* Every role is stacked in one grid cell: the pill sizes itself to
+                the longest of them, so it never resizes as they change, and the
+                outgoing and incoming roles cross-fade rather than leaving the
+                pill briefly empty the way `AnimatePresence mode="wait"` did. */}
+            <span className="grid">
+              {roles.map((role, i) => (
+                <motion.span
+                  key={role}
+                  aria-hidden={i !== roleIndex}
+                  className="[grid-area:1/1] text-xs font-medium tracking-[0.2em] text-brand uppercase md:text-sm"
+                  initial={false}
+                  animate={
+                    i === roleIndex
+                      ? { opacity: 1, y: 0, filter: "blur(0px)" }
+                      : { opacity: 0, y: -6, filter: "blur(4px)" }
+                  }
+                  transition={{ duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {role}
+                </motion.span>
+              ))}
+            </span>
           </motion.div>
 
           <motion.p

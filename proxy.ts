@@ -1,3 +1,11 @@
+/**
+ * Proxy — runs before any route renders.
+ *
+ * Next.js 16 renamed the `middleware` file convention to `proxy`; the file
+ * exports a single function, either as a default export or named `proxy`.
+ * `next-intl` still ships its half of this as a middleware factory, hence the
+ * import name below.
+ */
 import createIntlMiddleware from "next-intl/middleware";
 import { auth } from "@/lib/auth";
 import { routing } from "@/i18n/routing";
@@ -7,7 +15,7 @@ const intlMiddleware = createIntlMiddleware(routing);
 
 const protectedRoutes = ["/admin"];
 
-export default auth((req) => {
+export const proxy = auth((req) => {
   const { pathname } = req.nextUrl;
 
   // 1. Check if the route requires auth

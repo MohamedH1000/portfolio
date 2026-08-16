@@ -28,15 +28,34 @@ export function SettingsPage() {
   const [saving, setSaving] = useState<string | null>(null);
   const [edited, setEdited] = useState<Record<string, { value_en: string; value_ar: string }>>({});
 
-  const fetchSettings = useCallback(async () => {
-    setLoading(true);
+  // The request only returns data — applying it to state is the caller's job.
+  // That keeps every setState inside a promise callback rather than in the
+  // effect body, which is the shape React actually recommends here.
+  const fetchSettings = useCallback(async (): Promise<Setting[]> => {
     const res = await fetch("/api/admin/settings");
     const data = await res.json();
-    setSettings(data.settings ?? []);
+    return data.settings ?? [];
+  }, []);
+
+  const applyResult = useCallback((result: Setting[]) => {
+    setSettings(result);
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchSettings(); }, [fetchSettings]);
+  useEffect(() => {
+    let cancelled = false;
+    void fetchSettings().then((result) => {
+      if (!cancelled) applyResult(result);
+    });
+    return () => { cancelled = true; };
+  }, [fetchSettings, applyResult]);
+
+  // A refresh after a save shows the spinner again; the mount path does not,
+  // because `loading` already starts true.
+  const refreshSettings = useCallback(() => {
+    setLoading(true);
+    void fetchSettings().then(applyResult);
+  }, [fetchSettings, applyResult]);
 
   function getValue(key: string, field: "value_en" | "value_ar"): string {
     if (edited[key]?.[field] !== undefined) return edited[key][field];
@@ -67,7 +86,7 @@ export function SettingsPage() {
       for (const key of keys) delete next[key];
       return next;
     });
-    fetchSettings();
+    refreshSettings();
     setSaving(null);
   }
 

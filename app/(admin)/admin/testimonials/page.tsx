@@ -43,26 +43,42 @@ export function TestimonialsPage() {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
 
-  const fetchItems = useCallback(async () => {
-    setLoading(true);
-    setError("");
+  // The request only returns data — applying it to state is the caller's job.
+  // That keeps every setState inside a promise callback rather than in the
+  // effect body, which is the shape React actually recommends here.
+  type LoadResult = { items: Testimonial[]; error: string };
+
+  const fetchItems = useCallback(async (): Promise<LoadResult> => {
     try {
       const res = await fetch("/api/admin/testimonials");
       const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Failed to fetch");
-        setItems([]);
-      } else {
-        setItems(data.testimonials ?? []);
-      }
+      if (!res.ok) return { items: [], error: data.error || "Failed to fetch" };
+      return { items: data.testimonials ?? [], error: "" };
     } catch {
-      setError("Network error");
-      setItems([]);
+      return { items: [], error: "Network error" };
     }
+  }, []);
+
+  const applyResult = useCallback((result: LoadResult) => {
+    setItems(result.items);
+    setError(result.error);
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchItems(); }, [fetchItems]);
+  useEffect(() => {
+    let cancelled = false;
+    void fetchItems().then((result) => {
+      if (!cancelled) applyResult(result);
+    });
+    return () => { cancelled = true; };
+  }, [fetchItems, applyResult]);
+
+  // A refresh after a mutation shows the spinner again; the mount path does
+  // not, because `loading` already starts true.
+  const refreshItems = useCallback(() => {
+    setLoading(true);
+    void fetchItems().then(applyResult);
+  }, [fetchItems, applyResult]);
 
   const filtered = items.filter((t) =>
     t.name_en.toLowerCase().includes(search.toLowerCase()) ||
@@ -88,7 +104,7 @@ export function TestimonialsPage() {
         { method: editing?.id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }
       );
       if (!res.ok) { const d = await res.json(); setError(d.error || "Failed"); setSaving(false); return; }
-      setFormOpen(false); setEditing(null); fetchItems();
+      setFormOpen(false); setEditing(null); refreshItems();
     } catch { setError("Network error"); }
     setSaving(false);
   }
@@ -97,7 +113,7 @@ export function TestimonialsPage() {
     if (!deleteId) return;
     setDeleting(true);
     await fetch(`/api/admin/testimonials/${deleteId}`, { method: "DELETE" });
-    setDeleting(false); setDeleteId(null); fetchItems();
+    setDeleting(false); setDeleteId(null); refreshItems();
   }
 
   function openNew() {

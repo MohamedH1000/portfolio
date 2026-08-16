@@ -8,7 +8,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { notFound } from "next/navigation";
-import { createMetadata, personJsonLd } from "@/lib/metadata";
+import { createMetadata } from "@/lib/metadata";
 import { Analytics } from "@vercel/analytics/next"
 
 export function generateStaticParams() {
@@ -66,7 +66,7 @@ export default async function LocaleLayout({
         <SessionProvider>
           <Header />
           <PageTransition className="flex-1">{children}</PageTransition>
-          <Footer locale={locale} />
+          <Footer />
           <Analytics />
         </SessionProvider>
         </NextIntlClientProvider>

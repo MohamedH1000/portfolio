@@ -1,4 +1,4 @@
-import type { Adapter, AdapterUser, AdapterAccount, AdapterSession } from "@auth/core/adapters";
+import type { Adapter, AdapterUser, AdapterSession } from "@auth/core/adapters";
 import { createClient } from "@supabase/supabase-js";
 
 function getSupabaseAdmin() {

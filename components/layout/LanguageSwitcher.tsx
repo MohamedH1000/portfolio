@@ -4,24 +4,20 @@ import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useHydrated } from "@/lib/hooks";
 
 export function LanguageSwitcher() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const hydrated = useHydrated();
 
   const switchLocale = () => {
     const nextLocale = locale === "en" ? "ar" : "en";
     router.replace(pathname, { locale: nextLocale });
   };
 
-  if (!mounted) {
+  if (!hydrated) {
     return <div className="h-9 w-16 rounded-full bg-surface-high/60" />;
   }
 

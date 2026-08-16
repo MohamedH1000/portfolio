@@ -38,7 +38,9 @@
   },
   "testimonials": {
     "title": "كلمات طيبة من {highlight}",
-    "titleHighlight": "عملاء راضين"
+    "titleHighlight": "عملاء راضين",
+    "pause": "إيقاف عرض الشهادات",
+    "play": "استئناف عرض الشهادات"
   },
   "experience": {
     "title": "{highlight} العملي",

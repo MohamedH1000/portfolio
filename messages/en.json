@@ -38,7 +38,9 @@
   },
   "testimonials": {
     "title": "Kind words from {highlight}",
-    "titleHighlight": "satisfied clients"
+    "titleHighlight": "satisfied clients",
+    "pause": "Pause the testimonials",
+    "play": "Resume the testimonials"
   },
   "experience": {
     "title": "My {highlight}",

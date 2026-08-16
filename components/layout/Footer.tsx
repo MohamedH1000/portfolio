@@ -1,10 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-interface FooterProps {
-  locale: string;
-}
-
-export async function Footer({ locale }: FooterProps) {
+export async function Footer() {
   const t = await getTranslations("footer");
   const year = new Date().getFullYear();
 

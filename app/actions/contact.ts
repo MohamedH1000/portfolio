@@ -1,6 +1,5 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
 import { contactSchema } from "@/lib/validations/contact";
 import { sanitizeInput } from "@/lib/sanitize";
 import nodemailer from "nodemailer";

@@ -44,26 +44,42 @@ export function ExperiencesPage() {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
 
-  const fetchItems = useCallback(async () => {
-    setLoading(true);
-    setError("");
+  // The request only returns data — applying it to state is the caller's job.
+  // That keeps every setState inside a promise callback rather than in the
+  // effect body, which is the shape React actually recommends here.
+  type LoadResult = { items: Experience[]; error: string };
+
+  const fetchItems = useCallback(async (): Promise<LoadResult> => {
     try {
       const res = await fetch("/api/admin/experiences");
       const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Failed to fetch");
-        setItems([]);
-      } else {
-        setItems(data.experiences ?? []);
-      }
+      if (!res.ok) return { items: [], error: data.error || "Failed to fetch" };
+      return { items: data.experiences ?? [], error: "" };
     } catch {
-      setError("Network error");
-      setItems([]);
+      return { items: [], error: "Network error" };
     }
+  }, []);
+
+  const applyResult = useCallback((result: LoadResult) => {
+    setItems(result.items);
+    setError(result.error);
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchItems(); }, [fetchItems]);
+  useEffect(() => {
+    let cancelled = false;
+    void fetchItems().then((result) => {
+      if (!cancelled) applyResult(result);
+    });
+    return () => { cancelled = true; };
+  }, [fetchItems, applyResult]);
+
+  // A refresh after a mutation shows the spinner again; the mount path does
+  // not, because `loading` already starts true.
+  const refreshItems = useCallback(() => {
+    setLoading(true);
+    void fetchItems().then(applyResult);
+  }, [fetchItems, applyResult]);
 
   const filtered = items.filter((e) =>
     e.company.toLowerCase().includes(search.toLowerCase()) ||
@@ -95,7 +111,7 @@ export function ExperiencesPage() {
       if (!res.ok) { const d = await res.json(); setError(d.error || "Failed"); setSaving(false); return; }
       setFormOpen(false);
       setEditing(null);
-      fetchItems();
+      refreshItems();
     } catch { setError("Network error"); }
     setSaving(false);
   }
@@ -106,7 +122,7 @@ export function ExperiencesPage() {
     await fetch(`/api/admin/experiences/${deleteId}`, { method: "DELETE" });
     setDeleting(false);
     setDeleteId(null);
-    fetchItems();
+    refreshItems();
   }
 
   function openNew() {

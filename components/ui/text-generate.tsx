@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useHydrated } from "@/lib/hooks";
 
 interface TextGenerateProps {
   words: string;
@@ -10,14 +10,12 @@ interface TextGenerateProps {
 }
 
 export function TextGenerate({ words, className }: TextGenerateProps) {
-  const [mounted, setMounted] = useState(false);
+  const hydrated = useHydrated();
   const wordList = words.split(" ");
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
+  // The server renders the plain sentence, so the copy is in the HTML rather
+  // than hidden behind a per-word opacity animation.
+  if (!hydrated) {
     return <div className={cn(className)}>{words}</div>;
   }
 
