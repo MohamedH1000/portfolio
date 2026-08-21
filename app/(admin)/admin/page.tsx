@@ -2,31 +2,34 @@ import { getDashboardStats, getRecentContacts } from "@/app/actions/admin-dashbo
 import { StatsCard } from "@/components/admin/StatsCard";
 import { AdminPanel } from "@/components/admin/AdminPanel";
 import { EmptyState } from "@/components/admin/EmptyState";
+import { ErrorState } from "@/components/admin/ErrorState";
 import { FolderKanban, Briefcase, MessageSquareQuote, Mail, ArrowRight, Inbox } from "lucide-react";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  const [stats, recentContacts] = await Promise.all([
-    getDashboardStats(),
-    getRecentContacts(),
-  ]);
+  const [{ stats, error: statsError }, { contacts: recentContacts, error: contactsError }] =
+    await Promise.all([getDashboardStats(), getRecentContacts()]);
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatsCard label="Projects" value={stats.projects} icon={FolderKanban} index={0} />
-        <StatsCard label="Experiences" value={stats.experiences} icon={Briefcase} index={1} />
-        <StatsCard label="Testimonials" value={stats.testimonials} icon={MessageSquareQuote} index={2} />
-        <StatsCard
-          label="Unread Messages"
-          value={stats.unreadMessages}
-          icon={Mail}
-          index={3}
-          accent={stats.unreadMessages > 0 ? "warning" : "brand"}
-        />
-      </div>
+      {statsError ? (
+        <ErrorState message={statsError} />
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <StatsCard label="Projects" value={stats.projects} icon={FolderKanban} index={0} />
+          <StatsCard label="Experiences" value={stats.experiences} icon={Briefcase} index={1} />
+          <StatsCard label="Testimonials" value={stats.testimonials} icon={MessageSquareQuote} index={2} />
+          <StatsCard
+            label="Unread Messages"
+            value={stats.unreadMessages}
+            icon={Mail}
+            index={3}
+            accent={stats.unreadMessages > 0 ? "warning" : "brand"}
+          />
+        </div>
+      )}
 
       <AdminPanel
         index={4}
@@ -41,7 +44,9 @@ export default async function AdminDashboardPage() {
           </Link>
         }
       >
-        {recentContacts.length === 0 ? (
+        {contactsError ? (
+          <ErrorState message={contactsError} />
+        ) : recentContacts.length === 0 ? (
           <EmptyState
             icon={Inbox}
             title="No messages yet"
